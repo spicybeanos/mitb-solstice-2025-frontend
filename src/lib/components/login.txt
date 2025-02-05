@@ -1,0 +1,63 @@
+{#if isLogIn}
+    <form method="POST" action="?/login">
+        <div>
+            <TextInput
+                bind:text={email}
+                type="email"
+                placeholder="Email"
+                name="email"
+                required
+            />
+        </div>
+        <div>
+            <TextInput
+                bind:text={password}
+                type="password"
+                placeholder="Password"
+                name="password"
+                required
+            />
+        </div>
+        <Button active>Log in</Button>
+    </for
+    <Button
+        OnClicked={() => {
+            isLogIn = false;
+        }}>Sign up</Button
+    >
+{:else}
+    <form method="POST" action="?/signup">
+        <div>
+            <TextInput
+                bind:text={email}
+                type="email"
+                placeholder="Email"
+                name="email"
+                required
+            />
+        </div>
+        <div>
+            <TextInput
+                bind:text={password}
+                type="password"
+                placeholder="Password"
+                name="password"
+                required
+            />
+        </div>
+        <div>
+            <TextInput
+                bind:text={confirmPass}
+                type="password"
+                placeholder="Confirm password"
+                required
+            />
+        </div>
+        <Button active>Sign up</Button>
+    </for
+    <Button
+        OnClicked={() => {
+            isLogIn = true;
+        }}>Log in</Button
+    >
+{/if}
