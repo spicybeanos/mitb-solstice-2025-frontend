@@ -15,7 +15,6 @@
                     <img
                         src={event.pictureURL}
                         alt="picture for the event"
-                        width="360px"
                     />
                     <h1>{event.name}</h1>
                     <div class="nowrap">{event.description}</div>
@@ -29,13 +28,14 @@
 <style>
     img{
         border-radius: 0.5em;
+        width: min(80vw,360px);
     }
     .margin {
         margin: 10px;
     }
     .aspect {
         aspect-ratio: 1.423 / 1.8;
-        width: 15em;
+        width: min(80vw,15em);
     }
     .nowrap {
         height: 5em;
@@ -49,6 +49,7 @@
         flex-wrap: wrap;
     }
     .centre {
+        width: fit-content;
         display: flex;
         justify-content: center;
         align-items: center;
