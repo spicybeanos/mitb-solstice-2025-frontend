@@ -6,6 +6,7 @@
 
     let { data } = $props();
     let event: Event = $state({
+        img_alt:"picture of the event",
         name: "",
         id: "",
         title: "",
@@ -30,7 +31,7 @@
 <Card title={`@${event.id}`}>
     <div class="mid">
         <div style="font-size: xx-large;font-weight: 900;">{event.title}</div>
-        <img src={event.pictureURL} />
+        <img src={event.pictureURL} alt={event.img_alt}/>
         <div style="text-align: center;">{event.description}</div>
         <div> See you at {event.date} at {event.time} hrs!</div>
         <div>The event is {event.duration} {event.duration === 1? 'hour':'hours'}</div>
@@ -44,6 +45,9 @@
 </Card>
 </div>
 <style>
+    img{
+        width: 60vw;
+    }
     div{
         color: black
     }
@@ -62,7 +66,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: fit-content;
+        width: 70vw;
         flex-wrap: wrap;
     }
     .centre {

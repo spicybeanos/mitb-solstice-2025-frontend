@@ -26,29 +26,29 @@
 </div>
 
 <style>
-    img{
+    .e-img{
         border-radius: 0.5em;
         width: min(80vw,360px);
     }
-    .margin {
+    .e-margin {
         margin: 10px;
     }
-    .aspect {
+    .e-aspect {
         aspect-ratio: 1.423 / 1.8;
         width: min(80vw,15em);
     }
-    .nowrap {
+    .e-nowrap {
         height: 5em;
         overflow: auto;
     }
-    .mid {
+    .e-mid {
         display: flex;
         flex-direction: column;
         align-items: center;
         width: fit-content;
         flex-wrap: wrap;
     }
-    .centre {
+    .e-centre {
         width: fit-content;
         display: flex;
         justify-content: center;
