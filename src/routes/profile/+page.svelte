@@ -69,6 +69,7 @@
 
     .centre {
         display: flex;
+        height: 60vh;
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;

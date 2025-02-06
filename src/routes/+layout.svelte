@@ -1,4 +1,5 @@
 <script>
+    import "./app.css";
     import ALink from "$lib/components/ALink.svelte";
     import { onMount } from "svelte";
     import { checkLoggedIn } from "./GoogleLogin.svelte.ts";
@@ -20,8 +21,10 @@
 <nav>
     <ALink style="margin:5px" href="/">Home</ALink>
     <ALink style="margin:5px" href="/profile">Profile</ALink>
-    <ALink style="margin:5px" href="/events">Events</ALink>
+    <ALink style="margin:5px" href="/events">Events & Conclaves</ALink>
     <ALink style="margin:5px" href="/support">Support</ALink>
+    <ALink style='margin:5px' href='/contactus'>Contact Us</ALink>
+    <ALink style='margin:5px' href='/stay'>Accommodation</ALink>
 </nav>
 {@render children()}
 
