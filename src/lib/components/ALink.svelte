@@ -9,15 +9,15 @@
 <style>
     a{
         text-decoration: none;
-        color: black;
+        color: var(--text-light-mode);
         cursor: pointer;
-        background-color: white;
+        background-color: var(--background-light);
         padding: 10px;
         border: none;
         border-width: 0px;
         border-bottom-width: 0px;
         border-style: solid;
-        border-color: black;
+        border-color: var(--border-light-mode);
         transition: all 0.1s;   
     }
 

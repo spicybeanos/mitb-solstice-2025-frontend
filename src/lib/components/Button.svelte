@@ -13,9 +13,9 @@
     disabled={disable}
     onclick={OnClicked}
     style={active
-        ? "background-color:lightgreen"
+        ? "background-color:var(--btn-active-light)"
         : danger
-          ? "background-color:red"
+          ? "background-color:var(--btn-danger-light)"
           : ""}
           style:padding="{padding}px"
 >
@@ -28,7 +28,7 @@
         cursor: pointer;
         border: solid;
         border-width: 2px;
-        border-color: black;
+        border-color: var(--border-light-mode);
         border-radius: 10px;
         transform: translate(0, -4px);
         transition: all 0.1s;
@@ -38,9 +38,9 @@
         cursor: not-allowed;
         margin: 5px;
         border: solid;
-        background-color: pink;
+        background-color: var(--btn-disable-light);
         border-width: 2px;
-        border-color: black;
+        border-color: var(--border-light-mode);
         border-radius: 10px;
         transform: translate(0, -4px);
         transition: all 0.1s;

@@ -8,13 +8,14 @@
 {/if}
 <style>
     input,textarea{
+        color: var(--text-light);
         margin: 10px;
         padding: 7px;
         border: none;
         border-radius: 6px;
         border-style: solid;
         border-width: 1px;
-        border-color: black;
+        border-color: var(--border-light-mode);
         box-shadow:  4px 4px black;
         transition: all 0.1s;
         width:95%;

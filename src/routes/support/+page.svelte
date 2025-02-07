@@ -115,7 +115,7 @@
         padding: 7px;
         border: none;
         border-radius: 6px;
-        background-color: #fff;
+        background-color: var(--background-light);
         width: max-content;
 
         font-family: "Clash Display Medium";

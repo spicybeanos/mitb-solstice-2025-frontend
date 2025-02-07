@@ -23,7 +23,7 @@
     h2 {
         float: left;
         line-height: 1.5em;
-        color: black;
+        color: var(--text-light-mode);
         margin: 0;
     }
     .controls {

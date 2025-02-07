@@ -49,7 +49,7 @@
         width: 60vw;
     }
     div{
-        color: black
+        color: var(--text-light)
     }
     .margin {
         margin: 10px;

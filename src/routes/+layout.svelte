@@ -36,7 +36,7 @@
         flex-wrap: wrap;
         display: flex;
         flex-direction: row;
-        border-color: black;
+        border-color: var(--border-light-mode);
         box-shadow: 0px 6px black;
     }
 </style>
