@@ -23,7 +23,6 @@
     <ALink style="margin:5px" href="/profile">Profile</ALink>
     <ALink style="margin:5px" href="/events">Events & Conclaves</ALink>
     <ALink style="margin:5px" href="/support">Support</ALink>
-    <ALink style='margin:5px' href='/contactus'>Contact Us</ALink>
     <ALink style='margin:5px' href='/stay'>Accommodation</ALink>
 </nav>
 {@render children()}

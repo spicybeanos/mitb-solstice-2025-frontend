@@ -103,7 +103,8 @@
                 <Button OnClicked={() => {}} active>Send ticket</Button>
             </form>
         </Card>
-        
+        <AButton href="/contactus">Contact us</AButton>
+
     </div>
 </div>
 
