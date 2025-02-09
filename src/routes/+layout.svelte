@@ -27,21 +27,21 @@
 </script>
 
 <nav>
-    <ALink style="margin:5px" href="/"><img class="logo" src={logo} alt="logo" /></ALink>
+    <a style="margin:5px" href="/"><img class="logo" src={logo} alt="logo" /></a>
     <div>
-        <ALink style="margin:5px" href="/events"><img class="icon" src={events_icon} alt="events and conclaves"></ALink>
-        <ALink style="margin:5px" href="/support"><img class="icon" src={support_icon} alt="support"></ALink>
-        <ALink style="margin:5px" href="/passes"><img class="icon" src={tickets_icon} alt='passes'></ALink>
-        <ALink style="margin:5px" href="/stay"><img class="icon" src={stay_icon} alt='stay and accomodation'></ALink>
+        <a style="margin:5px" href="/events"><img class="icon" src={events_icon} alt="events and conclaves"></a>
+        <a style="margin:5px" href="/support"><img class="icon" src={support_icon} alt="support"></a>
+        <a style="margin:5px" href="/passes"><img class="icon" src={tickets_icon} alt='passes'></a>
+        <a style="margin:5px" href="/stay"><img class="icon" src={stay_icon} alt='stay and accomodation'></a>
     </div>
 
-    <ALink style="margin:5px" href="/profile">
+    <a style="margin:5px" href="/profile">
         {#if !UserProfileData.loggedIn}
         <img class="icon" src={profile_circle} alt='profile'>
         {:else}
         <img class="icon" src={UserProfileData.picture} alt='profile'>
         {/if}
-    </ALink>
+    </a>
 </nav>
 {@render children()}
 
@@ -50,11 +50,17 @@
         width: max(7vw,10em);
     }
     .icon{
-        width: min(7vw,2em);
+        padding: 7px 7px 7px 7px;
+        width: min(7vw,3em);
     }
     div{
         display: flex;
         justify-content: center;
+        border-style: solid ;
+        border-width: 0.1em;
+        border-radius: 3em;
+        border-color: black;
+        padding: 0.3em 0.3em 0.3em 0.3em;
     }
     nav {
         padding: 15px;

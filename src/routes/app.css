@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 :root{
+    --hotbar-bkg-color:#ff013c;
+
     --sliding-link-nuetral:#888;
     
     --background-light:#fff;
