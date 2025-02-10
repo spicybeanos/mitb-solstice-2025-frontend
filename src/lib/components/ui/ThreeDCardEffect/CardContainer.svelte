@@ -9,7 +9,7 @@
 </script>
 
 <div
-	class={flex items-center justify-center '}
+	class={'flex items-center justify-center '}
 	style="perspective: 1000px;"
 >
 	<div
