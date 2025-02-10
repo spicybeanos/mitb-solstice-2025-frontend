@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+@theme {
+    --font-akira: "Akira", "sans-serif";
+}
+
+@font-face {
+    font-family: Akira;
+    display: swap;
+    src: url("../lib/fonts/akira_expanded.otf");
+}
+
 :root{
     --hotbar-bkg-color:#ff013c;
 

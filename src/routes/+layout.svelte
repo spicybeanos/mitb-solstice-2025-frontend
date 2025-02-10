@@ -26,16 +26,17 @@
     });
 </script>
 
-<nav>
-    <a style="margin:5px" href="/"><img class="logo" src={logo} alt="logo" /></a>
-    <div>
-        <a style="margin:5px" href="/events"><img class="icon" src={events_icon} alt="events and conclaves"></a>
-        <a style="margin:5px" href="/support"><img class="icon" src={support_icon} alt="support"></a>
-        <a style="margin:5px" href="/passes"><img class="icon" src={tickets_icon} alt='passes'></a>
-        <a style="margin:5px" href="/stay"><img class="icon" src={stay_icon} alt='stay and accomodation'></a>
+<nav class="absolute top-0 flex flex-row items-center justify-between p-3 w-full">
+    <a href="/" class="grow max-w-[33%]"><img class="logo" src={logo} alt="logo" /></a>
+    
+    <div class="flex flex-row border-2 grow-0 rounded-full p-2">
+        <a href="/events"><img class="icon" src={events_icon} alt="events and conclaves"></a>
+        <a href="/support"><img class="icon" src={support_icon} alt="support"></a>
+        <a href="/passes"><img class="icon" src={tickets_icon} alt='passes'></a>
+        <a href="/stay"><img class="icon" src={stay_icon} alt='stay and accomodation'></a>
     </div>
 
-    <a style="margin:5px" href="/profile">
+    <a href="/profile" class="grow flex flex-row justify-end max-w-[33%]">
         {#if !UserProfileData.loggedIn}
         <img class="icon" src={profile_circle} alt='profile'>
         {:else}
@@ -43,7 +44,24 @@
         {/if}
     </a>
 </nav>
+
 {@render children()}
+
+<footer class="flex flex-col p-8 text-white">
+    <div class="flex flex-row justify-between">
+        <div class="flex flex-col">
+            <p>Manipal Institute of technology</p>
+            <p>Yelahanka, Bengaluru</p>
+            <p>Karnataka - 650036</p>
+        </div>
+
+        <div class="flex flex-col text-right">
+            <p>Contact @</p>
+            <p>+91 12345 67890</p>
+            <p>( Name - HR Head )</p>
+        </div>
+    </div>
+</footer>
 
 <style>
     .logo{
@@ -53,7 +71,11 @@
         padding: 7px 7px 7px 7px;
         width: min(7vw,3em);
     }
-    div{
+
+    footer {
+        background-color: #AB83FE;
+    }
+    /* div{
         display: flex;
         justify-content: center;
         border-style: solid ;
@@ -61,13 +83,13 @@
         border-radius: 3em;
         border-color: black;
         padding: 0.3em 0.3em 0.3em 0.3em;
-    }
-    nav {
+    } */
+    /* nav {
         padding: 15px;
         margin: 12px;
         flex-wrap: wrap;
         display: flex;
         justify-content: space-between;
         flex-direction: row;
-    }
+    } */
 </style>
