@@ -26,11 +26,11 @@
     });
 </script>
 
-<nav class="absolute top-0 flex flex-row items-center justify-between p-3 w-full">
-    <a href="/" class="grow max-w-[33%]"><img class="logo" src={logo} alt="logo" /></a>
+<nav class="absolute top-0 flex flex-row items-center justify-between p-3 md:p-6 w-full">
+    <a href="/" class="grow max-w-[33%]"><img class="logo w-[26vw] md:w-[15vw]" src={logo} alt="logo" /></a>
     
     <div class="flex flex-row border-2 grow-0 rounded-full p-2">
-        <a href="/events"><img class="icon" src={events_icon} alt="events and conclaves"></a>
+        <a href="/events"><img class="icon " src={events_icon} alt="events and conclaves"></a>
         <a href="/support"><img class="icon" src={support_icon} alt="support"></a>
         <a href="/passes"><img class="icon" src={tickets_icon} alt='passes'></a>
         <a href="/stay"><img class="icon" src={stay_icon} alt='stay and accomodation'></a>
@@ -38,7 +38,7 @@
 
     <a href="/profile" class="grow flex flex-row justify-end max-w-[33%]">
         {#if !UserProfileData.loggedIn}
-        <img class="icon" src={profile_circle} alt='profile'>
+        <img class="icon min-w-[15vw] md:min-w-[4vw]" src={profile_circle} alt='profile'>
         {:else}
         <img class="icon" src={UserProfileData.picture} alt='profile'>
         {/if}
@@ -47,7 +47,7 @@
 
 {@render children()}
 
-<footer class="flex flex-col p-8 text-white">
+<footer class="flex flex-col p-6 md:p-8 text-xs md:text-base text-white">
     <div class="flex flex-row justify-between">
         <div class="flex flex-col">
             <p>Manipal Institute of technology</p>
@@ -64,12 +64,12 @@
 </footer>
 
 <style>
-    .logo{
+    /* .logo{
         width: max(7vw,10em);
-    }
+    } */
     .icon{
         padding: 7px 7px 7px 7px;
-        width: min(7vw,3em);
+        width: min(8vw,3em);
     }
 
     footer {
