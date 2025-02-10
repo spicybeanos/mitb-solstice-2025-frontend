@@ -12,7 +12,10 @@
   import { UserProfileData } from "../GoogleLogin.svelte.ts";
 
     let events:FalakEvent[] = $state([]);
+    // TO BE REMOVED, ONLY HERE TO POPULATE WITH CONTENT TILL BACKEND IS CONNECTED
+
     let { data } = $props();
+    $inspect(data.events);
 
     let search = $state("");
 
