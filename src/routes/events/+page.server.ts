@@ -1,19 +1,13 @@
-import type { DateTime } from "@auth/core/providers/kakao";
+import type { FalakEvent } from '$lib/components/Events';
+import { error } from '@sveltejs/kit';
 
-export interface FalakEvent {
-    img_alt:string;
-    name: string;
-    id: string;
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    duration: number;
-    teamSize: number;
-    pictureURL: string;
+
+export function load()
+{
+    return ({events:events})
 }
 
-export const events = [
+const events : FalakEvent[] = [
     {
         img_alt:"image alt",
         name: 'HackFest25',

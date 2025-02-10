@@ -1,11 +1,11 @@
 <script lang="ts">
-    import type { Event } from "$lib/components/Events.js";
+    import type { FalakEvent } from "$lib/components/Events.js";
     import { onMount } from "svelte";
     import {events} from "$lib/components/Events.js";
     import Card from "$lib/components/Card.svelte";
 
     let { data } = $props();
-    let event: Event = $state({
+    let event: FalakEvent = $state({
         img_alt:"picture of the event",
         name: "",
         id: "",

@@ -1,18 +1,19 @@
 <script lang="ts">
-    import type { Event } from "$lib/components/Events.ts";
+    import type { FalakEvent } from "$lib/components/Events.ts";
     import Button from "$lib/components/Button.svelte";
     import Card from "$lib/components/Card.svelte";
     import TextInput from "$lib/components/TextInput.svelte";
     import EventCard from "$lib/components/EventCard.svelte";
-    import { events } from "$lib/components/Events.ts";
+    //import { events } from "$lib/components/Events.ts";
     import AButton from "$lib/components/AButton.svelte";
     import { onMount } from "svelte";
+
+    let events:FalakEvent[] = $state([]);
     let { data } = $props();
 
-    let displayEvents = $state([{}]);
     let search = $state("");
 
-    function searchEvent(e:Event)
+    function searchEvent(e:FalakEvent)
     {
         if(e.description.toUpperCase().includes(search.toUpperCase())){
             return true;
@@ -31,9 +32,7 @@
     }
 
     onMount(() => {
-        events.forEach((eve) => {
-            displayEvents.push(eve);
-        });
+        events = data.events;
     });
 </script>
 
