@@ -28,11 +28,11 @@
 
 <nav>
     <a style="margin:5px" href="/"><img class="logo" src={logo} alt="logo" /></a>
-    <div>
-        <a style="margin:5px" href="/events"><img class="icon" src={events_icon} alt="events and conclaves"></a>
-        <a style="margin:5px" href="/support"><img class="icon" src={support_icon} alt="support"></a>
-        <a style="margin:5px" href="/passes"><img class="icon" src={tickets_icon} alt='passes'></a>
-        <a style="margin:5px" href="/stay"><img class="icon" src={stay_icon} alt='stay and accomodation'></a>
+    <div class="hotbar">
+        <a style="margin:0.5em" href="/events">EVENTS</a>
+        <a style="margin:0.5em" href="/support">SUPPORT</a>
+        <a style="margin:0.5em" href="/passes">PASSES</a>
+        <a style="margin:0.5em" href="/stay">STAY</a>
     </div>
 
     <a style="margin:5px" href="/profile">
@@ -44,8 +44,18 @@
     </a>
 </nav>
 {@render children()}
-
+<div class="justify-between"><div class="text-white">Manipal Institute of Technology<br>Yelahanka, Bengaluru<br>Karnataka- 650036</div></div>
 <style>
+    :global(body){
+        background-color: #AB83FE;
+    }
+    a{
+        font-size: medium;
+        color: white;
+    }
+    a:hover{
+        color: yellow;
+    }
     .logo{
         width: max(7vw,10em);
     }
@@ -53,14 +63,16 @@
         padding: 7px 7px 7px 7px;
         width: min(7vw,3em);
     }
-    div{
+    .hotbar{
         display: flex;
         justify-content: center;
+        align-items: center;
         border-style: solid ;
         border-width: 0.1em;
         border-radius: 3em;
         border-color: black;
-        padding: 0.3em 0.3em 0.3em 0.3em;
+        padding: 0.3em 2em 0.3em 2em;
+        background-color: black;
     }
     nav {
         padding: 15px;
