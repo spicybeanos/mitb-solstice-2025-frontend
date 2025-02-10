@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { cn } from '$lib/utils/cn.ts';
 
 	export let className: string | undefined = undefined;
 	export let isMouseEntered: boolean = false;
@@ -12,7 +11,7 @@
 
 <div
 	bind:this={ref}
-	class={cn('w-fit transition duration-200 ease-linear', className)}
+	class={'w-fit transition duration-200 ease-linear'}
 	{...$$props}
 >
 	<slot />
