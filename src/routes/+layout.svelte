@@ -26,14 +26,18 @@
     });
 </script>
 
-<nav class="absolute top-0 flex flex-row items-center justify-between p-3 md:p-6 w-full">
+<nav class="absolute top-0 z-10 flex flex-row items-center justify-between p-3 md:p-6 w-full">
     <a href="/" class="grow max-w-[33%]"><img class="logo w-[26vw] md:w-[15vw]" src={logo} alt="logo" /></a>
     
-    <div class="flex flex-row border-2 grow-0 rounded-full p-2">
-        <a href="/events"><img class="icon " src={events_icon} alt="events and conclaves"></a>
+    <div class="flex flex-row grow-0 rounded-full px-12 py-3 bg-black text-white gap-8">
+        <a class="hover:text-[#AB83FE] cursor-pointer" href="/passes">Passes</a>
+        <a class="hover:text-[#AB83FE] cursor-pointer" href="/events">Events</a>
+        <a class="hover:text-[#AB83FE] cursor-pointer" href="/support">Support</a>
+        <a class="hover:text-[#AB83FE] cursor-pointer" href="/stay">Stay</a>
+        <!-- <a href="/events"><img class="icon " src={events_icon} alt="events and conclaves"></a>
         <a href="/support"><img class="icon" src={support_icon} alt="support"></a>
         <a href="/passes"><img class="icon" src={tickets_icon} alt='passes'></a>
-        <a href="/stay"><img class="icon" src={stay_icon} alt='stay and accomodation'></a>
+        <a href="/stay"><img class="icon" src={stay_icon} alt='stay and accomodation'></a> -->
     </div>
 
     <a href="/profile" class="grow flex flex-row justify-end max-w-[33%]">
