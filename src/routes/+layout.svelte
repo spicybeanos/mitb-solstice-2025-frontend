@@ -2,7 +2,7 @@
     import "./app.css";
     import { UserProfileData } from "./GoogleLogin.svelte.ts";
     import logo from "$lib/falak.png";
-    import profile_circle from "$lib/icons/account_circle.png"
+    import profile_circle from "$lib/icons/account_circle.png";
     import tickets_icon from "$lib/icons/ticket.png";
     import support_icon from "$lib/icons/support.png";
     import events_icon from "$lib/icons/event.png";
@@ -27,7 +27,8 @@
 </script>
 
 <nav>
-    <a style="margin:5px" href="/"><img class="logo" src={logo} alt="logo" /></a>
+    <a style="margin:5px" href="/"><img class="logo" src={logo} alt="logo" /></a
+    >
     <div class="hotbar">
         <a style="margin:0.3em" href="/events">EVENTS</a>
         <a style="margin:0.3em" href="/support">SUPPORT</a>
@@ -37,41 +38,56 @@
 
     <a style="margin:5px" href="/profile">
         {#if !UserProfileData.loggedIn}
-        <img class="icon" src={profile_circle} alt='profile'>
+            <img class="icon" src={profile_circle} alt="profile" />
         {:else}
-        <img class="icon" src={UserProfileData.picture} alt='profile'>
+            <img class="icon" src={UserProfileData.picture} alt="profile" />
         {/if}
     </a>
 </nav>
-{@render children()}
-<div class="justify-between"><div class="text-white">Manipal Institute of Technology<br>Yelahanka, Bengaluru<br>Karnataka- 650036</div></div>
+<div class="bg-[#1E1E1E]" style="min-height: 70vh;">
+   {@render children()} 
+</div>
+
+
+<div class="justify-between p-[1vw]">
+    <div class="text-white">
+        Manipal Institute of Technology<br />Yelahanka, Bengaluru<br
+        />Karnataka- 650036
+    </div>
+</div>
+
 <style>
-    :global(body){
-        background-color: #AB83FE;
+    :global(body) {
+        background-color: #ab83fe;
     }
-    a{
+    a {
         font-size: small;
         color: white;
     }
-    a:hover{
+    a:hover {
         color: yellow;
     }
-    .logo{
-        width: max(7vw,10em);
+    .logo {
+        aspect-ratio: 249/31;
+        width: max(14vw, 10em);
     }
-    .icon{
+    .icon {
         padding: 7px 7px 7px 7px;
-        width: min(12vw,3em);
+        width: min(12vw, 3em);
+        border-radius: 50%;
     }
-    .hotbar{
+    .hotbar {
         display: flex;
         justify-content: center;
         align-items: center;
-        border-style: solid ;
+        border-style: solid;
         border-width: 0.1em;
-        border-radius: 3em;
+        border-radius: 2em;
         border-color: black;
-        padding: 0.05em 0.2em 0.05em 0.2em;
+        padding-left: 1em;
+        padding-right: 1em;
+        aspect-ratio: 290/40;
+        height: 40px;
         background-color: black;
     }
     nav {
