@@ -1,6 +1,6 @@
 import { backendURL } from "./Backend";
 
-interface FalakEventInfo {
+interface SolsticeEventInfo {
     name: string,
     description: string,
     type: string,
@@ -13,13 +13,13 @@ interface FalakEventInfo {
 export async function getEvents() {
 
 }
-export async function getEventInfo(eventId: string) : Promise<FalakEventInfo|null> {
+export async function getEventInfo(eventId: string) : Promise<SolsticeEventInfo|null> {
     const res = await fetch(`${backendURL}/event/${eventId}`, {
         method: 'GET'
     });
 
     if (res.status === 200) {
-        return (await res.json()) as FalakEventInfo;
+        return (await res.json()) as SolsticeEventInfo;
     }
     return null;
 }

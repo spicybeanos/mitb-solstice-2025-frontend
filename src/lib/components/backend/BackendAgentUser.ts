@@ -1,6 +1,6 @@
 import { backendURL } from "./Backend";
 
-interface FalakUser {
+interface SolsticeUser {
     first_name: string;
     last_name: string;
     email_address: string;
@@ -9,20 +9,20 @@ interface FalakUser {
     pass_id: string;
     id: string;
 }
-interface FalakUserPass{
+interface SolsticeUserPass{
     name: string,
     description: string,
     cost: string,
     id: string
 }
-export async function registerUser(user: FalakUser): Promise<FalakUser|null> {
+export async function registerUser(user: SolsticeUser): Promise<SolsticeUser|null> {
     const res = await fetch(`${backendURL}/user`, {
         method: 'POST',
         body: JSON.stringify(user)
     });
 
     if (res.status === 200) {
-        return (await res.json()) as FalakUser;
+        return (await res.json()) as SolsticeUser;
     }
     return null;
 }
@@ -30,27 +30,27 @@ export async function getUserId(email:string) : Promise<string|null> {
     //wait for him to make the endpoint
     return null;
 }
-export async function getUserInfo(userId:string) : Promise<FalakUser|null> {
+export async function getUserInfo(userId:string) : Promise<SolsticeUser|null> {
     const res = await fetch(`${backendURL}/user/${userId}`, {
         method: 'GET'
     });
 
     if (res.status === 200) {
-        return (await res.json()) as FalakUser;
+        return (await res.json()) as SolsticeUser;
     }
     return null;
 }
-export async function getUserPassInfo(userId:string) : Promise<FalakUserPass | null> {
+export async function getUserPassInfo(userId:string) : Promise<SolsticeUserPass | null> {
     const res = await fetch(`${backendURL}/user/${userId}/pass`, {
         method: 'GET',
     });
 
     if (res.status === 200) {
-        return (await res.json()) as FalakUserPass;
+        return (await res.json()) as SolsticeUserPass;
     }
     return null;
 }
-export async function updateUserInfo(userId:string,info:FalakUser) : Promise<boolean> {
+export async function updateUserInfo(userId:string,info:SolsticeUser) : Promise<boolean> {
     const res = await fetch(`${backendURL}/user/${userId}`, {
         method: 'PATCH',
         body: JSON.stringify(info)

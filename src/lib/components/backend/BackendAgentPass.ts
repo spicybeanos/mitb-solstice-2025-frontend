@@ -1,6 +1,6 @@
 import { backendURL } from "./Backend";
 
-interface FalakPassInfo{
+interface SolsticePassInfo{
     name: string;
     description: string;
     cost: string;
@@ -13,7 +13,7 @@ export async function getPass(passId: string) {
     });
 
     if (res.status === 200) {
-        return (await res.json()) as FalakPassInfo;
+        return (await res.json()) as SolsticePassInfo;
     }
     return null;
 }
