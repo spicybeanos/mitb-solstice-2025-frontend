@@ -57,13 +57,6 @@
 </div>
 
 
-<div class="justify-between p-[1vw]">
-    <div class="text-white">
-        Manipal Institute of Technology<br />Yelahanka, Bengaluru<br
-        />Karnataka- 650036
-    </div>
-</div>
-
 <footer class="flex flex-col p-6 md:p-8 text-xs md:text-base text-white">
     <div class="flex flex-row justify-between">
         <div class="flex flex-col">
@@ -123,5 +116,5 @@
         display: flex;
         justify-content: space-between;
         flex-direction: row;
-    } */
+    }
 </style>
