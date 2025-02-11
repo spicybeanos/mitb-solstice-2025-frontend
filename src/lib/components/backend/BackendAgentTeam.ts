@@ -45,3 +45,14 @@ export async function getTeamDetails(teamId:string) : Promise<FalakTeamInfo|null
 
     return null;
 }
+export async function delteTeam(teamId:string) : Promise<FalakTeamInfo|null> {
+    const res = await fetch(`${backendURL}/team/${teamId}`, {
+        method: 'DELETE'
+    });
+
+    if (res.status === 200) {
+        return (await res.json()) as FalakTeamInfo;
+    }
+
+    return null;
+}
