@@ -1,4 +1,3 @@
-import {backendURL} from "$lib/components/Backend.ts";
 
 
 export async function load(){
