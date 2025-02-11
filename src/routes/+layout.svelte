@@ -26,24 +26,32 @@
     });
 </script>
 
-<nav>
-    <a style="margin:5px" href="/"><img class="logo" src={logo} alt="logo" /></a
-    >
-    <div class="hotbar">
-        <a style="margin:0.3em" href="/events">EVENTS</a>
-        <a style="margin:0.3em" href="/support">SUPPORT</a>
-        <a style="margin:0.3em" href="/passes">PASSES</a>
-        <a style="margin:0.3em" href="/stay">STAY</a>
+<nav class="absolute top-0 z-10 flex flex-row items-center justify-between p-3 md:p-6 w-full">
+    <a href="/" class="grow max-w-[33%]"><img class="logo w-[26vw] md:w-[15vw]" src={logo} alt="logo" /></a>
+    
+    <div class="flex flex-row grow-0 rounded-full px-12 py-3 bg-black text-white gap-8">
+        <a class="hover:text-[#AB83FE] cursor-pointer" href="/passes">Passes</a>
+        <a class="hover:text-[#AB83FE] cursor-pointer" href="/events">Events</a>
+        <a class="hover:text-[#AB83FE] cursor-pointer" href="/support">Support</a>
+        <a class="hover:text-[#AB83FE] cursor-pointer" href="/stay">Stay</a>
+        <!-- <a href="/events"><img class="icon " src={events_icon} alt="events and conclaves"></a>
+        <a href="/support"><img class="icon" src={support_icon} alt="support"></a>
+        <a href="/passes"><img class="icon" src={tickets_icon} alt='passes'></a>
+        <a href="/stay"><img class="icon" src={stay_icon} alt='stay and accomodation'></a> -->
+
     </div>
 
-    <a style="margin:5px" href="/profile">
+    <a href="/profile" class="grow flex flex-row justify-end max-w-[33%]">
         {#if !UserProfileData.loggedIn}
-            <img class="icon" src={profile_circle} alt="profile" />
+
+        <img class="icon min-w-[15vw] md:min-w-[4vw]" src={profile_circle} alt='profile'>
+
         {:else}
             <img class="icon" src={UserProfileData.picture} alt="profile" />
         {/if}
     </a>
 </nav>
+
 <div class="bg-[#1E1E1E]" style="min-height: 70vh;">
    {@render children()} 
 </div>
@@ -56,7 +64,24 @@
     </div>
 </div>
 
+<footer class="flex flex-col p-6 md:p-8 text-xs md:text-base text-white">
+    <div class="flex flex-row justify-between">
+        <div class="flex flex-col">
+            <p>Manipal Institute of technology</p>
+            <p>Yelahanka, Bengaluru</p>
+            <p>Karnataka - 650036</p>
+        </div>
+
+        <div class="flex flex-col text-right">
+            <p>Contact @</p>
+            <p>+91 12345 67890</p>
+            <p>( Name - HR Head )</p>
+        </div>
+    </div>
+</footer>
+
 <style>
+
     :global(body) {
         background-color: #ab83fe;
     }
@@ -84,6 +109,7 @@
         border-width: 0.1em;
         border-radius: 2em;
         border-color: black;
+
         padding-left: 1em;
         padding-right: 1em;
         aspect-ratio: 290/40;
@@ -97,5 +123,5 @@
         display: flex;
         justify-content: space-between;
         flex-direction: row;
-    }
+    } */
 </style>
