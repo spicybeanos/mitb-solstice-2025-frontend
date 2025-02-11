@@ -29,10 +29,10 @@
 <nav>
     <a style="margin:5px" href="/"><img class="logo" src={logo} alt="logo" /></a>
     <div class="hotbar">
-        <a style="margin:0.5em" href="/events">EVENTS</a>
-        <a style="margin:0.5em" href="/support">SUPPORT</a>
-        <a style="margin:0.5em" href="/passes">PASSES</a>
-        <a style="margin:0.5em" href="/stay">STAY</a>
+        <a style="margin:0.3em" href="/events">EVENTS</a>
+        <a style="margin:0.3em" href="/support">SUPPORT</a>
+        <a style="margin:0.3em" href="/passes">PASSES</a>
+        <a style="margin:0.3em" href="/stay">STAY</a>
     </div>
 
     <a style="margin:5px" href="/profile">
@@ -50,7 +50,7 @@
         background-color: #AB83FE;
     }
     a{
-        font-size: medium;
+        font-size: small;
         color: white;
     }
     a:hover{
@@ -61,7 +61,7 @@
     }
     .icon{
         padding: 7px 7px 7px 7px;
-        width: min(7vw,3em);
+        width: min(12vw,3em);
     }
     .hotbar{
         display: flex;
@@ -71,7 +71,7 @@
         border-width: 0.1em;
         border-radius: 3em;
         border-color: black;
-        padding: 0.3em 2em 0.3em 2em;
+        padding: 0.05em 0.2em 0.05em 0.2em;
         background-color: black;
     }
     nav {
