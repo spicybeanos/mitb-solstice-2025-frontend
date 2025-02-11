@@ -8,21 +8,21 @@
 {/if}
 <style>
     input,textarea{
-        color: var(--text-light);
+        color: var(--text-dark);
         margin: 10px;
         padding: 7px;
         border: none;
         border-radius: 6px;
         border-style: solid;
         border-width: 1px;
-        border-color: var(--border-light-mode);
-        box-shadow:  4px 4px black;
+        border-color: var(--border-dark-mode);
+        box-shadow:  1px 1px var(--border-dark-mode);
         transition: all 0.1s;
         width:95%;
     }
 
     input:focus,textarea:focus{
         outline: none;
-        box-shadow:  8px 8px black;
+        box-shadow:  4px 4px var(--border-dark-mode);
     }
 </style>

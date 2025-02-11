@@ -2,7 +2,7 @@
     import "./app.css";
     import { UserProfileData } from "./GoogleLogin.svelte.ts";
     import logo from "$lib/falak.png";
-    import profile_circle from "$lib/icons/account_circle.png"
+    import profile_circle from "$lib/icons/account_circle.png";
     import tickets_icon from "$lib/icons/ticket.png";
     import support_icon from "$lib/icons/support.png";
     import events_icon from "$lib/icons/event.png";
@@ -38,18 +38,31 @@
         <a href="/support"><img class="icon" src={support_icon} alt="support"></a>
         <a href="/passes"><img class="icon" src={tickets_icon} alt='passes'></a>
         <a href="/stay"><img class="icon" src={stay_icon} alt='stay and accomodation'></a> -->
+
     </div>
 
     <a href="/profile" class="grow flex flex-row justify-end max-w-[33%]">
         {#if !UserProfileData.loggedIn}
+
         <img class="icon min-w-[15vw] md:min-w-[4vw]" src={profile_circle} alt='profile'>
+
         {:else}
-        <img class="icon" src={UserProfileData.picture} alt='profile'>
+            <img class="icon" src={UserProfileData.picture} alt="profile" />
         {/if}
     </a>
 </nav>
 
-{@render children()}
+<div class="bg-[#1E1E1E]" style="min-height: 70vh;">
+   {@render children()} 
+</div>
+
+
+<div class="justify-between p-[1vw]">
+    <div class="text-white">
+        Manipal Institute of Technology<br />Yelahanka, Bengaluru<br
+        />Karnataka- 650036
+    </div>
+</div>
 
 <footer class="flex flex-col p-6 md:p-8 text-xs md:text-base text-white">
     <div class="flex flex-row justify-between">
@@ -68,27 +81,42 @@
 </footer>
 
 <style>
-    /* .logo{
-        width: max(7vw,10em);
-    } */
-    .icon{
-        padding: 7px 7px 7px 7px;
-        width: min(8vw,3em);
-    }
 
-    footer {
-        background-color: #AB83FE;
+    :global(body) {
+        background-color: #ab83fe;
     }
-    /* div{
+    a {
+        font-size: small;
+        color: white;
+    }
+    a:hover {
+        color: yellow;
+    }
+    .logo {
+        aspect-ratio: 249/31;
+        width: max(14vw, 10em);
+    }
+    .icon {
+        padding: 7px 7px 7px 7px;
+        width: min(12vw, 3em);
+        border-radius: 50%;
+    }
+    .hotbar {
         display: flex;
         justify-content: center;
-        border-style: solid ;
+        align-items: center;
+        border-style: solid;
         border-width: 0.1em;
-        border-radius: 3em;
+        border-radius: 2em;
         border-color: black;
-        padding: 0.3em 0.3em 0.3em 0.3em;
-    } */
-    /* nav {
+
+        padding-left: 1em;
+        padding-right: 1em;
+        aspect-ratio: 290/40;
+        height: 40px;
+        background-color: black;
+    }
+    nav {
         padding: 15px;
         margin: 12px;
         flex-wrap: wrap;
