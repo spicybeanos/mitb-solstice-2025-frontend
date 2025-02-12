@@ -26,9 +26,9 @@
     });
 </script>
 
-<nav class="absolute top-0 z-10 flex flex-row items-center justify-between p-3 md:p-6 w-full">
+<nav class="flex flex-row items-center justify-between p-3 md:p-6 w-[96vw]">
     <a href="/" class="grow max-w-[33%]"><img class="logo w-[26vw] md:w-[15vw]" src={logo} alt="logo" /></a>
-    
+     
     <div class="flex flex-row grow-0 rounded-full px-12 py-3 bg-black text-white gap-8">
         <a class="hover:text-[#AB83FE] cursor-pointer" href="/passes">Passes</a>
         <a class="hover:text-[#AB83FE] cursor-pointer" href="/events">Events</a>
