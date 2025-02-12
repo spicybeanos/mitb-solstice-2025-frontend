@@ -13,6 +13,7 @@ interface SolsticeEventInfo {
 export async function getEvents() {
 
 }
+
 export async function getEventInfo(eventId: string) : Promise<SolsticeEventInfo|null> {
     const res = await fetch(`${backendURL}/event/${eventId}`, {
         method: 'GET'

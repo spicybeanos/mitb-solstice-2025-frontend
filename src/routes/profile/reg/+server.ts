@@ -8,5 +8,5 @@ export async function GET({ url }: { url: URL }){
 
     if(userId == null) return json({message:"not registered"}, {status:404});
 
-    return json({userid:userId}, {status:202});
+    return json({userid:userId}, {status:200});
 }

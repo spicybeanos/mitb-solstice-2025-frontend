@@ -45,7 +45,7 @@ export async function getTeamDetails(teamId:string) : Promise<SolsticeTeamInfo|n
 
     return null;
 }
-export async function delteTeam(teamId:string) : Promise<SolsticeTeamInfo|null> {
+export async function deleteTeam(teamId:string) : Promise<SolsticeTeamInfo|null> {
     const res = await fetch(`${backendURL}/team/${teamId}`, {
         method: 'DELETE'
     });

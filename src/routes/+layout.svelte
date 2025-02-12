@@ -91,7 +91,7 @@
     }
     .icon {
         padding: 7px 7px 7px 7px;
-        width: min(12vw, 3em);
+        width: 60px;
         border-radius: 50%;
     }
     .hotbar {

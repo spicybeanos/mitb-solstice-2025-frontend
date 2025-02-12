@@ -1,4 +1,4 @@
-export const backendURL = "www.example.com";
+export const backendURL = "http://127.0.0.1:8000";
 /*
     these functions are to be called in +server.ts, 
     +page.server.ts, +layout.server.ts files only

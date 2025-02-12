@@ -27,7 +27,13 @@ export async function registerUser(user: SolsticeUser): Promise<SolsticeUser|nul
     return null;
 }
 export async function getUserId(email:string) : Promise<string|null> {
-    //wait for him to make the endpoint
+    const res = await fetch(`${backendURL}/user/id?email_address=${encodeURIComponent(email)}`, {
+        method: 'GET'
+    });
+
+    if (res.status === 200) {
+        return (await res.json()) as string;
+    }
     return null;
 }
 export async function getUserInfo(userId:string) : Promise<SolsticeUser|null> {
