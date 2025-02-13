@@ -1,6 +1,7 @@
 export const UserProfileData = $state({
-    name: '', email: '', picture: '', loggedIn: false, userID: '', registered: false
-})
+    name: '', email: '', picture: '', loggedIn: false, userID: '', registered: false,passID:0
+});
+
 export const isSigningOut = $state({ status: false });
 
 export async function checkLoggedIn(cookieJwt: string | undefined) {

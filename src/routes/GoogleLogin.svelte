@@ -45,6 +45,17 @@
               UserProfileData.email = gup.email;
               UserProfileData.picture = gup.picture;
               UserProfileData.loggedIn = true;
+
+              fetch(`/profile/reg?email=${encodeURIComponent(gup.email)}`, {
+                method: "GET",
+              }).then((reg) => {
+                if (reg.ok) {
+                  reg.json().then((rn) => {
+                    UserProfileData.registered = true;
+                    UserProfileData.userID = rn.message;
+                  });
+                }
+              });
             }
           });
         }
@@ -88,7 +99,7 @@
 </script>
 
 {#if !UserProfileData.loggedIn}
-<div id="google-signin-button"></div>
+  <div id="google-signin-button"></div>
 {/if}
 {#if UserProfileData.loggedIn}
   <p>Welcome, {UserProfileData.name}!</p>

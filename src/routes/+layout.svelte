@@ -8,7 +8,6 @@
     import events_icon from "$lib/icons/event.png";
     import stay_icon from "$lib/icons/stay.png";
 
-    import ALink from "$lib/components/ALink.svelte";
     import { onMount } from "svelte";
     import { checkLoggedIn } from "./GoogleLogin.svelte.ts";
 
@@ -52,7 +51,7 @@
     </a>
 </nav>
 
-<div class="bg-[#1E1E1E]" style="min-height: 70vh;">
+<div class="bg-[#1E1E1E]" style="min-height: 70vh; height:fit-content">
    {@render children()} 
 </div>
 

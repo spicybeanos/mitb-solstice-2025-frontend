@@ -10,7 +10,6 @@
     div{
         border-radius: 10px;
         padding: 20px 20px 20px 20px;
-        border-width: 3px;
-        border-color: #e81cff ;
+        background-color: black;
     }
 </style>
