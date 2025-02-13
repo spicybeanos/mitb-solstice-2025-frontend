@@ -69,18 +69,21 @@
                             <TextInput
                                 placeholder="First Name"
                                 name="first_name"
+                                required
                             ></TextInput>
-                            <TextInput placeholder="Last Name" name="last_name"
+                            <TextInput placeholder="Last Name" name="last_name" required
                             ></TextInput>
                             <TextInput
                                 placeholder="Phone Number"
                                 name="phone_num"
                                 type="number"
+                                required
                             ></TextInput>
                             <TextInput
                                 placeholder="Mahe Registration Number"
                                 name="mahe_num"
                                 type="number"
+                                required
                             ></TextInput>
                             <Button OnClicked={() => {}}
                                 ><div style="color: black;">Submit</div></Button
