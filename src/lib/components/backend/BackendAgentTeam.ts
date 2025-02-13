@@ -9,6 +9,9 @@ interface SolsticeTeamInfo{
 export async function createTeam(teamName:string,hostId:string) : Promise<SolsticeTeamInfo|null> {
     const res = await fetch(`${backendURL}/team`, {
         method: 'POST',
+        headers:{
+            "Content-type":"application/json"
+        },
         body: JSON.stringify({
             name:teamName,
             host_id:hostId
@@ -23,6 +26,9 @@ export async function createTeam(teamName:string,hostId:string) : Promise<Solsti
 export async function updateTeam(teamName:string,hostId:string) : Promise<SolsticeTeamInfo|null> {
     const res = await fetch(`${backendURL}/team`, {
         method: 'PATCH',
+        headers:{
+            "Content-type":"application/json"
+        },
         body: JSON.stringify({
             name:teamName,
             host_id:hostId

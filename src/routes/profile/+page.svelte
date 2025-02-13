@@ -8,6 +8,7 @@
 
     import { UserProfileData } from "../GoogleLogin.svelte.ts";
     import { json } from "@sveltejs/kit";
+    import SimpleCard from "$lib/components/SimpleCard.svelte";
 
     let { data } = $props();
 
@@ -60,7 +61,13 @@
             <Button danger OnClicked={LogOut}>Sign Out</Button>
 
             {#if !UserProfileData.registered}
-                <div>You havent registered yet!</div>
+                <h1>You havent registered yet!</h1>
+                <form>
+                    <SimpleCard>
+                        <TextInput placeholder='First Name' name='first_name'></TextInput>
+                        <TextInput placeholder='Last Name' name='last_name'></TextInput>
+                    </SimpleCard>
+                </form>
             {:else}
                 <div>All good :)</div>
             {/if}

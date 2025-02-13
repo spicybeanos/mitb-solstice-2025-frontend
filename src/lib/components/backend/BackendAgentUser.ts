@@ -18,6 +18,9 @@ interface SolsticeUserPass{
 export async function registerUser(user: SolsticeUser): Promise<SolsticeUser|null> {
     const res = await fetch(`${backendURL}/user`, {
         method: 'POST',
+        headers:{
+            "Content-type":"application/json"
+        },
         body: JSON.stringify(user)
     });
 
@@ -59,6 +62,9 @@ export async function getUserPassInfo(userId:string) : Promise<SolsticeUserPass 
 export async function updateUserInfo(userId:string,info:SolsticeUser) : Promise<boolean> {
     const res = await fetch(`${backendURL}/user/${userId}`, {
         method: 'PATCH',
+        headers:{
+            "Content-type":"application/json"
+        },
         body: JSON.stringify(info)
     });
 
