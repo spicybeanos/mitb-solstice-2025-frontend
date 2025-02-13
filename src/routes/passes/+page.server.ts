@@ -29,3 +29,4 @@ const passes:FalakPass[]=[
         price:"1000"
     }
 ]
+

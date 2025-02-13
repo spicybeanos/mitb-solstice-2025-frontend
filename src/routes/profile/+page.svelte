@@ -58,6 +58,12 @@
                 <div>{UserProfileData.email}</div>
             </div>
             <Button danger OnClicked={LogOut}>Sign Out</Button>
+
+            {#if !UserProfileData.registered}
+                <div>You havent registered yet!</div>
+            {:else}
+                <div>All good :)</div>
+            {/if}
         </div>
     {/if}
 </div>
@@ -66,7 +72,9 @@
     img {
         border-radius: 50%;
     }
-
+    div{
+        color: white;
+    }
     .centre {
         display: flex;
         height: 60vh;

@@ -27,10 +27,14 @@
 		"@auth/sveltekit": "^1.7.4",
 		"@tailwindcss/vite": "^4.0.3",
 		"better-sqlite3": "^11.7.2",
+		"clsx": "^2.1.1",
 		"dotenv": "^16.4.7",
+		"frontend": "file:",
 		"google-auth-library": "^9.15.0",
 		"qrcode": "^1.5.4",
 		"sqlite3": "^5.1.7",
+		"svelte-motion": "^0.12.2",
+		"tailwind-merge": "^3.0.1",
 		"tailwindcss": "^4.0.3",
 		"uuid": "^11.0.5"
 	}

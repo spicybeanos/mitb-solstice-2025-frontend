@@ -2,7 +2,7 @@
     import "./app.css";
     import { UserProfileData } from "./GoogleLogin.svelte.ts";
     import logo from "$lib/falak.png";
-    import profile_circle from "$lib/icons/account_circle.png"
+    import profile_circle from "$lib/icons/account_circle.png";
     import tickets_icon from "$lib/icons/ticket.png";
     import support_icon from "$lib/icons/support.png";
     import events_icon from "$lib/icons/event.png";
@@ -26,41 +26,88 @@
     });
 </script>
 
-<nav>
-    <a style="margin:5px" href="/"><img class="logo" src={logo} alt="logo" /></a>
-    <div>
-        <a style="margin:5px" href="/events"><img class="icon" src={events_icon} alt="events and conclaves"></a>
-        <a style="margin:5px" href="/support"><img class="icon" src={support_icon} alt="support"></a>
-        <a style="margin:5px" href="/passes"><img class="icon" src={tickets_icon} alt='passes'></a>
-        <a style="margin:5px" href="/stay"><img class="icon" src={stay_icon} alt='stay and accomodation'></a>
+<nav class="flex flex-row items-center justify-between p-3 md:p-6 w-[96vw]">
+    <a href="/" class="grow max-w-[33%]"><img class="logo w-[26vw] md:w-[15vw]" src={logo} alt="logo" /></a>
+     
+    <div class="flex flex-row grow-0 rounded-full px-12 py-3 bg-black text-white gap-8">
+        <a class="hover:text-[#AB83FE] cursor-pointer" href="/passes">Passes</a>
+        <a class="hover:text-[#AB83FE] cursor-pointer" href="/events">Events</a>
+        <a class="hover:text-[#AB83FE] cursor-pointer" href="/support">Support</a>
+        <a class="hover:text-[#AB83FE] cursor-pointer" href="/stay">Stay</a>
+        <!-- <a href="/events"><img class="icon " src={events_icon} alt="events and conclaves"></a>
+        <a href="/support"><img class="icon" src={support_icon} alt="support"></a>
+        <a href="/passes"><img class="icon" src={tickets_icon} alt='passes'></a>
+        <a href="/stay"><img class="icon" src={stay_icon} alt='stay and accomodation'></a> -->
+
     </div>
 
-    <a style="margin:5px" href="/profile">
+    <a href="/profile" class="grow flex flex-row justify-end max-w-[33%]">
         {#if !UserProfileData.loggedIn}
+
         <img class="icon" src={profile_circle} alt='profile'>
+
         {:else}
-        <img class="icon" src={UserProfileData.picture} alt='profile'>
+            <img class="icon" src={UserProfileData.picture} alt="profile" />
         {/if}
     </a>
 </nav>
-{@render children()}
+
+<div class="bg-[#1E1E1E]" style="min-height: 70vh;">
+   {@render children()} 
+</div>
+
+
+<footer class="flex flex-col p-6 md:p-8 text-xs md:text-base text-white">
+    <div class="flex flex-row justify-between">
+        <div class="flex flex-col">
+            <p>Manipal Institute of technology</p>
+            <p>Yelahanka, Bengaluru</p>
+            <p>Karnataka - 650036</p>
+        </div>
+
+        <div class="flex flex-col text-right">
+            <p>Contact @</p>
+            <p>+91 12345 67890</p>
+            <p>( Name - HR Head )</p>
+        </div>
+    </div>
+</footer>
 
 <style>
-    .logo{
-        width: max(7vw,10em);
+
+    :global(body) {
+        background-color: #ab83fe;
     }
-    .icon{
+    a {
+        font-size: small;
+        color: white;
+    }
+    a:hover {
+        color: yellow;
+    }
+    .logo {
+        aspect-ratio: 249/31;
+        width: max(14vw, 10em);
+    }
+    .icon {
         padding: 7px 7px 7px 7px;
-        width: min(7vw,3em);
+        width: 60px;
+        border-radius: 50%;
     }
-    div{
+    .hotbar {
         display: flex;
         justify-content: center;
-        border-style: solid ;
+        align-items: center;
+        border-style: solid;
         border-width: 0.1em;
-        border-radius: 3em;
+        border-radius: 2em;
         border-color: black;
-        padding: 0.3em 0.3em 0.3em 0.3em;
+
+        padding-left: 1em;
+        padding-right: 1em;
+        aspect-ratio: 290/40;
+        height: 40px;
+        background-color: black;
     }
     nav {
         padding: 15px;
