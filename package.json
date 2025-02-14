@@ -27,6 +27,7 @@
 		"@auth/sveltekit": "^1.7.4",
 		"@tailwindcss/vite": "^4.0.3",
 		"better-sqlite3": "^11.7.2",
+		"bits-ui": "^1.1.0",
 		"clsx": "^2.1.1",
 		"dotenv": "^16.4.7",
 		"frontend": "file:",
