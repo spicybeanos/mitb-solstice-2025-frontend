@@ -1,6 +1,6 @@
 import { backendURL } from "./Backend";
 
-interface SolsticeUser {
+export interface SolsticeUser {
     first_name: string;
     last_name: string;
     email_address: string;
@@ -9,7 +9,7 @@ interface SolsticeUser {
     pass_id: string;
     id: string;
 }
-interface SolsticeUserPass{
+export interface SolsticeUserPass{
     name: string,
     description: string,
     cost: string,
