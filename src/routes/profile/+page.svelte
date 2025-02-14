@@ -1,13 +1,13 @@
 <script lang="ts">
     import Button from "$lib/components/Button.svelte";
     import { fly } from "svelte/transition";
-    import Card from "$lib/components/Card.svelte";
     import TextInput from "$lib/components/TextInput.svelte";
     import GoogleLogin from "../GoogleLogin.svelte";
-    import {isSigningOut} from "../GoogleLogin.svelte.ts";
+    import { isSigningOut } from "../GoogleLogin.svelte.ts";
 
     import { UserProfileData } from "../GoogleLogin.svelte.ts";
     import { json } from "@sveltejs/kit";
+    import SimpleCard from "$lib/components/SimpleCard.svelte";
 
     let { data } = $props();
 
@@ -32,7 +32,7 @@
             body: JSON.stringify({ action: "logout" }),
         }).finally(() => {
             isSigningOut.status = false;
-            console.log("done logging out!")
+            console.log("done logging out!");
         });
     }
 </script>
@@ -58,6 +58,42 @@
                 <div>{UserProfileData.email}</div>
             </div>
             <Button danger OnClicked={LogOut}>Sign Out</Button>
+
+            {#if !UserProfileData.registered}
+                <h1>You haven't registered yet!</h1>
+                <br />
+                <div>
+                    <SimpleCard>
+                        <h1>Register</h1>
+                        <form action="?/register" method="post">
+                            <TextInput
+                                placeholder="First Name"
+                                name="first_name"
+                                required
+                            ></TextInput>
+                            <TextInput placeholder="Last Name" name="last_name" required
+                            ></TextInput>
+                            <TextInput
+                                placeholder="Phone Number"
+                                name="phone_num"
+                                type="number"
+                                required
+                            ></TextInput>
+                            <TextInput
+                                placeholder="Mahe Registration Number"
+                                name="mahe_num"
+                                type="number"
+                                required
+                            ></TextInput>
+                            <Button OnClicked={() => {}}
+                                ><div style="color: black;">Submit</div></Button
+                            >
+                        </form>
+                    </SimpleCard>
+                </div>
+            {:else}
+                <div>All good :)</div>
+            {/if}
         </div>
     {/if}
 </div>
@@ -66,7 +102,9 @@
     img {
         border-radius: 50%;
     }
-
+    div {
+        color: white;
+    }
     .centre {
         display: flex;
         height: 60vh;

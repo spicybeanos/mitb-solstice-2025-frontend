@@ -33,6 +33,7 @@
         transform: translate(0, -4px);
         transition: all 0.1s;
         box-shadow: 0px 4px black;
+        background-color: white;
     }
     button:disabled{
         cursor: not-allowed;

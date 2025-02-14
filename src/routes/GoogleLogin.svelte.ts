@@ -1,6 +1,7 @@
 export const UserProfileData = $state({
-    name: '', email: '', picture: '', loggedIn: false, userID: ''
-})
+    name: '', email: '', picture: '', loggedIn: false, userID: '', registered: false,falakUser:{}
+});
+
 export const isSigningOut = $state({ status: false });
 
 export async function checkLoggedIn(cookieJwt: string | undefined) {
@@ -20,16 +21,25 @@ export async function checkLoggedIn(cookieJwt: string | undefined) {
                 body: JSON.stringify({ token: cookieJwt, action: 'login' }),
             });
             if (result.ok) {
-                result.json().then((gup) => {
-                    UserProfileData.name = gup.name;
-                    UserProfileData.email = gup.email;
-                    UserProfileData.picture = gup.picture;
-                    UserProfileData.loggedIn = true;
-                });
+                const gup = await result.json()
+                UserProfileData.name = gup.name;
+                UserProfileData.email = gup.email;
+                UserProfileData.picture = gup.picture;
+                UserProfileData.loggedIn = true;
+
+
+                const reg = await fetch(`/profile/reg?email=${encodeURIComponent(gup.email)}`,{method:'GET'});
+
+                if(reg.ok){
+                    const rn = await reg.json();
+                    UserProfileData.registered=true;
+                    UserProfileData.userID=rn.message;
+                }
+
                 return true;
-            } else {
-                return false;
             }
+
+            return false;
         }
         catch {
             return false;

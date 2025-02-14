@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div class="landing-sec-2 h-screen flex flex-col justify-center items-center w-full bg-cover">
+    <div class="landing-sec-2 h-screen flex flex-col justify-center items-center w-[95vw] bg-cover">
         <!-- <div class="h-[70%] w-[80%] flex flex-col justify-center items-center text-white gap-3">
             <h1 class="font-akira text-6xl text-center">Book your tickets now!</h1>
             <h1 class="font-akira text-6xl text-center">The fest will be a blast</h1>

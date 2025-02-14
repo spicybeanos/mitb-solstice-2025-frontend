@@ -1,1 +1,0 @@
-export const backendURL = "www.example.com";

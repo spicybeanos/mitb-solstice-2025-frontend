@@ -24,5 +24,6 @@
         align-items: center;
         flex-wrap: wrap;
         flex-direction: column;
+        color: white;
     }
 </style>
