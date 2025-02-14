@@ -1,4 +1,5 @@
 <script>
+    import { Hamburger } from "svelte-hamburgers";
     import "./app.css";
     import { UserProfileData } from "./GoogleLogin.svelte.ts";
     import logo from "$lib/falak.png";
@@ -9,6 +10,7 @@
     import stay_icon from "$lib/icons/stay.png";
 
     import { onMount } from "svelte";
+    let hamOpen = $state(false);
     import { checkLoggedIn } from "./GoogleLogin.svelte.ts";
 
     let { children, data } = $props();
@@ -25,38 +27,86 @@
     });
 </script>
 
-<nav class="flex flex-row items-center justify-between p-3 md:p-6 w-[96vw]">
-    <a href="/" class="grow max-w-[33%]"><img class="logo w-[26vw] md:w-[15vw]" src={logo} alt="logo" /></a>
-     
-    <div class="flex flex-row grow-0 rounded-full px-12 py-3 bg-black text-white gap-8">
-        <a class="hover:text-[#AB83FE] cursor-pointer" href="/passes">Passes</a>
-        <a class="hover:text-[#AB83FE] cursor-pointer" href="/events">Events</a>
-        <a class="hover:text-[#AB83FE] cursor-pointer" href="/support">Support</a>
-        <a class="hover:text-[#AB83FE] cursor-pointer" href="/stay">Stay</a>
-        <!-- <a href="/events"><img class="icon " src={events_icon} alt="events and conclaves"></a>
+<div class="desktop">
+    <nav class="flex flex-row items-center justify-between p-3 md:p-6 w-[96vw]">
+        <a href="/" class="grow max-w-[33%]"
+            ><img class="logo w-[26vw] md:w-[15vw]" src={logo} alt="logo" /></a
+        >
+
+        <div
+            class="flex flex-row grow-0 rounded-full px-12 py-3 bg-black text-white gap-8"
+        >
+            <a class="hover:text-[#AB83FE] cursor-pointer" href="/passes"
+                >Passes</a
+            >
+            <a class="hover:text-[#AB83FE] cursor-pointer" href="/events"
+                >Events</a
+            >
+            <a class="hover:text-[#AB83FE] cursor-pointer" href="/support"
+                >Support</a
+            >
+            <a class="hover:text-[#AB83FE] cursor-pointer" href="/stay">Stay</a>
+            <!-- <a href="/events"><img class="icon " src={events_icon} alt="events and conclaves"></a>
         <a href="/support"><img class="icon" src={support_icon} alt="support"></a>
         <a href="/passes"><img class="icon" src={tickets_icon} alt='passes'></a>
         <a href="/stay"><img class="icon" src={stay_icon} alt='stay and accomodation'></a> -->
+        </div>
 
-    </div>
+        <a href="/profile" class="grow flex flex-row justify-end max-w-[33%]">
+            {#if !UserProfileData.loggedIn}
+                <img class="icon" src={profile_circle} alt="profile" />
+            {:else}
+                <img class="icon" src={UserProfileData.picture} alt="profile" />
+            {/if}
+        </a>
+    </nav>
+</div>
+<div class="mobile">
+    <nav>
+        <div
+            class="flex flex-row items-center justify-between p-3 md:p-6 w-[96vw]"
+        >
+            <a href="/" class="grow max-w-[33%]"
+                ><img
+                    class="logo w-[26vw] md:w-[15vw]"
+                    src={logo}
+                    alt="logo"
+                /></a
+            >
+            <Hamburger
+                onclick={() => {
+                    hamOpen = !hamOpen;
+                }}
+            />
+        </div>
 
-    <a href="/profile" class="grow flex flex-row justify-end max-w-[33%]">
-        {#if !UserProfileData.loggedIn}
-
-        <img class="icon" src={profile_circle} alt='profile'>
-
-        {:else}
-            <img class="icon" src={UserProfileData.picture} alt="profile" />
+        {#if hamOpen}
+            <div>
+                <a class="hover:text-[#AB83FE] cursor-pointer" href="/passes"
+                    >Passes</a
+                >
+                <a class="hover:text-[#AB83FE] cursor-pointer" href="/events"
+                    >Events</a
+                >
+                <a class="hover:text-[#AB83FE] cursor-pointer" href="/support"
+                    >Support</a
+                >
+                <a class="hover:text-[#AB83FE] cursor-pointer" href="/stay"
+                    >Stay</a
+                >
+                <a class="hover:text-[#AB83FE] cursor-pointer" href="/profile"
+                    >Profile</a
+                >
+            </div>
         {/if}
-    </a>
-</nav>
-
-<div class="bg-[#1E1E1E]" style="min-height: 70vh; height:fit-content">
-   {@render children()} 
+    </nav>
 </div>
 
+<div class="bg-[#1E1E1E]" style="min-height: 70vh; height:fit-content">
+    {@render children()}
+</div>
 
-<footer class="flex flex-col p-6 md:p-8 text-xs md:text-base text-white">
+<footer class="flex flex-col p-6 md:p-8 text-xs md:text-base text-white" style="z-index: -33333;">
     <div class="flex flex-row justify-between">
         <div class="flex flex-col">
             <p>Manipal Institute of technology</p>
@@ -73,13 +123,16 @@
 </footer>
 
 <style>
-
     :global(body) {
         background-color: #ab83fe;
     }
+    .mobile {
+        display: none;
+    }
     a {
-        font-size: small;
+        font-size: medium;
         color: white;
+        margin: 10px;
     }
     a:hover {
         color: yellow;
@@ -115,5 +168,14 @@
         display: flex;
         justify-content: space-between;
         flex-direction: row;
+    }
+
+    @media (max-width: 768px) {
+        .desktop {
+            display: none;
+        }
+        .mobile {
+            display: block;
+        }
     }
 </style>

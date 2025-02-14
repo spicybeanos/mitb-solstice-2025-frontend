@@ -1,6 +1,6 @@
 import { registerUser } from '$lib/components/backend/BackendAgentUser.js';
 import { getUserObjectFromJWT } from '$lib/components/GAuth.js';
-import { redirect } from '@sveltejs/kit';
+import { json, redirect } from '@sveltejs/kit';
 
 export function load({cookies}){
     return {authToken : cookies.get('authToken')};
@@ -19,7 +19,7 @@ export const actions = {
         const phone = form.get('phone_num') as string;
         const reg = parseInt(form.get('mahe_num') as string);
 
-        registerUser({
+        const soluser = registerUser({
             email_address:user.email,
             first_name:fname,
             last_name:lname,
@@ -28,5 +28,7 @@ export const actions = {
             id:"",
             pass_id:''
         });
+
+        
     }
 }

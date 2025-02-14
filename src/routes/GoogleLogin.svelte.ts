@@ -1,5 +1,5 @@
 export const UserProfileData = $state({
-    name: '', email: '', picture: '', loggedIn: false, userID: '', registered: false,passID:0
+    name: '', email: '', picture: '', loggedIn: false, userID: '', registered: false,falakUser:{}
 });
 
 export const isSigningOut = $state({ status: false });
