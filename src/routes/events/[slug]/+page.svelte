@@ -122,19 +122,23 @@
         successMessage = '';
         
         try {
-            const teamId = existing_team_ID;  // Get the teamId from the URL
-            const userID = UserProfileData.userID;
+            // const teamId = existing_team_ID;
             
-            if (!UserProfileData.userID) {
+            // Check for registered field
+            if (!UserProfileData.registered) {
                 throw new Error('You must be logged in to join a team');
             }
 
-            const response = await fetch(`/events/${teamId}`, {
+            const response = await fetch(`/events/${existing_team_ID}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ userID })
+                body: JSON.stringify({ 
+                    registered: UserProfileData.registered, // Using registered field
+                    memberName: new_member ,
+                    teamId: existing_team_ID
+                })
             });
 
             const result = await response.json();
@@ -154,7 +158,7 @@
             error = err instanceof Error ? err.message : 'Failed to join team';
         } finally {
             loading = false;
-        }
+    }
     }   
     
 </script>
