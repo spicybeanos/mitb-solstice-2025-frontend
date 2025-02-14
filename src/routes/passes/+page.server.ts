@@ -1,32 +1,63 @@
+import { getAllEventsInPass, getAllPasses, type EventInPass, type SolsticePassInfo } from "$lib/components/backend/BackendAgentPass";
+import { getUserId, getUserPassInfo, type SolsticeUserPass } from "$lib/components/backend/BackendAgentUser";
 import { events } from "$lib/components/Events";
 import type { FalakPass } from "$lib/components/FalakPass";
+import { UserProfileData } from "../GoogleLogin.svelte.ts";
 
-
-
-export function load(){
-    return ({passes:passes});
+export interface EventInAllPasses{
+    pass:string,
+    name:string,
+    description:string,
+    type:string,
+    team_members:number,
+    start:string,
+    venue:string,
+    id: string,
 }
 
-const passes:FalakPass[]=[
-    {
-        name:"PLATINUM",
-        description:"Join us for the Hackathon at TechSolstice, a high-energy, 24-hour coding marathon where your ideas take shape and your skills shine!",
-        price:"1000"
-    },
-    {
-        name:"GOLD",
-        description:"Put your problem-solving skills to the test in this intense 3-hour coding contest designed to challenge the best minds in competitive programming.",
-        price:"1000"
-    },
-    {
-        name:"SILVER",
-        description:"Create AI-powered solutions to real-world challenges. Showcase your innovation and compete to win the title of the best AI project.",
-        price:"1000"
-    },
-    {
-        name:"BASIC",
-        description:"Form a team, build a robot, and put it to the test in challenges that measure speed, agility, and problem-solving.",
-        price:"1000"
+export async function load(){
+    const SolsticeAllPassInfo: SolsticePassInfo[] | null = await getAllPasses();
+    let EventsInAllPasses: EventInAllPasses[] = [];
+
+    if (SolsticeAllPassInfo !== null) {
+        // Wait for all async operations to complete
+        await Promise.all(
+            // Fxn to retieve them Events For each pass and store em in a master array(better opt then 2d array) with a new lil structure
+            SolsticeAllPassInfo.map(async (pass) => {
+                const EventsInPass = await getAllEventsInPass(pass.id);
+                if (EventsInPass) {
+                    EventsInPass.forEach((ev) => {
+                        EventsInAllPasses.push({
+                            pass: pass.name,
+                            name: ev.name,
+                            description: ev.description,
+                            type: ev.type,
+                            team_members: ev.team_members,
+                            start: ev.start,
+                            venue: ev.venue,
+                            id: ev.id,
+                        });
+                    });
+                }
+            })
+        );
     }
-]
+
+    const userId:string | null=UserProfileData.userID
+    let userPassInfo:SolsticeUserPass|null;
+    if (userId){
+        userPassInfo= await getUserPassInfo(userId)
+    }
+    else{
+        userPassInfo=null
+    }
+
+    return ({
+        SolsticeAllPassInfo : SolsticeAllPassInfo,
+        EventsInAllPasses : EventsInAllPasses,
+        userPassInfo: userPassInfo
+    });
+}
+
+
 

@@ -9,7 +9,7 @@ interface SolsticeUser {
     pass_id: string;
     id: string;
 }
-interface SolsticeUserPass{
+export interface SolsticeUserPass{
     name: string,
     description: string,
     cost: string,

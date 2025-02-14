@@ -4,63 +4,84 @@
     import PassCard from '$lib/components/PassCard.svelte';
     import BuyPass from '$lib/components/BuyPass.svelte';
     import QRCode from '$lib/components/QR.svelte';
+    import type { SolsticePassInfo } from '$lib/components/backend/BackendAgentPass.js';
+    import type { EventInAllPasses } from './+page.server.js';
+    import type { SolsticeUserPass } from '$lib/components/backend/BackendAgentUser.js';
     
     let {data} = $props();
-    let passes:FalakPass[] = $state([]);
-    let userPassData=$state(
-        null
-    )
-    // If the pass is bought,state must look like this:-
-        // let userPassData=$state({
-        //     name:"PLATINUM",
-        //     uniqueString:"EFJNCFJVNFHV"
-        // })
+    let SolsticeAllPassInfo:SolsticePassInfo[]|null = $state([]);
+    let EventsInAllPasses:EventInAllPasses[]|null = $state([]);
+
+    let userPassInfo:SolsticeUserPass|null=$state(null)
 
     onMount(() => {
-        passes = data.passes;
+        SolsticeAllPassInfo = data.SolsticeAllPassInfo;
+        EventsInAllPasses = data.EventsInAllPasses
+        userPassInfo = data.userPassInfo
     });
     
 </script>
 
 <div class="outer">
     <div class="inner ">
-        {#if userPassData==null}
-            {#each passes as pass}
-                {#if pass.name !== undefined}
-                    
-                        <div class="container">
-                            <PassCard>
-                                <div class="detailContainer">
-                                    <h1 class="text-6xl font-bold mb-2">{pass.name}</h1>
-                                    <div class="desc text-sm mb-4">
-                                        {pass.description}
+        {#if userPassInfo==null}
+            {#if SolsticeAllPassInfo!==null}
+                {#each SolsticeAllPassInfo as pass}
+                    {#if pass.name !== undefined}
+                        
+                            <div class="container">
+                                <PassCard>
+                                    <div class="detailContainer">
+                                        <h1 class="text-6xl font-bold mb-1">{pass.name}</h1>
+                                        <div class="desc text-sm mb-1">
+                                            {pass.description}
+                                        </div>
+
+                                        <div class="eventsIncludedOuter">
+                                            {#if EventsInAllPasses!==null}
+                                                {#each EventsInAllPasses as event}
+                                                    {#if event.pass===pass.name}
+                                                        <div class="eventsIncluded">
+                                                            <a href={`/events/${event.id}`}>{event.name}</a>
+                                                        </div>
+                                                    {/if}
+                                                {/each}
+                                            {/if}
+                                        </div>
+                                        
+                                        <div class="price">
+                                            {pass.cost}
+                                        </div>
+                                        <div class="button mt-2">
+                                            <BuyPass href={`https://payment.manipal.edu/bangalore-campus`} >
+                                                <div class="text">Buy Pass!</div>
+                                            </BuyPass>  
+                                        </div>
                                     </div>
-                                    <div class="price">
-                                        {pass.price}
-                                    </div>
-                                    <div class="button mt-10">
-                                        <BuyPass href={`https://payment.manipal.edu/bangalore-campus`} >
-                                            <div class="text">Buy Pass!</div>
-                                        </BuyPass>  
-                                    </div>
-                                </div>
-                            </PassCard>
+                                </PassCard>
+                            </div>
+                        
+                    {/if}
+                {/each}
+                {:else}
+                    <div class="emptyPassOuter">
+                        <div class="emptyPassInner">
+                            No Passes Online at the moment. Check Another time
                         </div>
-                    
-                {/if}
-            {/each}
+                    </div>
+            {/if}
             {:else}
             <div class="outer">
                 <div class="inner">
                     <div class="">
                         <PassCard>
                             <div class="detailContainer">
-                                <h1 class="text-6xl font-bold mb-6">{userPassData.name}</h1>
+                                <h1 class="text-6xl font-bold mb-6">{userPassInfo.name}</h1>
                                 <div class="uniqueString text-sm ">
-                                    Unique Id: {userPassData.uniqueString}
+                                    Unique Id: {userPassInfo.id}
                                 </div>
                                 <div class="qr-container">
-                                    <QRCode text={userPassData.uniqueString} />
+                                    <QRCode text={userPassInfo.id} />
                                 </div>
                                 <div class="button mt-4">
                                     <BuyPass href="/events" >
@@ -150,7 +171,7 @@
     margin-top: -10px; 
     font-weight: 800;
     line-height: 1.1;
-    padding-bottom: 20px;
+    padding-bottom: 16px;
     
 }
 
@@ -217,13 +238,63 @@
     text-align:center;
     font-size: 0.9rem;
     flex-grow: 1;
-    margin-top: 48px;
-    margin-bottom: 12px;
+    margin-top: 14px;
+    margin-bottom: 2px;
 }
 .qr-container {
         display: flex;
         justify-content: center;
         margin: 20px 0;
     }
+.eventsIncluded {
+    font-size: 0.8rem;
+    text-align: left;
+    padding-left: 18px;
+    position: relative;
+    margin-bottom: 4px;
+}
+
+.eventsIncluded::before {
+    content: "•";
+    position: absolute;
+    left: 0px;
+    color: #AB83FE;
+}
+
+.eventsIncludedOuter {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    padding: 10px 20px;
+    margin: 10px 0;
+}
+
+.emptyPassOuter {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+}
+
+.emptyPassInner {
+    background-color: #2a2a2a;
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    color: #C7AE93;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 90%;
+}
+
+@media screen and (max-width: 480px) {
+    .emptyPassInner {
+        font-size: 1rem;
+        padding: 1.5rem;
+    }
+}
 </style>
 
