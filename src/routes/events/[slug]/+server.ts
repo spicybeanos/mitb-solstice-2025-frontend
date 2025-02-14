@@ -61,26 +61,27 @@ export const DELETE: RequestHandler = async ({ params }) => {
 
 export const PUT: RequestHandler = async ({ request, params }) => {
     try {
-        const { userId, memberName } = await request.json();
-        const { teamId } = params;  // Get teamId from params directly
+        const { registered, memberName, teamId } = await request.json();
+        // const { teamId } = params;
 
-        if (!teamId || !userId) {
-            throw new Error('Missing required parameters: teamId or userId');
+        if (!teamId) {
+            throw new Error('Missing required parameters: teamId ');
         }
+        if(!registered)
+            throw new Error('Missing required parameters: registration ID');
+        console.log("Attempting to add user to team:", { teamId, registered, memberName });
 
-        console.log("Attempting to add user to team:", { teamId, userId, memberName });  //logging
-
-        const updatedTeam = await addUserToTeam(teamId, userId);
+        const updatedTeam = await addUserToTeam(teamId, registered);
 
         if (!updatedTeam) {
             throw new Error('Failed to add user to team');
         }
 
-        console.log("Successfully added user to team:", updatedTeam);  //  logging
+        console.log("Successfully added user to team:", updatedTeam);
 
         return json({ success: true, team: updatedTeam });
     } catch (error) {
-        console.error("Error in PUT handler:", error);  // error logging
+        console.error("Error in PUT handler:", error);
         return new Response(
             JSON.stringify({
                 success: false,
