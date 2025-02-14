@@ -1,12 +1,12 @@
 <script lang="ts">
     import type { FalakEvent } from "$lib/components/Events.ts";
-    import Button from "$lib/components/Button.svelte";
-    import Card from "$lib/components/Card.svelte";
-    import TextInput from "$lib/components/TextInput.svelte";
-    import EventCard from "$lib/components/EventCard.svelte";
+    // import Button from "$lib/components/Button.svelte";
+    // import Card from "$lib/components/Card.svelte";
+    import TextInput from "../../lib/components/TextInput.svelte";
+    // import EventCard from "$lib/components/EventCard.svelte";
     //import { events } from "$lib/components/Events.ts";
     let isMouseEntered = false;
-    import AButton from "$lib/components/AButton.svelte";
+    // import AButton from "$lib/components/AButton.svelte";
     import { onMount } from "svelte";
   import { CardBody, CardContainer, CardItem } from "$lib/components/ui/ThreeDCardEffect/index.js";
   import { UserProfileData } from "../GoogleLogin.svelte.ts";
@@ -55,7 +55,7 @@
                         {#if event.id != undefined}
                             <div class="e-margin">
                                 <CardContainer bind:isMouseEntered className="inter-var ">
-                                    <CardBody className="bg-gray-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto  sm:w-[24rem] h-auto rounded-xl p-6 border">
+                                    <CardBody className="bg-gray-50 flex flex-col justify-between relative group/card  dark:hover:shadow-2xl dark:hover:shadow-purple-500/[0.1]  dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto  sm:w-[24rem] h-[37rem] rounded-xl p-6 border">
                                         <CardItem {isMouseEntered} translateZ="100" className="w-full mb-4 hover:translate-z-8">
                                             <img
                                                 src={event.pictureURL}
@@ -110,8 +110,8 @@
                     {/if}
                 {:else}
                     <div class="e-margin">
-                        <CardContainer bind:isMouseEntered className="inter-var ">
-                            <CardBody className="bg-gray-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto  sm:w-[24rem] h-auto rounded-xl p-6 border">
+                        <CardContainer bind:isMouseEntered className="inter-var">
+                            <CardBody className="bg-gray-50 flex flex-col justify-between relative group/card h-[37rem] dark:hover:shadow-2xl dark:hover:shadow-purple-500/[0.1]  dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto  sm:w-[24rem] rounded-xl p-6 border">
                                 <CardItem {isMouseEntered} translateZ="100" className="w-full mb-4 hover:translate-z-8">
                                     <img
                                         src={event.pictureURL}

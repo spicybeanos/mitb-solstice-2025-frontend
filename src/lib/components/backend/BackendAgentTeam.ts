@@ -98,4 +98,5 @@ export async function deleteTeam(teamId:string) : Promise<SolsticeTeamInfo|null>
     }
 
     return null;
+
 }
