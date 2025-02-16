@@ -35,6 +35,7 @@
             console.log("done logging out!");
         });
     }
+    
 </script>
 
 <div class="flex h-full justify-center items-center py-[6rem]">
@@ -98,7 +99,39 @@
                     </SimpleCard>
                 </div>
             {:else}
-                <div>All good :)</div>
+                <div>
+                    <SimpleCard>
+                        <h1 class="w-full text-center text-2xl font-semibold">Update Information</h1>
+                        <form action="?/update" method="post" class="w-[80vw] sm:w-[60vw] grid place-items-center pt-6 gap-6">
+                            <TextInput
+                                placeholder="First Name"
+                                name="f-name"
+                                required
+                            ></TextInput>
+                            <TextInput 
+                            placeholder="Last Name" 
+                            name="l-name" 
+                            required
+                            ></TextInput>
+                            <TextInput
+                                placeholder="Phone Number"
+                                name="ph-num"
+                                type="number"
+                                required
+                            ></TextInput>
+                            <TextInput
+                                placeholder="Mahe Registration Number"
+                                name="mahe_num_update"
+                                type="number"
+                                required
+                            ></TextInput>
+                            <Button OnClicked={() => {}}
+                                ><div style="color: black;">Submit</div></Button
+                            >
+                        </form>
+                    </SimpleCard>
+                </div>
+                <!-- <div>All good :)</div> -->
             {/if}
         </div>
     {/if}
