@@ -1,4 +1,5 @@
 import { getEventID, getEventInfo, getEvents, getTeams, getUsersInEvent, getUserTeamIDInEvent } from '$lib/components/backend/BackendAgentEvent.js';
+import { checkEventAccesableByPass } from '$lib/components/backend/BackendAgentPass.js';
 import { createTeamAndAttach, getTeamDetails } from '$lib/components/backend/BackendAgentTeam.js';
 import { getUserId, getUserInfo } from '$lib/components/backend/BackendAgentUser.js';
 import { getUserObjectFromJWT, verifyGJWT } from '$lib/components/GAuth.js';
@@ -16,7 +17,7 @@ export const load = async ({ params, cookies }) => {
 
     const userData = await getUserInfo(userID);
     if(userData == null) {redirect(300, '/profile'); }
-       
+    const canAccess = await checkEventAccesableByPass(eventID,userData.pass_id);   
 
 
     const teamID = await getUserTeamIDInEvent(userID, eventID);
