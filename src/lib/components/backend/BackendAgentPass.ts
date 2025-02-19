@@ -1,7 +1,7 @@
 import { backendURL } from "./Backend";
 import type { SolsticeEventInfo } from "./BackendAgentEvent";
 
-interface SolsticePassInfo {
+export interface SolsticePassInfo {
     name: string;
     description: string | null;
     cost: string;
