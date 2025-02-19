@@ -16,7 +16,7 @@ export interface VerificationResult {
     object?: UserProfile;
     userid?: string;
 }
-export async function verifyGJWT(token: string) {
+export async function verifyGJWT(token: string) : Promise<VerificationResult> {
     if (!isSigningOut.status) {
         try {
             const ticket = await gclient.verifyIdToken({

@@ -2,7 +2,7 @@ import { backendURL } from "./Backend";
 
 interface SolsticePassInfo{
     name: string;
-    description: string;
+    description: string | null;
     cost: string;
     id: string;
 }
@@ -16,4 +16,7 @@ export async function getPass(passId: string) {
         return (await res.json()) as SolsticePassInfo;
     }
     return null;
+}
+export async function getUserPass(userID:string) {
+    
 }

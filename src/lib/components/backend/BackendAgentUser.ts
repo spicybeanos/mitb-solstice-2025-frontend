@@ -4,9 +4,9 @@ export interface SolsticeUser {
     first_name: string;
     last_name: string;
     email_address: string;
-    phone_number: string;
-    mahe_registration_number: number;
-    pass_id: string;
+    phone_number: string | null;
+    mahe_registration_number: number | null;
+    pass_id: string | null;
     id: string;
 }
 export interface SolsticeUserPass{

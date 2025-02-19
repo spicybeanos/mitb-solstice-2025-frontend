@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { FalakEvent } from "$lib/components/Events.ts";
+    import type { SolsticeEvent } from "$lib/components/Events.ts";
     // import Button from "$lib/components/Button.svelte";
     // import Card from "$lib/components/Card.svelte";
     import TextInput from "../../lib/components/TextInput.svelte";
@@ -11,7 +11,7 @@
   import { CardBody, CardContainer, CardItem } from "$lib/components/ui/ThreeDCardEffect/index.js";
   import { UserProfileData } from "../GoogleLogin.svelte.ts";
 
-    let events:FalakEvent[] = $state([]);
+    let events:SolsticeEvent[] = $state([]);
     // TO BE REMOVED, ONLY HERE TO POPULATE WITH CONTENT TILL BACKEND IS CONNECTED
 
     let { data } = $props();
@@ -19,7 +19,7 @@
 
     let search = $state("");
 
-    function searchEvent(e:FalakEvent)
+    function searchEvent(e:SolsticeEvent)
     {
         if(e.description.toUpperCase().includes(search.toUpperCase())){
             return true;
@@ -73,9 +73,6 @@
                                             <div class="text font-bold">
                                                 {event.name}    
                                             </div>
-                                            <div class="text font-medium">
-                                                {`@${event.id}`}
-                                            </div>
                                         </CardItem>
                                         <CardItem
                                             {isMouseEntered}
@@ -128,9 +125,6 @@
                                 >
                                     <div class="text font-bold">
                                         {event.name}    
-                                    </div>
-                                    <div class="text font-medium">
-                                        {`@${event.id}`}
                                     </div>
                                 </CardItem>
                                 <CardItem
