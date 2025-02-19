@@ -15,7 +15,8 @@ export const load = async ({ params, cookies }) => {
     if (userID == null) { redirect(300, '/profile'); }
 
     const userData = await getUserInfo(userID);
-    const eventInfo = await getEventInfo(eventID);
+    if(userData == null) {redirect(300, '/profile'); }
+       
 
 
     const teamID = await getUserTeamIDInEvent(userID, eventID);
