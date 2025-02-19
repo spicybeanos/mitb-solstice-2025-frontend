@@ -46,11 +46,12 @@ export async function checkEventAccesableByPass(eventID: string, passID: string 
     if (passID == null) return false;
     const events = await getEventsAccessableByPass(passID);
     if (events == null) { return false; }
-    events.forEach(ev => {
-        if (ev.id == eventID) { return true; }
-    });
+    let flag = false;
+    for (let index = 0; index < events.length; index++) {
+        if(events[index].id == eventID) return true;    
+    }
 
-    return false;
+    return flag;
 }
 export async function getDefaultPass() : Promise<string|null> {
     const passes = await getAllPasses();

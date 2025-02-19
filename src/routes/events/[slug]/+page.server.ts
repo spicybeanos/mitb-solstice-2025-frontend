@@ -1,6 +1,6 @@
 import { getEventID, getEventInfo, getEvents, getTeams, getUsersInEvent, getUserTeamIDInEvent } from '$lib/components/backend/BackendAgentEvent.js';
 import { checkEventAccesableByPass } from '$lib/components/backend/BackendAgentPass.js';
-import { createTeamAndAttach, getTeamDetails } from '$lib/components/backend/BackendAgentTeam.js';
+import { addUserToTeam, createTeamAndAttach, getTeamDetails, getUsersInTeam } from '$lib/components/backend/BackendAgentTeam.js';
 import { getUserId, getUserInfo } from '$lib/components/backend/BackendAgentUser.js';
 import { getUserObjectFromJWT, verifyGJWT } from '$lib/components/GAuth.js';
 import { fail, json, redirect } from '@sveltejs/kit';
@@ -16,9 +16,10 @@ export const load = async ({ params, cookies }) => {
     if (userID == null) { redirect(300, '/profile'); }
 
     const userData = await getUserInfo(userID);
-    if(userData == null) {redirect(300, '/profile'); }
-    const canAccess = await checkEventAccesableByPass(eventID,userData.pass_id);   
+    if (userData == null) { redirect(300, '/profile'); }
 
+    const canAccess = await checkEventAccesableByPass(eventID, userData.pass_id);
+    console.log(`Access attempt for ${eventID} : ${canAccess}`)
 
     const teamID = await getUserTeamIDInEvent(userID, eventID);
     let is_in_team = teamID == null;
@@ -27,9 +28,10 @@ export const load = async ({ params, cookies }) => {
     if (events == null) { redirect(300, '/') }
     return {
         slug: eventID,
-        in_team: is_in_team, 
+        in_team: is_in_team,
         team: team,
-        events: events
+        events: events,
+        canAccess: canAccess
     }
 }
 
@@ -57,20 +59,74 @@ export const actions = {
         const teams = await getTeams(eventId);
         if (teams != null) {
             teams.forEach(t => {
-                if (t.host_id == hostID) { return fail(409,{msg:"You're already in a team!"}); }
+                if (t.host_id == hostID) { return fail(409, { msg: "You're already in a team!" }); }
             });
         }
 
         const users = await getUsersInEvent(eventId);
         if (users != null) {
             users.forEach(us => {
-                if (us == hostID) { return fail(409,{msg:"You're already in a team!"}); }
+                if (us == hostID) { return fail(409, { msg: "You're already in a team!" }); }
             });
         }
 
         const teamMade = await createTeamAndAttach(teamName as string, hostID, eventId);
-        if (teamMade == null) { return fail(500,{msg:"Failed to make a team!"}); }
+        if (teamMade == null) { return fail(403, { msg: "Failed to make a team!" }); }
         console.log(`team made! ${teamMade.id}: ${teamMade.name} by ${teamMade.host_id}`)
         return { team: teamMade };
+    },
+    joinTeam: async ({ cookies, request, params }) => {
+        const form = await request.formData();
+        const g_jwt = cookies.get('authToken');
+        const teamID = form.get('team_id') as string | null | undefined;
+
+        if (teamID == undefined) return fail(400, { msg: 'team name not provided' });
+        if (teamID == null) return fail(400, { msg: 'team name not provided' });
+
+        if (g_jwt == undefined) return fail(401, { msg: 'google auth failed! log in again!' });
+        if (g_jwt == null) return fail(401, { msg: 'google auth failed! log in again!' });
+        const jwt = g_jwt as string;
+
+        const ver = await verifyGJWT(jwt);
+        if (ver.result == false) return fail(401, { msg: 'google auth failed! log in again!' });
+        const eventId = params.slug;
+        const userID = await getUserId(ver.object?.email as string);
+
+        if (eventId == null) return fail(400, { msg: 'event id is null!' });
+        if (userID == null) return fail(400, { msg: 'host id is null!' });
+
+        const teams = await getTeams(eventId);
+        if (teams != null) {
+            teams.forEach(t => {
+                if (t.host_id == userID) { return fail(409, { msg: "You're already in a team!" }); }
+            });
+        }
+
+        const users = await getUsersInEvent(eventId);
+        if (users != null) {
+            users.forEach(us => {
+                if (us == userID) { return fail(409, { msg: "You're already in a team!" }); }
+            });
+        }
+
+        const eventDetails = await getEventInfo(eventId);
+        if (eventDetails == null) { return fail(404, { msg: 'That event does not exist' }); }
+        const teamDetails = await getTeamDetails(teamID as string);
+        if (teamDetails == null) { return fail(404, { msg: 'That team does not exist' }); }
+
+        const usersInTeam = await getUsersInTeam(teamID);
+        if (usersInTeam != null) {
+            if (eventDetails.team_members != null) {
+                if (usersInTeam.length >= eventDetails.team_members) {
+                    return fail(403, { msg: 'Team is full!' });
+                }
+            } else {
+                return fail(403, { msg: 'This event has no events!' });
+            }
+        }
+
+        const added = await addUserToTeam(teamID, userID);
+        if (added == null) { return fail(403, { msg: 'Failed to add user to team!' }); }
+        return { teamJoined: added };
     }
 }
