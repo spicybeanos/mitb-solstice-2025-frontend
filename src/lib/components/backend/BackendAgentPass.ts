@@ -21,7 +21,7 @@ export async function getAllPasses() {
     return null;
 }
 
-export async function getPassInfo(passId: string) {
+export async function getPass(passId: string) {
     const res = await fetch(`${backendURL}/pass/${passId}`, {
         method: 'GET'
     });
@@ -61,4 +61,8 @@ export async function getDefaultPass() : Promise<string|null> {
         if (pas.name == DEFAUL_PASS_NAME){return pas.id;}
     });
     return null;
+
+
+export async function getAllEventsInPass(passId:string) {
+    return getEventsAccessableByPass(passId);
 }

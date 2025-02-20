@@ -1,6 +1,6 @@
 <script lang="ts">
     import {UserProfileData} from "../../routes/GoogleLogin.svelte.ts";
-    let { children, href } = $props();
+    let { children , href } = $props();
     console.log(UserProfileData)
 </script>
 
