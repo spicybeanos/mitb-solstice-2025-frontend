@@ -1,7 +1,7 @@
 import { checkOCAccess } from "$lib/components/backend/BackendAdmin";
 import { getPassInfo } from "$lib/components/backend/BackendAgentPass";
 import { getUserId, getUserInfo } from "$lib/components/backend/BackendAgentUser";
-import { fail, type Cookies } from "@sveltejs/kit";
+import { error, fail, json, type Cookies } from "@sveltejs/kit";
 
 export async function GET({ url, cookies }: { url: URL, cookies: Cookies }) {
     const isOC = await checkOCAccess(cookies.get('authToken'));
@@ -18,15 +18,18 @@ export async function GET({ url, cookies }: { url: URL, cookies: Cookies }) {
     if (userInfo == null) { return fail(400, { error: 'User info fetch failed!' }); }
 
     if (userInfo.pass_id == null) {
-        return {
-            ownsPass: false
-        };
+        return json({
+            ownsPass: false,
+            error:null,
+            pass:null
+        },{status:200});
     }
     const passInfo = await getPassInfo(userInfo.pass_id);
     if (passInfo == null) { return fail(400, { error: 'Pass for this user is invalid!' }); }
 
-    return {
+    return json( {
         ownsPass: true,
-        pass: passInfo
-    }
+        pass: passInfo,
+        error:null
+    },{status:200})
 }

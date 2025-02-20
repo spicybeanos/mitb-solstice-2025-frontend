@@ -2,8 +2,8 @@
     import { onMount } from "svelte";
     import { UserProfileData } from "../GoogleLogin.svelte.ts";
     import Button from "$lib/components/Button.svelte";
-    import Card from "$lib/components/Card.svelte";
-    import type {ProblemTicket} from '../support/+page.server.ts'
+    import SimpleCard from "$lib/components/SimpleCard.svelte";
+    import type { ProblemTicket } from "../support/+page.server.ts";
 
     let tickets = $state([] as ProblemTicket[]);
     let { data } = $props();
@@ -15,7 +15,7 @@
 
     // TO BE CALLED ON MOUNT ONLY !!
     async function getTickets() {
-        loadingData=true;
+        loadingData = true;
         let base_url =
             window === undefined
                 ? "http://localhost:5173/tickets"
@@ -37,45 +37,71 @@
                 console.log("no tickets!");
             }
         }
-        loadingData=false;
+        loadingData = false;
     }
 </script>
 
 <div class="mid">
     <div class="centre">
-        <Button disable={loadingData} padding={5} OnClicked={getTickets}><svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#000000"><path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/></svg></Button>
-        <div>Unsolved tickets: {tickets.length}</div>
+        <Button disable={loadingData} padding={5} OnClicked={getTickets}
+            ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="30px"
+                viewBox="0 -960 960 960"
+                width="30px"
+                fill="#ffffff"
+                ><path
+                    d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"
+                /></svg
+            ></Button
+        >
+        <div class="text-white">Unsolved tickets: {tickets.length}</div>
     </div>
     {#if !UserProfileData.loggedIn}
         <div style="color: red;">Please log in to make a ticket!</div>
     {/if}
     <div class="centre">
         {#each tickets as ticket}
-            <div class='margin'>
-                <Card title={ticket.category}>
-                    <div>Problem : {ticket.problem}</div>
-                    <div class="" style="color:{ticket.solved?"green":"red"}">{ticket.solved?"Solved":"Un Solved"}</div>
-                    <div class="medium">{ticket.description}</div>
-                    <div class="medium">Phone: {ticket.phone}</div>
-                    <div class="medium">e-mail : {ticket.email}</div>
-                    <div class="tiny gray">{ticket.ticketID}</div>
-                </Card>
+            <div class="margin">
+                <SimpleCard>
+                    <div class="text-white">Problem : {ticket.problem}</div>
+                    <div class="border border-gray-500 p-1.5 rounded-sm">
+                        <div
+                            class="text-white"
+                            style="color:{ticket.solved ? 'green' : 'red'}"
+                        >
+                            {ticket.solved ? "Solved" : "Un Solved"}
+                        </div>
+                        <div class="medium text-white">
+                            Phone: {ticket.phone}
+                        </div>
+                        <div class="medium text-white">
+                            e-mail : {ticket.email}
+                        </div>
+                        <div class="tiny gray">{ticket.ticketID}</div>
+                        <div
+                            class="medium text-white border border-gray-500 p-1.5 rounded-sm"
+                        >
+                            {ticket.description}
+                        </div>
+                    </div>
+                </SimpleCard>
             </div>
         {/each}
     </div>
 </div>
 
 <style>
-    .tiny{
+    .tiny {
         font-size: small;
     }
-    .medium{
+    .medium {
         font-size: medium;
     }
-    .gray{
+    .gray {
         color: grey;
     }
-    .margin{
+    .margin {
         margin: 10px;
     }
     .mid {

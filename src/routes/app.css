@@ -25,7 +25,8 @@
     --text-dark:#fff;
 
     --btn-active-light:lightgreen;
+    --btn-active-dark:green;
     --btn-disable-light:pink;
-    --btn-danger-light:red;
+    --btn-danger-dark:red;
 
 }

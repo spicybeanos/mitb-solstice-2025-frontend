@@ -3,6 +3,7 @@
     import Card from "$lib/components/Card.svelte";
     import TextInput from "$lib/components/TextInput.svelte";
     import AButton from "$lib/components/AButton.svelte";
+    import SimpleCard from "$lib/components/SimpleCard.svelte";
 
     interface ProblemTicket {
         name: String;
@@ -52,8 +53,11 @@
 
 <div class="centre">
     <div class="mid">
-        <AButton href="/tickets">Tickets you've submitted</AButton>
-        <Card title="Make a ticket">
+        <AButton href="/tickets"
+            ><div class="text-white">Tickets you've submitted</div></AButton
+        >
+        <SimpleCard>
+            <h1 class="text-white">Make a ticket</h1>
             <form method="post" action="?/postTicket" class="mid">
                 <TextInput
                     bind:text={name}
@@ -102,9 +106,10 @@
                 <div>{description.length}/128</div>
                 <Button OnClicked={() => {}} active>Send ticket</Button>
             </form>
-        </Card>
-        <AButton href="/contactus">Contact us</AButton>
-
+        </SimpleCard>
+        <AButton href="/contactus"
+            ><div class="text-white">Contact us</div></AButton
+        >
     </div>
 </div>
 
@@ -114,14 +119,12 @@
         margin: 5px;
         padding: 7px;
         border: none;
-        border-radius: 6px;
-        background-color: var(--background-light);
+        background-color: var(--background-dark);
         width: max-content;
-
-        font-family: "Clash Display Medium";
+        color: var(--text-dark);
         font-optical-sizing: auto;
         font-style: normal;
-        font-size: x-large;
+        font-size: medium;
     }
     .mid {
         display: flex;

@@ -8,7 +8,7 @@ export interface SolsticePassInfo {
     id: string;
 }
 
-const DEFAUL_PASS_NAME = 'default-pass';
+const DEFAULT_PASS_NAME = 'default-pass';
 
 export async function getAllPasses() {
     const res = await fetch(`${backendURL}/pass`, {
@@ -20,7 +20,16 @@ export async function getAllPasses() {
     }
     return null;
 }
+export async function getPassInfo(passID:string) {
+    const res = await fetch(`${backendURL}/pass/${passID}`, {
+        method: 'GET'
+    });
 
+    if (res.status === 200) {
+        return (await res.json()) as SolsticePassInfo;
+    }
+    return null;
+}
 export async function getPass(passId: string) {
     const res = await fetch(`${backendURL}/pass/${passId}`, {
         method: 'GET'
@@ -58,11 +67,11 @@ export async function getDefaultPass() : Promise<string|null> {
 
     if (passes == null) { return null; }
     passes.forEach(pas => {
-        if (pas.name == DEFAUL_PASS_NAME){return pas.id;}
+        if (pas.name == DEFAULT_PASS_NAME){return pas.id;}
     });
     return null;
 
-
+}
 export async function getAllEventsInPass(passId:string) {
-    return getEventsAccessableByPass(passId);
+    return await getEventsAccessableByPass(passId);
 }

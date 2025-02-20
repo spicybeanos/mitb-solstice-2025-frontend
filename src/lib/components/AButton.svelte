@@ -16,7 +16,7 @@
         z-index: 1;
         border-style: solid;
         text-decoration: none;
-        color: var(--text-light-mode);
+        color: var(--text-dark-mode);
         margin: 10px 10px 10px 10px;
         transition: 0.1s cubic-bezier(0.785, 0.135, 0.15, 0.86);
         transition-delay: 0s !important;
@@ -40,7 +40,7 @@
     a:hover {
         box-shadow:
             0 0 var(--sliding-link-nuetral),
-            0 0 var(--border-light-mode);
+            0 0 var(--border-dark-mode);
         color: var(--text-dark-mode);
     }
 </style>

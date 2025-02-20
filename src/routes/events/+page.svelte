@@ -5,6 +5,8 @@
     import TextInput from "$lib/components/TextInput.svelte";
     // import EventCard from "$lib/components/EventCard.svelte";
     //import { events } from "$lib/components/Events.ts";
+    import { fade, slide, scale } from "svelte/transition";
+    import { cubicOut, quintOut } from "svelte/easing";
     let isMouseEntered = $state(false);
     // import AButton from "$lib/components/AButton.svelte";
     import { onMount } from "svelte";
@@ -51,145 +53,187 @@
     </div>
 
     <div class="eventCont">
-        <div class="e-centre">
-            {#each events as event}
+        <div class="e-centre" in:fade={{duration: 300,delay: 150}}>
+            {#each events as event,i}
                 {#if search.length > 0}
                     {#if searchEvent(event)}
                         {#if event.id != undefined}
-                            <div class="e-margin">
-                                <CardContainer
-                                    bind:isMouseEntered
-                                    className="inter-var "
+                            <div
+                                class="e-margin"
+                                in:slide={{
+                                    delay: i * 200,
+                                    duration: 1000,
+                                    easing: quintOut,
+                                    axis: "y",
+                                }}
+                                out:fade|global={{
+                                    duration: 300,
+                                }}
+                            >
+                                <div
+                                    in:scale|global={{
+                                        delay: i * 200,
+                                        duration: 800,
+                                        start: 0.95,
+                                        opacity: 0,
+                                    }}
                                 >
-                                    <CardBody
-                                        className="bg-gray-50 flex flex-col justify-between relative group/card  dark:hover:shadow-2xl dark:hover:shadow-purple-500/[0.1]  dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto  sm:w-[24rem] h-[37rem] rounded-xl p-6 border"
+                                    <CardContainer
+                                        bind:isMouseEntered
+                                        className="inter-var "
                                     >
-                                        <CardItem
-                                            {isMouseEntered}
-                                            translateZ="100"
-                                            className="w-full mb-4 hover:translate-z-8"
+                                        <CardBody
+                                            className="bg-gray-50 flex flex-col justify-between relative group/card  dark:hover:shadow-2xl dark:hover:shadow-purple-500/[0.1]  dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto  sm:w-[24rem] h-[37rem] rounded-xl p-6 border"
                                         >
-                                            <img
-                                                src={event.pictureURL}
-                                                height="1000"
-                                                width="1000"
-                                                class="h-60 w-full rounded-xl object-cover group-hover/card:shadow-xl"
-                                                alt="thumbnail"
-                                            />
-                                        </CardItem>
-                                        <CardItem
-                                            {isMouseEntered}
-                                            translateZ="50"
-                                            className="text-xl w-full text-[#C7AE93] flex mt-8 justify-between"
-                                        >
-                                            <div class="text font-bold">
-                                                {event.name}
-                                            </div>
-                                        </CardItem>
-                                        <CardItem
-                                            {isMouseEntered}
-                                            translateZ="60"
-                                            className="text-[#C7AE93] text-sm max-w-sm mt-2 "
-                                        >
-                                            {event.description}
-                                        </CardItem>
-                                        <CardItem
-                                            {isMouseEntered}
-                                            translateZ="60"
-                                            className="text-[#C7AE93] text-sm max-w-sm mt-2 mb-4"
-                                        >
-                                            {#if event.teamSize != null}
-                                                <pre>Team size: {` ${event.teamSize} ${event.teamSize === 1 ? " person" : " people"}`}</pre>
-                                            {:else}
-                                                <pre>No teams for this event.</pre>
-                                            {/if}
-                                        </CardItem>
-                                        <div
-                                            class=" w-full bg-[#D9D9D9] rounded-lg flex justify-center p-2 cursor-pointer"
-                                        >
-                                            <a href={`/events/${event.id}/`}>
-                                                <CardItem
-                                                    {isMouseEntered}
-                                                    translateZ={20}
-                                                    className="px-4 py-2 text-[#1d1d1d] text-xs font-bold cursor-pointer "
+                                            <CardItem
+                                                {isMouseEntered}
+                                                translateZ="100"
+                                                className="w-full mb-4 hover:translate-z-8"
+                                            >
+                                                <img
+                                                    src={event.pictureURL}
+                                                    height="1000"
+                                                    width="1000"
+                                                    class="h-60 w-full rounded-xl object-cover group-hover/card:shadow-xl"
+                                                    alt="thumbnail"
+                                                />
+                                            </CardItem>
+                                            <CardItem
+                                                {isMouseEntered}
+                                                translateZ="50"
+                                                className="text-xl w-full text-[#C7AE93] flex mt-8 justify-between"
+                                            >
+                                                <div class="text font-bold">
+                                                    {event.name}
+                                                </div>
+                                            </CardItem>
+                                            <CardItem
+                                                {isMouseEntered}
+                                                translateZ="60"
+                                                className="text-[#C7AE93] text-sm max-w-sm mt-2 "
+                                            >
+                                                {event.description}
+                                            </CardItem>
+                                            <CardItem
+                                                {isMouseEntered}
+                                                translateZ="60"
+                                                className="text-[#C7AE93] text-sm max-w-sm mt-2 mb-4"
+                                            >
+                                                {#if event.teamSize != null}
+                                                    <pre>Team size: {` ${event.teamSize} ${event.teamSize === 1 ? " person" : " people"}`}</pre>
+                                                {:else}
+                                                    <pre>No teams for this event.</pre>
+                                                {/if}
+                                            </CardItem>
+                                            <div
+                                                class=" w-full bg-[#D9D9D9] rounded-lg flex justify-center p-2 cursor-pointer"
+                                            >
+                                                <a
+                                                    href={`/events/${event.id}/`}
                                                 >
-                                                    Register
-                                                </CardItem>
-                                            </a>
-                                        </div>
-                                    </CardBody>
-                                </CardContainer>
+                                                    <CardItem
+                                                        {isMouseEntered}
+                                                        translateZ={20}
+                                                        className="px-4 py-2 text-[#1d1d1d] text-xs font-bold cursor-pointer "
+                                                    >
+                                                        Register
+                                                    </CardItem>
+                                                </a>
+                                            </div>
+                                        </CardBody>
+                                    </CardContainer>
+                                </div>
                             </div>
                         {/if}
                     {/if}
                 {:else}
-                    <div class="e-margin">
-                        <CardContainer
-                            bind:isMouseEntered
-                            className="inter-var"
+                    <div
+                        class="e-margin"
+                        in:slide={{
+                            delay: i * 200,
+                            duration: 1000,
+                            easing: quintOut,
+                            axis: "y",
+                        }}
+                        out:fade|global={{
+                            duration: 300,
+                        }}
+                    >
+                        <div
+                            in:scale|global={{
+                                delay: i * 200,
+                                duration: 800,
+                                start: 0.95,
+                                opacity: 0,
+                            }}
                         >
-                            <CardBody
-                                className="bg-gray-50 flex flex-col justify-between relative group/card h-[37rem] dark:hover:shadow-2xl dark:hover:shadow-purple-500/[0.1]  dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto  sm:w-[24rem] rounded-xl p-6 border"
+                            <CardContainer
+                                bind:isMouseEntered
+                                className="inter-var"
                             >
-                                <CardItem
-                                    {isMouseEntered}
-                                    translateZ="100"
-                                    className="w-full mb-4 hover:translate-z-8"
+                                <CardBody
+                                    className="bg-gray-50 flex flex-col justify-between relative group/card h-[37rem] dark:hover:shadow-2xl dark:hover:shadow-purple-500/[0.1]  dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto  sm:w-[24rem] rounded-xl p-6 border"
                                 >
-                                    <img
-                                        src={event.pictureURL}
-                                        height="1000"
-                                        width="1000"
-                                        class="h-60 w-full rounded-xl object-cover group-hover/card:shadow-xl"
-                                        alt="thumbnail"
-                                    />
-                                </CardItem>
-                                <CardItem
-                                    {isMouseEntered}
-                                    translateZ="50"
-                                    className="text-xl w-full text-[#C7AE93] flex mt-8 justify-between"
-                                >
-                                    <div class="text font-bold">
-                                        {event.name}
-                                    </div>
-                                </CardItem>
-                                <CardItem
-                                    {isMouseEntered}
-                                    translateZ="60"
-                                    className="text-[#C7AE93] text-sm max-w-sm mt-2 "
-                                >
-                                    {event.description}
-                                </CardItem>
-                                <CardItem
-                                    {isMouseEntered}
-                                    translateZ="60"
-                                    className="text-[#C7AE93] text-sm max-w-sm mt-2 mb-4"
-                                >
-                                    {#if event.teamSize != null}
-                                        <pre>Team size: {` ${event.teamSize} ${event.teamSize === 1 ? " person" : " people"}`}</pre>
-                                    {:else}
-                                        <pre>No teams for this event.</pre>
-                                    {/if}
-                                </CardItem>
-                                <div
-                                    class=" w-full bg-[#D9D9D9] rounded-lg flex justify-center p-2 cursor-pointer"
-                                >
-                                    <a
-                                        href={UserProfileData.loggedIn
-                                            ? `/events/${event.id}/`
-                                            : `/profile`}
+                                    <CardItem
+                                        {isMouseEntered}
+                                        translateZ="100"
+                                        className="w-full mb-4 hover:translate-z-8"
                                     >
-                                        <CardItem
-                                            {isMouseEntered}
-                                            translateZ={20}
-                                            className="px-4 py-2 text-[#1d1d1d] text-xs font-bold cursor-pointer "
+                                        <img
+                                            src={event.pictureURL}
+                                            height="1000"
+                                            width="1000"
+                                            class="h-60 w-full rounded-xl object-cover group-hover/card:shadow-xl"
+                                            alt="thumbnail"
+                                        />
+                                    </CardItem>
+                                    <CardItem
+                                        {isMouseEntered}
+                                        translateZ="50"
+                                        className="text-xl w-full text-[#C7AE93] flex mt-8 justify-between"
+                                    >
+                                        <div class="text font-bold">
+                                            {event.name}
+                                        </div>
+                                    </CardItem>
+                                    <CardItem
+                                        {isMouseEntered}
+                                        translateZ="60"
+                                        className="text-[#C7AE93] text-sm max-w-sm mt-2 "
+                                    >
+                                        {event.description}
+                                    </CardItem>
+                                    <CardItem
+                                        {isMouseEntered}
+                                        translateZ="60"
+                                        className="text-[#C7AE93] text-sm max-w-sm mt-2 mb-4"
+                                    >
+                                        {#if event.teamSize != null}
+                                            <pre>Team size: {` ${event.teamSize} ${event.teamSize === 1 ? " person" : " people"}`}</pre>
+                                        {:else}
+                                            <pre>No teams for this event.</pre>
+                                        {/if}
+                                    </CardItem>
+                                    <div
+                                        class=" w-full bg-[#D9D9D9] rounded-lg flex justify-center p-2 cursor-pointer"
+                                    >
+                                        <a
+                                            href={UserProfileData.loggedIn
+                                                ? `/events/${event.id}/`
+                                                : `/profile`}
                                         >
-                                            Register
-                                        </CardItem>
-                                    </a>
-                                </div>
-                            </CardBody>
-                        </CardContainer>
+                                            <CardItem
+                                                {isMouseEntered}
+                                                translateZ={20}
+                                                className="px-4 py-2 text-[#1d1d1d] text-xs font-bold cursor-pointer "
+                                            >
+                                                Register
+                                            </CardItem>
+                                        </a>
+                                    </div>
+                                </CardBody>
+                            </CardContainer>
+                        </div>
                     </div>
                 {/if}
             {/each}

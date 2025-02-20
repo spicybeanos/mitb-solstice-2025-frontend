@@ -11,6 +11,7 @@
     import { cubicOut, quintOut } from 'svelte/easing';
     
     let {data} = $props();
+    
     let loading = $state(true);
     let SolsticeAllPassInfo:SolsticePassInfo[]|null = $state([]);
     let EventsInAllPasses:EventInAllPasses[]|null = $state([]);
