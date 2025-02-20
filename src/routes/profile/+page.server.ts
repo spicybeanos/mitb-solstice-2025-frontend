@@ -25,8 +25,8 @@ export const actions = {
             last_name:lname,
             mahe_registration_number:reg,
             phone_number:phone,
-            id:"",
-            pass_id:''
+            id:'',
+            pass_id:null
         });
 
         

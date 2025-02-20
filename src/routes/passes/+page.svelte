@@ -4,17 +4,13 @@
     import PassCard from '$lib/components/PassCard.svelte';
     import BuyPass from '$lib/components/BuyPass.svelte';
     import QRCode from '$lib/components/QR.svelte';
+    import type { SolsticePassInfo } from '$lib/components/backend/BackendAgentPass.js';
     
     let {data} = $props();
-    let passes:FalakPass[] = $state([]);
+    let passes:SolsticePassInfo[] = $state([]);
     let userPassData=$state(
         null
     )
-    // If the pass is bought,state must look like this:-
-        // let userPassData=$state({
-        //     name:"PLATINUM",
-        //     uniqueString:"EFJNCFJVNFHV"
-        // })
 
     onMount(() => {
         passes = data.passes;
@@ -36,7 +32,7 @@
                                         {pass.description}
                                     </div>
                                     <div class="price">
-                                        {pass.price}
+                                        {pass.cost}
                                     </div>
                                     <div class="button mt-10">
                                         <BuyPass href={`https://payment.manipal.edu/bangalore-campus`} >

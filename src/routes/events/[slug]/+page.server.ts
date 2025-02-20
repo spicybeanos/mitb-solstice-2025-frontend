@@ -1,3 +1,4 @@
+import { verifyAndGetUser } from '$lib/components/backend/Backend.js';
 import { getEventID, getEventInfo, getEvents, getTeams, getUsersInEvent, getUserTeamIDInEvent } from '$lib/components/backend/BackendAgentEvent.js';
 import { checkEventAccesableByPass } from '$lib/components/backend/BackendAgentPass.js';
 import { addUserToTeam, createTeamAndAttach, getTeamDetails, getUsersInTeam } from '$lib/components/backend/BackendAgentTeam.js';
@@ -10,18 +11,17 @@ export const load = async ({ params, cookies }) => {
     const eventID = params.slug;
     if (eventID == null) redirect(300, '/events');
     const token = cookies.get('authToken');
-    if (token == null) redirect(300, '/profile');
-    const guser = getUserObjectFromJWT(token);
-    const userID = await getUserId(guser.email);
-    if (userID == null) { redirect(300, '/profile'); }
 
-    const userData = await getUserInfo(userID);
-    if (userData == null) { redirect(300, '/profile'); }
+    const user = await verifyAndGetUser(token);
 
-    const canAccess = await checkEventAccesableByPass(eventID, userData.pass_id);
+    if(user.success == false){redirect(300, '/profile');}
+    //this should NEVER happen
+    if(user.result == null){redirect(300, '/profile');}
+
+    const canAccess = await checkEventAccesableByPass(eventID, user.result.pass_id);
     console.log(`Access attempt for ${eventID} : ${canAccess}`)
 
-    const teamID = await getUserTeamIDInEvent(userID, eventID);
+    const teamID = await getUserTeamIDInEvent(user.result.id, eventID);
     let is_in_team = teamID == null;
     let team = teamID != null ? await getTeamDetails(teamID) : null;
     const events = await getEvents();
@@ -48,10 +48,10 @@ export const actions = {
         if (g_jwt == null) return fail(401, { msg: 'google auth failed! log in again!' });
         const jwt = g_jwt as string;
 
-        const ver = await verifyGJWT(jwt);
-        if (ver.result == false) return fail(401, { msg: 'google auth failed! log in again!' });
+        const ver = await verifyAndGetUser(jwt);
+        if (ver.success == false) return fail(401, { msg: ver.error });
         const eventId = params.slug;
-        const hostID = await getUserId(ver.object?.email as string);
+        const hostID = ver.result?.id;
 
         if (eventId == null) return fail(400, { msg: 'event id is null!' });
         if (hostID == null) return fail(400, { msg: 'host id is null!' });
@@ -83,15 +83,12 @@ export const actions = {
         if (teamID == undefined) return fail(400, { msg: 'team name not provided' });
         if (teamID == null) return fail(400, { msg: 'team name not provided' });
 
-        if (g_jwt == undefined) return fail(401, { msg: 'google auth failed! log in again!' });
-        if (g_jwt == null) return fail(401, { msg: 'google auth failed! log in again!' });
-        const jwt = g_jwt as string;
-
-        const ver = await verifyGJWT(jwt);
-        if (ver.result == false) return fail(401, { msg: 'google auth failed! log in again!' });
+        const ver = await verifyAndGetUser(g_jwt);
+        if (ver.success == false) return fail(401, { msg: ver.error });
+        
+        const userID = ver.result?.id;
+        
         const eventId = params.slug;
-        const userID = await getUserId(ver.object?.email as string);
-
         if (eventId == null) return fail(400, { msg: 'event id is null!' });
         if (userID == null) return fail(400, { msg: 'host id is null!' });
 

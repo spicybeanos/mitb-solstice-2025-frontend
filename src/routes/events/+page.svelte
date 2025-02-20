@@ -98,7 +98,11 @@
                                             translateZ="60"
                                             className="text-[#C7AE93] text-sm max-w-sm mt-2 mb-4"
                                         >
-                                            <pre>Team size: {` ${event.teamSize} ${event.teamSize === 1 ? " person" : " people"}`}</pre>
+                                            {#if event.teamSize != null}
+                                                <pre>Team size: {` ${event.teamSize} ${event.teamSize === 1 ? " person" : " people"}`}</pre>
+                                            {:else}
+                                                <pre>No teams for this event.</pre>
+                                            {/if}
                                         </CardItem>
                                         <div
                                             class=" w-full bg-[#D9D9D9] rounded-lg flex justify-center p-2 cursor-pointer"
@@ -161,7 +165,11 @@
                                     translateZ="60"
                                     className="text-[#C7AE93] text-sm max-w-sm mt-2 mb-4"
                                 >
-                                    <pre>Team size: {` ${event.teamSize} ${event.teamSize === 1 ? " person" : " people"}`}</pre>
+                                    {#if event.teamSize != null}
+                                        <pre>Team size: {` ${event.teamSize} ${event.teamSize === 1 ? " person" : " people"}`}</pre>
+                                    {:else}
+                                        <pre>No teams for this event.</pre>
+                                    {/if}
                                 </CardItem>
                                 <div
                                     class=" w-full bg-[#D9D9D9] rounded-lg flex justify-center p-2 cursor-pointer"
