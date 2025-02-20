@@ -22,7 +22,7 @@
         await new Promise(resolve => setTimeout(resolve, 100));
         SolsticeAllPassInfo = data.SolsticeAllPassInfo;
         EventsInAllPasses = data.EventsInAllPasses;
-        userPassInfo = data.userPassInfo
+        userPassInfo = data.userPassInfo;
         loading = false;
     });
     
@@ -521,11 +521,11 @@
 
 @media screen and (max-width: 480px) {
     .single-container {
-        max-width: 280px;
+        max-width: 400px;
     }
 
     .single-pass-container {
-        padding: 0.5rem;
+        padding: 1rem;
     }
 
     .pass-info {
