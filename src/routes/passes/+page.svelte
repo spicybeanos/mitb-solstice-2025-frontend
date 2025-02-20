@@ -103,6 +103,8 @@
                                     <div class="uniqueString text-sm ">
                                         Unique Id: {userPassInfo.id}
                                     </div>
+                                    <div class="price">
+                                        {pass.cost}
                                     <div class="qr-container">
                                         <QRCode text={userPassInfo.id} />
                                     </div>

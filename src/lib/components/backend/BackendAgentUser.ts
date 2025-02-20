@@ -1,21 +1,18 @@
 import { backendURL } from "./Backend";
+import { getDefaultPass, type SolsticePassInfo } from "./BackendAgentPass";
 
 export interface SolsticeUser {
     first_name: string;
     last_name: string;
     email_address: string;
-    phone_number: string;
-    mahe_registration_number: number;
-    pass_id: string;
+    phone_number: string | null;
+    mahe_registration_number: number | null;
+    pass_id: string | null;
     id: string;
 }
-export interface SolsticeUserPass{
-    name: string,
-    description: string,
-    cost: string,
-    id: string
-}
 export async function registerUser(user: SolsticeUser): Promise<SolsticeUser|null> {
+    const defaultPassID = await getDefaultPass();
+    user.pass_id = defaultPassID;
     const res = await fetch(`${backendURL}/user`, {
         method: 'POST',
         headers:{
@@ -49,13 +46,13 @@ export async function getUserInfo(userId:string) : Promise<SolsticeUser|null> {
     }
     return null;
 }
-export async function getUserPassInfo(userId:string) : Promise<SolsticeUserPass | null> {
+export async function getUserPassInfo(userId:string) : Promise<SolsticePassInfo | null> {
     const res = await fetch(`${backendURL}/user/${userId}/pass`, {
         method: 'GET',
     });
 
     if (res.status === 200) {
-        return (await res.json()) as SolsticeUserPass;
+        return (await res.json()) as SolsticePassInfo;
     }
     return null;
 }

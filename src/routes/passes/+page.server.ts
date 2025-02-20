@@ -1,3 +1,4 @@
+
 import { getAllEventsInPass, getAllPasses, type EventInPass, type SolsticePassInfo } from "$lib/components/backend/BackendAgentPass";
 import { getUserId, getUserPassInfo, type SolsticeUserPass } from "$lib/components/backend/BackendAgentUser";
 import { events } from "$lib/components/Events";
@@ -58,6 +59,3 @@ export async function load(){
         userPassInfo: userPassInfo
     });
 }
-
-
-
