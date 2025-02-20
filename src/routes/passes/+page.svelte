@@ -22,7 +22,7 @@
         await new Promise(resolve => setTimeout(resolve, 100));
         SolsticeAllPassInfo = data.SolsticeAllPassInfo;
         EventsInAllPasses = data.EventsInAllPasses;
-        userPassInfo = data.userPassInfo;
+        userPassInfo = data.userPassInfo
         loading = false;
     });
     
@@ -56,25 +56,27 @@
                                         }}>
                                         <PassCard>
                                             <div class="detailContainer">
-                                                <h1 class="text-6xl font-bold mb-1">{pass.name}</h1>
-                                                <div class="desc text-sm mb-1">
-                                                    {pass.description}
-                                                </div>
-    
-                                                <div class="eventsIncludedOuter">
-                                                    {#if EventsInAllPasses!==null}
-                                                        {#each EventsInAllPasses as event}
-                                                            {#if event.pass===pass.name}
-                                                                <div class="eventsIncluded">
-                                                                    <a href={`/events/${event.id}`}>{event.name}</a>
-                                                                </div>
-                                                            {/if}
-                                                        {/each}
-                                                    {/if}
-                                                </div>
-                                                
-                                                <div class="price">
-                                                    {pass.cost}
+                                                <div class="content-wrapper">
+                                                    <h1 class="text-6xl font-bold mb-1">{pass.name}</h1>
+                                                    <div class="desc text-sm mb-1">
+                                                        {pass.description}
+                                                    </div>
+        
+                                                    <div class="eventsIncludedOuter">
+                                                        {#if EventsInAllPasses!==null}
+                                                            {#each EventsInAllPasses as event}
+                                                                {#if event.pass===pass.name}
+                                                                    <div class="eventsIncluded">
+                                                                        <a href={`/events/${event.id}`}>{event.name}</a>
+                                                                    </div>
+                                                                {/if}
+                                                            {/each}
+                                                        {/if}
+                                                    </div>
+                                                    
+                                                    <div class="price">
+                                                        {pass.cost}
+                                                    </div>
                                                 </div>
                                                 <div class="button mt-2">
                                                     <BuyPass href={`https://payment.manipal.edu/bangalore-campus`} >
@@ -95,29 +97,30 @@
                         </div>
                 {/if}
                 {:else}
-                <div class="outer">
-                    <div class="inner">
-                        <div class="">
-                            <PassCard>
-                                <div class="detailContainer">
-                                    <h1 class="text-6xl font-bold mb-6">{userPassInfo.name}</h1>
-                                    <div class="uniqueString text-sm ">
-                                        Unique Id: {userPassInfo.id}
+                <div class="container single-container" in:fade={{duration: 300}}>
+                    <PassCard>
+                        <div class="detailContainer single-pass-container">
+                            <div class="content-wrapper">
+                                <h1 class="text-4xl font-bold mb-4">Your Pass</h1>
+                                <div class="info-box">
+                                    <div class="pass-info">
+                                        <h2 class="pass-name">{userPassInfo.name}</h2>
+                                        <div class="uniqueString">
+                                            Unique Id: <span class="id-text">{userPassInfo.id}</span>
+                                        </div>
                                     </div>
-                                    <div class="price">
-                                        {pass.cost}
-                                    <div class="qr-container">
+                                    <div class="qr-wrapper">
                                         <QRCode text={userPassInfo.id} />
                                     </div>
-                                    <div class="button mt-4">
-                                        <BuyPass href="/events" >
-                                            <div class="text">Pass Bought!</div>
+                                    <div class="button-wrapper">
+                                        <BuyPass href="/events">
+                                            <div class="text">View Events</div>
                                         </BuyPass>
                                     </div>
                                 </div>
-                            </PassCard>
+                            </div>
                         </div>
-                    </div>
+                    </PassCard>
                 </div>
             {/if}
         </div>
@@ -130,6 +133,7 @@
 
 
 <style>
+
     .outer {
     display: flex;
     justify-content: center;
@@ -143,10 +147,10 @@
 .inner {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: stretch;
+    justify-content: center;
+    align-items: flex-start;
     max-width: 1600px; 
-    gap: 0px; 
+    gap: 24px; 
     perspective: 1000px;
     transform-style: preserve-3d;
     backface-visibility: hidden;
@@ -154,10 +158,12 @@
 
 
 .container {
-    flex: 1 1 calc(33.333% - 20px);
+    flex: 0 1 calc(33.333% - 20px);
     max-width: 33%; 
+    min-width: 300px;
     box-sizing: border-box;
-    margin-bottom: 20px; 
+    max-height: fit-content;
+    margin-bottom: 10px; 
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -199,6 +205,7 @@
     width: 100%;
     display: flex;
     justify-content: center; 
+    margin-top: auto;
 }
 
 .text{
@@ -233,18 +240,20 @@
     text-align: center;
     flex-grow: 1; 
     height: 100%;
+    min-height: 100%;
+    padding-bottom: 1rem;
 }
 
 @media screen and (max-width: 1024px) {
     .container {
-        flex: 1 1 calc(50% - 20px);
+        flex: 0 1 calc(50% - 20px);
         max-width: 48%;
     }
 }
 
 @media screen and (max-width: 768px) {
     .container {
-        flex: 1 1 100%;
+        flex: 0 1 100%;
         max-width: 100%;
     }
     .detailContainer h1 {
@@ -280,11 +289,7 @@
     margin-top: 14px;
     margin-bottom: 2px;
 }
-.qr-container {
-        display: flex;
-        justify-content: center;
-        margin: 20px 0;
-    }
+
 .eventsIncluded {
     font-size: 0.8rem;
     text-align: left;
@@ -373,5 +378,174 @@
     }
 }
 
+
+.single-container {
+    flex: 0 1 100%;
+    max-width: 1000px;
+    min-width: 280px;
+    margin: 0 auto;
+    animation: none;
+    transform: none;
+    opacity: 1;
+    min-height: 0;
+    padding: 0.5rem;
+}
+
+/* Pass Container Layout */
+.single-pass-container {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Info Box Styles */
+.info-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 0.5rem;
+    padding: 0.5rem;
+}
+
+/* Pass Info Section */
+.pass-info {
+    text-align: center;
+    width: 107%;
+    padding: 0.75rem;
+    background: rgba(171, 131, 254, 0.1);
+    border-radius: 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+/* Typography */
+.pass-name {
+    font-size: 1.5rem;
+    color: #AB83FE;
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 0.25rem;
+}
+
+.uniqueString {
+    color: #C7AE93;
+    font-size: 0.85rem;
+    word-break: break-all;
+    line-height: 1.2;
+    margin: 0px;
+}
+
+.id-text {
+    color: #AB83FE;
+    font-family: monospace;
+    font-size: 0.85rem;
+    background: rgba(171, 131, 254, 0.05);
+    padding: 0.25px 0.5rem;
+    border-radius: 6px;
+    display: inline-block;
+    margin-top: 0.1rem;
+}
+
+/* QR Code Wrapper */
+.qr-wrapper {
+    padding: 0.75rem;
+    border-radius: 0px;
+    box-shadow: 4px 4px 8px #ffc089;
+    width: 100%;
+    max-width: 250px;
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem auto;
+    overflow: hidden;
+    background-color: white;
+    position: relative;
+}
+
+.qr-wrapper :global(canvas) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90% !important; /* Slightly smaller than container */
+    height: 90% !important;
+    max-width: none !important;
+    object-fit: contain;
+}
+
+/* Button Wrapper */
+.button-wrapper {
+    margin-top: auto;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    
+}
+
+/* Responsive Breakpoints */
+@media screen and (max-width: 768px) {
+    .single-container {
+        max-width: 320px;
+    }
+
+    .single-pass-container{
+        padding: 0.75rem;
+    }
+
+    .pass-info {
+        padding: 0.25rem;
+        width: 80%;
+    }
+
+    .pass-name {
+        font-size: 1rem;
+    }
+
+    .qr-wrapper {
+        width: 80%;
+        padding: 0.75rem;
+        max-width: 180px;
+    }
+    .info-box {
+        padding: 0.25rem;
+    }
+    
+}
+
+@media screen and (max-width: 480px) {
+    .single-container {
+        max-width: 280px;
+    }
+
+    .single-pass-container {
+        padding: 0.5rem;
+    }
+
+    .pass-info {
+        padding: 0.5rem;
+    }
+
+    .qr-wrapper {
+        width: 60%;
+        padding: clamp(0.5rem, 2vw, 1rem);
+        margin: 1rem auto;
+        max-width: 160px;
+    }
+
+    .uniqueString {
+        font-size: 0.8rem;
+    }
+
+    .id-text {
+        font-size: 0.75rem;
+    }
+}
 </style>
 
