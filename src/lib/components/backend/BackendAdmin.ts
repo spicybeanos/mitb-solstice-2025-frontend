@@ -1,5 +1,5 @@
 import { verifyAndGetUser, type Result } from "./Backend";
-import type { SolsticeUser } from "./BackendAgentUser";
+import { getUserId, type SolsticeUser } from "./BackendAgentUser";
 
 const admins:string[] = ['aryan.d.dalal@gmail.com','srivastavak1223@gmail.com'];
 const IT_OCs:string[] = [];
@@ -56,6 +56,6 @@ export async function check_EventRW_Access(jwt: string | null | undefined,eventI
         const element = admins[index];
         if(element == user.result.email_address){return true;}
     }
-    
+    const org = await getUserId(user.result.email_address);
     return false;
 }

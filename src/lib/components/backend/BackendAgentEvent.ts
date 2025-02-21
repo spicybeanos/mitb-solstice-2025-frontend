@@ -11,7 +11,8 @@ export interface SolsticeEventInfo {
     team_members: number | null,
     start: DateTime | null,
     venue: string | null,
-    id: string
+    id: string,
+    organizer_id:string | null
 }
 
 let serverEvents: SolsticeEventInfo[] = [];
