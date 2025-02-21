@@ -1,3 +1,4 @@
+import { BEARER_TOKEN } from "$env/static/private";
 import { backendURL } from "./Backend";
 import type { SolsticeEventInfo } from "./BackendAgentEvent";
 
@@ -12,7 +13,10 @@ const DEFAULT_PASS_NAME = 'default-pass';
 
 export async function getAllPasses() {
     const res = await fetch(`${backendURL}/pass`, {
-        method: 'GET'
+        method: 'GET',
+        headers:{
+            "Authorization": `Bearer ${BEARER_TOKEN}`
+        }
     });
 
     if (res.status === 200) {
@@ -22,7 +26,10 @@ export async function getAllPasses() {
 }
 export async function getPassInfo(passID:string) {
     const res = await fetch(`${backendURL}/pass/${passID}`, {
-        method: 'GET'
+        method: 'GET',
+        headers:{
+            "Authorization": `Bearer ${BEARER_TOKEN}`
+        }
     });
 
     if (res.status === 200) {
@@ -32,7 +39,10 @@ export async function getPassInfo(passID:string) {
 }
 export async function getPass(passId: string) {
     const res = await fetch(`${backendURL}/pass/${passId}`, {
-        method: 'GET'
+        method: 'GET',
+        headers:{
+            "Authorization": `Bearer ${BEARER_TOKEN}`
+        }
     });
 
     if (res.status === 200) {
@@ -42,7 +52,10 @@ export async function getPass(passId: string) {
 }
 export async function getEventsAccessableByPass(passID: string): Promise<SolsticeEventInfo[] | null> {
     const res = await fetch(`${backendURL}/pass/${passID}/events`, {
-        method: 'GET'
+        method: 'GET',
+        headers:{
+            "Authorization": `Bearer ${BEARER_TOKEN}`
+        }
     });
 
     if (res.status == 200) {

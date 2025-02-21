@@ -1,6 +1,7 @@
 import { json } from '@sveltejs/kit';
 import { OAuth2Client } from 'google-auth-library';
 import { isSigningOut } from '../../routes/GoogleLogin.svelte.ts';
+import { G_CLIENT_AUD } from '$env/static/private';
 
 const gclient = new OAuth2Client();
 
@@ -21,7 +22,7 @@ export async function verifyGJWT(token: string) : Promise<VerificationResult> {
         try {
             const ticket = await gclient.verifyIdToken({
                 idToken: token,
-                audience: '791276530561-516epk75ca30hk173asit5cp3ftfj0bj.apps.googleusercontent.com',  // Specify the CLIENT_ID of the app that accesses the backend
+                audience: G_CLIENT_AUD,  // Specify the CLIENT_ID of the app that accesses the backend
                 // Or, if multiple clients access the backend:
                 //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
             });

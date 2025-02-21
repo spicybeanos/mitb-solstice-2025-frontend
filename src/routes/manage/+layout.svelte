@@ -5,6 +5,8 @@
 <aside class="m-[30px]">
     <h2>Actions</h2>
     <a href="/manage/verify">verify user pass</a>
+    <a href="/manage/ids">get details</a>
+    <a href="/manage/events">events</a>
 </aside>
 
 {@render children()}
