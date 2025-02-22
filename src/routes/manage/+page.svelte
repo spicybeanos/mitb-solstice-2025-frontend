@@ -7,5 +7,5 @@
     }
 </style>
 <h2>
-    OC page
+    OC and Admin Panel
 </h2>

@@ -7,14 +7,13 @@ import { BEARER_TOKEN } from "$env/static/private";
 export interface SolsticeEventInfo {
     name: string,
     description: string | null,
-    type: string,
+    type: 'cultural' | 'e_sports' | 'experiences' | 'finance' | 'hackathon' | 'other' | 'pro_show' | 'robotics' | 'sports' | 'technical',
     team_members: number | null,
     start: DateTime | null,
     venue: string | null,
     id: string,
-    organizer_id:string | null
+    organizer_id: string | null
 }
-
 let serverEvents: SolsticeEventInfo[] = [];
 
 export async function getEvents() {

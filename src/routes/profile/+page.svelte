@@ -93,7 +93,7 @@
                                 required
                             ></TextInput>
                             <Button OnClicked={() => {}}
-                                ><div style="color: black;">Submit</div></Button
+                                ><div style="color: white   ;">Submit</div></Button
                             >
                         </form>
                     </SimpleCard>
@@ -126,7 +126,7 @@
                                 required
                             ></TextInput>
                             <Button OnClicked={() => {}}
-                                ><div style="color: black;">Submit</div></Button
+                                ><div style="color: white;">Submit</div></Button
                             >
                         </form>
                     </SimpleCard>

@@ -1,5 +1,8 @@
 <script lang="ts">
     import type { SolsticeUser } from "$lib/components/backend/BackendAgentUser";
+    import BasicButtonFilled from "$lib/components/ui/Basic/BasicButtonFilled.svelte";
+    import BasicButtonOutline from "$lib/components/ui/Basic/BasicButtonOutline.svelte";
+    import BasicInput from "$lib/components/ui/Basic/BasicInput.svelte";
     import { fade, fly } from "svelte/transition";
 
     let email = $state("");
@@ -32,56 +35,60 @@
     }
 </script>
 
-<div class="p-[30px]">
-    <h1>Get info of a user</h1>
-    <div>
-        <label for="email"
-            >Email:<input
-                class="m-3"
+<div class="flex justify-center">
+    <div class="p-[30px]">
+        <h1>Get info of a user</h1>
+        <div>
+            <BasicInput
+                required
                 name="email"
                 type="email"
                 placeholder="E-mail"
                 bind:value={email}
-            /></label
-        >
-        <button
-            onclick={() => {
-                getUserDetails();
-            }}
-            class="rounded-sm">Go</button
-        >
-        <button
-            onclick={() => {
-                loaded = false;
-            }}
-            class="rounded-sm">Reset</button
-        >
-    </div>
-    {#if loaded == true}
-        <div in:fly={{ y: 200, duration: 100 }} out:fade>
-            {#if response.error != null}
-                <div style="color: red;">
-                    Error:{response.error}
-                </div>
-            {/if}
-            {#if response.userData != null}
-                <div class="flex flex-col">
-                    <div>
-                        Name : {response.userData.first_name}
-                        {response.userData.last_name}
-                    </div>
-                    <div>Email : {response.userData.email_address}</div>
-                    <div>Phone number : {response.userData.phone_number}</div>
-                    <div>User ID : {response.userData.id}</div>
-                    <div>
-                        Registration number : {response.userData
-                            .mahe_registration_number}
-                    </div>
-                    <div>Pass ID : {response.userData.pass_id == null ? 'None' : response.userData.pass_id}</div>
-                </div>
-            {/if}
+            />
+            <BasicButtonFilled
+                OnClick={() => {
+                    getUserDetails();
+                }}><b>GO</b></BasicButtonFilled
+            >
+            <BasicButtonOutline
+                OnClick={() => {
+                    loaded = false;
+                }}><b>RESET</b></BasicButtonOutline
+            >
         </div>
-    {/if}
+        {#if loaded == true}
+            <div in:fly={{ y: 200, duration: 100 }} out:fade>
+                {#if response.error != null}
+                    <div style="color: red;">
+                        Error:{response.error}
+                    </div>
+                {/if}
+                {#if response.userData != null}
+                    <div class="flex flex-col">
+                        <div>
+                            Name : {response.userData.first_name}
+                            {response.userData.last_name}
+                        </div>
+                        <div>Email : {response.userData.email_address}</div>
+                        <div>
+                            Phone number : {response.userData.phone_number}
+                        </div>
+                        <div>User ID : {response.userData.id}</div>
+                        <div>
+                            Registration number : {response.userData
+                                .mahe_registration_number}
+                        </div>
+                        <div>
+                            Pass ID : {response.userData.pass_id == null
+                                ? "None"
+                                : response.userData.pass_id}
+                        </div>
+                    </div>
+                {/if}
+            </div>
+        {/if}
+    </div>
 </div>
 
 <style>

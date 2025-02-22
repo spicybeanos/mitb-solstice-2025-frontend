@@ -1,21 +1,22 @@
 <script lang="ts">
+    import BasicInput from "$lib/components/ui/Basic/BasicInput.svelte";
+
     let eventID = $state("");
     let { data } = $props();
 </script>
 
-<div class="flex flex-col m-15">
-    <h1>Enter event ID to view or edit event</h1>
-    <div>Make sure you are the event head of that event!</div>
-    <label for="eventID"
-        >Event ID
-        <input
+<div class="flex justify-center">
+    <div class="p-[30px]">
+        <h1>Enter event ID to view or edit event</h1>
+        <div>Make sure you are the event head of that event!</div>
+
+        <BasicInput
             required
             name="eventID"
             bind:value={eventID}
             placeholder="Enter event ID"
         />
-    </label>
-    <div>
+
         <a href={`/manage/events/${eventID.trim()}/edit`}>Edit event</a>
         <a href={`/manage/events/${eventID.trim()}/teams`}>View teams</a>
     </div>
@@ -32,9 +33,12 @@
     a {
         border-style: solid;
         border-width: 1px;
+        border-radius: 10px;
         border-color: lightcoral;
-        padding: 5px 5px 5px 5px;
+        padding: 10px 10px 10px 10px;
         color: lightcoral;
+        margin: 15px 15px 15px 15px;
+        margin-top: 30px;
     }
     input {
         border-style: solid;
