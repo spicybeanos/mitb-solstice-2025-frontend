@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { SolsticeUser } from "$lib/components/backend/BackendAgentUser";
+    import type { SolsticeUser } from "$lib/components/backend/BackendTypes.ts";
     import BasicButtonFilled from "$lib/components/ui/Basic/BasicButtonFilled.svelte";
     import BasicButtonOutline from "$lib/components/ui/Basic/BasicButtonOutline.svelte";
     import BasicInput from "$lib/components/ui/Basic/BasicInput.svelte";

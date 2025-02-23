@@ -1,13 +1,9 @@
 import { BEARER_TOKEN } from "$env/static/private";
 import { backendURL } from "./Backend";
 import { addTeamToEvent } from "./BackendAgentEvent";
-import type { SolsticeUser } from "./BackendAgentUser";
+import type { SolsticeUser } from "./BackendTypes.ts"
+import type { SolsticeTeamInfo } from "./BackendTypes";
 
-export interface SolsticeTeamInfo {
-    name: string;
-    host_id: string;
-    id: string;
-}
 
 export async function createTeam(teamName: string, hostId: string): Promise<SolsticeTeamInfo | null> {
     const res = await fetch(`${backendURL}/team`, {

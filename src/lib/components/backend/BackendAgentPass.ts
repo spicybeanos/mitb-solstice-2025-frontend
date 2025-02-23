@@ -1,13 +1,7 @@
 import { BEARER_TOKEN } from "$env/static/private";
 import { backendURL } from "./Backend";
-import type { SolsticeEventInfo } from "./BackendAgentEvent";
+import type { SolsticeEventInfo, SolsticePassInfo } from "./BackendTypes.ts";
 
-export interface SolsticePassInfo {
-    name: string;
-    description: string | null;
-    cost: string;
-    id: string;
-}
 
 const DEFAULT_PASS_NAME = 'default-pass';
 

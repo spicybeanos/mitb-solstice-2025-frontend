@@ -1,4 +1,4 @@
-import { getUserId, registerUser, updateUserInfo, type SolsticeUser } from '$lib/components/backend/BackendAgentUser.js';
+import { getUserId, registerUser, updateUserInfo } from '$lib/components/backend/BackendAgentUser.js';
 import { getUserObjectFromJWT } from '$lib/components/GAuth.js';
 import { json, redirect } from '@sveltejs/kit';
 

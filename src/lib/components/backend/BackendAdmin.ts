@@ -1,6 +1,6 @@
 import { verifyAndGetUser, type Result } from "./Backend";
 import { getEventInfo } from "./BackendAgentEvent";
-import { getUserId, type SolsticeUser } from "./BackendAgentUser";
+import { getUserId } from "./BackendAgentUser";
 
 const admins: string[] = ['aryan.d.dalal@gmail.com'];
 const IT_OCs: string[] = [];

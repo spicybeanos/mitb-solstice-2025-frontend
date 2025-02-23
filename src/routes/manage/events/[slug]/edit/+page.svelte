@@ -35,7 +35,7 @@
 </script>
 
 <div class="flex justify-center">
-    <div class="p-[30px]">
+    <div class="p-[30px] m-[10px] rounded-xl border border-white">
         <BasicHeader>Edit event details</BasicHeader>
         <div class="text-white">Event id: <code>{event.id}</code></div>
         <form action="?/updateEvent" method="POST" class="flex flex-col">

@@ -1,19 +1,11 @@
 import { get } from "svelte/store";
 import { backendURL } from "./Backend";
-import { getUsersInTeam, type SolsticeTeamInfo } from "./BackendAgentTeam";
+import { getUsersInTeam } from "./BackendAgentTeam";
 import type { DateTime } from "@auth/core/providers/kakao";
 import { BEARER_TOKEN } from "$env/static/private";
+import type { SolsticeEventInfo, SolsticeTeamInfo } from "./BackendTypes.ts";
 
-export interface SolsticeEventInfo {
-    name: string,
-    description: string | null,
-    type: 'cultural' | 'e_sports' | 'experiences' | 'finance' | 'hackathon' | 'other' | 'pro_show' | 'robotics' | 'sports' | 'technical',
-    team_members: number | null,
-    start: DateTime | null,
-    venue: string | null,
-    id: string,
-    organizer_id: string | null
-}
+
 let serverEvents: SolsticeEventInfo[] = [];
 
 export async function getEvents() {
@@ -56,6 +48,15 @@ export async function getUsersInEvent(eventId: string): Promise<string[] | null>
     });
 
     return users;
+}
+export async function updateeventDetails(eventID: string, info: SolsticeEventInfo) {
+    const res = await fetch(`${backendURL}/event/${eventID}`, {
+        method: 'PATCH',
+        body: JSON.stringify(info)
+    });
+    if (res.ok) { return true; }
+    console.log(`Could not update event: ${await res.json()}`);
+    return false;
 }
 export async function getUserTeamIDInEvent(userID: string, eventID: string): Promise<string | null> {
     const teams = await getTeams(eventID);
