@@ -35,6 +35,7 @@
                         {#if pass.name !== undefined}
                             <div
                                 class="container"
+                                style="--index:{i}"
                                 in:slide={{
                                     delay: i * 200,
                                     duration: 1000,
@@ -92,8 +93,8 @@
                                                     </BuyPass>  
                                                 </div>
                                             </div>
-                                        </div>
-                                    </PassCard>
+                                        </PassCard>
+                                    </div>
                                 </div>
                             </div>
                         {/if}
@@ -181,10 +182,6 @@
     overflow-wrap: break-word;
     transform-origin: center;
     will-change: transform, opacity;
-    transform: translateY(100px);
-    opacity: 0;
-    animation: slideUp 2000ms cubic-bezier(0.23, 1, 0.32, 1) forwards;
-    animation-delay: calc(1000ms * var(--index));
 }
 
 .PassCard {
@@ -260,12 +257,6 @@
         max-width: 48%;
     }
 
-    .container {
-
-        flex: 0 1 100%;
-        max-width: 100%;
-    }
-
     .PassCard {
         display: flex;
         flex-direction: column;
@@ -328,15 +319,8 @@
         flex-grow: 1;
         height: 100%;
     }
-
-    @media screen and (max-width: 1024px) {
-        .container {
-            flex: 1 1 calc(50% - 20px);
-            max-width: 48%;
-        }
-    }
-
-    @media screen and (max-width: 768px) {
+}
+@media screen and (max-width: 768px) {
         .container {
             flex: 1 1 100%;
             max-width: 100%;
@@ -348,9 +332,37 @@
         .desc {
             font-size: 1rem;
         }
+        .single-container {
+        max-width: 320px;
     }
 
-    @media screen and (max-width: 480px) {
+    .single-pass-container{
+        padding: 0.75rem;
+    }
+
+    .pass-info {
+        padding: 0.25rem;
+        width: 80%;
+    }
+
+    .pass-name {
+        font-size: 1rem;
+    }
+
+    .qr-wrapper {
+        width: 80%;
+        padding: 0.75rem;
+        max-width: 180px;
+    }
+    .info-box {
+        padding: 0.25rem;
+    }
+    .eventsIncludedOuter{
+        min-height: 100px;
+    }
+}
+
+@media screen and (max-width: 480px) {
         .inner {
             max-width: 300px;
             margin-left: 0px;
@@ -364,16 +376,93 @@
         .desc {
             font-size: 0.7rem;
         }
-    }
-
-    .price {
+        .emptyPassInner {
+        background-color: #2a2a2a;
+        padding: 2rem;
+        border-radius: 10px;
         text-align: center;
-        font-size: 0.9rem;
-        flex-grow: 1;
-        margin-top: 14px;
-        margin-bottom: 2px;
+        color: #c7ae93;
+        font-size: 1.2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 90%;
     }
 
+    
+    .emptyPassInner {
+            font-size: 1rem;
+            padding: 1.5rem;
+        }
+    
+
+    .card-wrapper {
+        height: 100%;
+        width: 100%;
+    }
+
+
+    .single-container {
+        max-width: 400px;
+    }
+
+    .single-pass-container {
+        padding: 1rem;
+    }
+
+    .pass-info {
+        padding: 0.5rem;
+    }
+
+    .qr-wrapper {
+        width: 60%;
+        padding: clamp(0.5rem, 2vw, 1rem);
+        margin: 1rem auto;
+        max-width: 160px;
+    }
+
+    .uniqueString {
+        font-size: 0.8rem;
+    }
+
+    .id-text {
+        font-size: 0.75rem;
+    }
+
+    @keyframes slideUp {
+        from {
+            transform: translateY(600px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    
+}
+
+.loading-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 60vh;
+    }
+
+.loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid #ab83fe;
+        border-top: 3px solid transparent;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+}
+@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
 }
 
 .price{
@@ -406,6 +495,7 @@
     width: 100%;
     padding: 10px 20px;
     margin: 10px 0;
+    min-height: 200px;
 }
 
 .emptyPassOuter {
@@ -428,68 +518,7 @@
     width: 90%;
 }
 
-@media screen and (max-width: 480px) {
-    .emptyPassInner {
-        background-color: #2a2a2a;
-        padding: 2rem;
-        border-radius: 10px;
-        text-align: center;
-        color: #c7ae93;
-        font-size: 1.2rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        max-width: 400px;
-        width: 90%;
-    }
 
-    @media screen and (max-width: 480px) {
-        .emptyPassInner {
-            font-size: 1rem;
-            padding: 1.5rem;
-        }
-    }
-
-    .card-wrapper {
-        height: 100%;
-        width: 100%;
-    }
-
-    .loading-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 60vh;
-    }
-
-    .loading-spinner {
-        width: 50px;
-        height: 50px;
-        border: 3px solid #ab83fe;
-        border-top: 3px solid transparent;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-
-    @keyframes slideUp {
-        from {
-            transform: translateY(600px);
-            opacity: 0;
-        }
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }
-    }
-
-}
 
 
 .single-container {
@@ -602,62 +631,5 @@
     
 }
 
-/* Responsive Breakpoints */
-@media screen and (max-width: 768px) {
-    .single-container {
-        max-width: 320px;
-    }
 
-    .single-pass-container{
-        padding: 0.75rem;
-    }
-
-    .pass-info {
-        padding: 0.25rem;
-        width: 80%;
-    }
-
-    .pass-name {
-        font-size: 1rem;
-    }
-
-    .qr-wrapper {
-        width: 80%;
-        padding: 0.75rem;
-        max-width: 180px;
-    }
-    .info-box {
-        padding: 0.25rem;
-    }
-    
-}
-
-@media screen and (max-width: 480px) {
-    .single-container {
-        max-width: 400px;
-    }
-
-    .single-pass-container {
-        padding: 1rem;
-    }
-
-    .pass-info {
-        padding: 0.5rem;
-    }
-
-    .qr-wrapper {
-        width: 60%;
-        padding: clamp(0.5rem, 2vw, 1rem);
-        margin: 1rem auto;
-        max-width: 160px;
-    }
-
-    .uniqueString {
-        font-size: 0.8rem;
-    }
-
-    .id-text {
-        font-size: 0.75rem;
-    }
-}
 </style>
