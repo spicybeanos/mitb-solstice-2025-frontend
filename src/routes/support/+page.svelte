@@ -3,6 +3,7 @@
     import Card from "$lib/components/Card.svelte";
     import TextInput from "$lib/components/TextInput.svelte";
     import AButton from "$lib/components/AButton.svelte";
+    import BasicInput from '$lib/components/ui/Basic/BasicInput.svelte'
     import SimpleCard from "$lib/components/SimpleCard.svelte";
 
     interface ProblemTicket {

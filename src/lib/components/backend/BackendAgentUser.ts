@@ -1,22 +1,17 @@
+import { BEARER_TOKEN } from "$env/static/private";
 import { backendURL } from "./Backend";
-import { getDefaultPass, type SolsticePassInfo } from "./BackendAgentPass";
+import { getDefaultPass } from "./BackendAgentPass";
+import type { SolsticeUser, SolsticePassInfo } from "./BackendTypes.ts";
 
-export interface SolsticeUser {
-    first_name: string;
-    last_name: string;
-    email_address: string;
-    phone_number: string | null;
-    mahe_registration_number: number | null;
-    pass_id: string | null;
-    id: string;
-}
-export async function registerUser(user: SolsticeUser): Promise<SolsticeUser|null> {
+
+export async function registerUser(user: SolsticeUser): Promise<SolsticeUser | null> {
     const defaultPassID = await getDefaultPass();
-    user.pass_id = defaultPassID;
+    user.pass_id = null;
     const res = await fetch(`${backendURL}/user`, {
         method: 'POST',
-        headers:{
-            "Content-type":"application/json"
+        headers: {
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${BEARER_TOKEN}`
         },
         body: JSON.stringify(user)
     });
@@ -26,9 +21,12 @@ export async function registerUser(user: SolsticeUser): Promise<SolsticeUser|nul
     }
     return null;
 }
-export async function getUserId(email:string) : Promise<string|null> {
+export async function getUserId(email: string): Promise<string | null> {
     const res = await fetch(`${backendURL}/user/id?email_address=${encodeURIComponent(email)}`, {
-        method: 'GET'
+        method: 'GET',
+        headers: {
+            "Authorization": `Bearer ${BEARER_TOKEN}`
+        }
     });
 
     if (res.status === 200) {
@@ -36,9 +34,12 @@ export async function getUserId(email:string) : Promise<string|null> {
     }
     return null;
 }
-export async function getUserInfo(userId:string) : Promise<SolsticeUser|null> {
+export async function getUserInfo(userId: string): Promise<SolsticeUser | null> {
     const res = await fetch(`${backendURL}/user/${userId}`, {
-        method: 'GET'
+        method: 'GET',
+        headers: {
+            "Authorization": `Bearer ${BEARER_TOKEN}`
+        }
     });
 
     if (res.status === 200) {
@@ -46,9 +47,12 @@ export async function getUserInfo(userId:string) : Promise<SolsticeUser|null> {
     }
     return null;
 }
-export async function getUserPassInfo(userId:string) : Promise<SolsticePassInfo | null> {
+export async function getUserPassInfo(userId: string): Promise<SolsticePassInfo | null> {
     const res = await fetch(`${backendURL}/user/${userId}/pass`, {
         method: 'GET',
+        headers: {
+            "Authorization": `Bearer ${BEARER_TOKEN}`
+        }
     });
 
     if (res.status === 200) {
@@ -56,11 +60,12 @@ export async function getUserPassInfo(userId:string) : Promise<SolsticePassInfo 
     }
     return null;
 }
-export async function updateUserInfo(userId:string,info:SolsticeUser) : Promise<boolean> {
+export async function updateUserInfo(userId: string, info: SolsticeUser): Promise<boolean> {
     const res = await fetch(`${backendURL}/user/${userId}`, {
         method: 'PATCH',
-        headers:{
-            "Content-type":"application/json"
+        headers: {
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${BEARER_TOKEN}`
         },
         body: JSON.stringify(info)
     });

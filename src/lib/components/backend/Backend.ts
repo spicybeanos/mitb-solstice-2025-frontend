@@ -1,5 +1,6 @@
 import { verifyGJWT } from "../GAuth";
-import { getUserId, getUserInfo, type SolsticeUser } from "./BackendAgentUser";
+import { getUserId, getUserInfo } from "./BackendAgentUser";
+import type { SolsticeUser } from "./BackendTypes";
 
 export const backendURL = "http://127.0.0.1:8000";
 /*

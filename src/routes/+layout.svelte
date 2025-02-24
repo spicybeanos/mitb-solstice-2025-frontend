@@ -39,21 +39,6 @@
         <a href="/" class="grow max-w-[33%]"
             ><img class="logo w-[26vw] md:w-[15vw]" src={logo} alt="logo" /></a
         >
-
-        <!-- <div
-            class="flex flex-row grow-0 rounded-full px-12 py-3 bg-black text-white gap-8"
-        >
-            <a class="hover:text-[#AB83FE] cursor-pointer" href="/passes"
-                >Passes</a
-            >
-            <a class="hover:text-[#AB83FE] cursor-pointer" href="/events"
-                >Events</a
-            >
-            <a class="hover:text-[#AB83FE] cursor-pointer" href="/support"
-                >Support</a
-            >
-            <a class="hover:text-[#AB83FE] cursor-pointer" href="/stay">Stay</a>
-        </div> -->
         <FloatingNavbar navItems={navItems} />
 
         <a href="/profile" class="grow flex flex-row justify-end max-w-[33%]">
@@ -155,8 +140,8 @@
 
         <div class="flex flex-col text-right">
             <p>Contact @</p>
-            <p>+91 12345 67890</p>
-            <p>( Name - HR Head )</p>
+            <p>+91 79069 52055</p>
+            <p>( Atharva Maikhuri - HR Head )</p>
         </div>
     </div>
 </footer>

@@ -7,11 +7,6 @@
         {#if title !== ""}
             <h2>{title}</h2>
         {/if}
-        <div class="controls">
-            <div class="btn close"></div>
-            <div class="btn min"></div>
-            <div class="btn max"></div>
-        </div>
     </div>
 
     <div class="cont">
@@ -23,11 +18,8 @@
     h2 {
         float: left;
         line-height: 1.5em;
-        color: var(--text-light-mode);
+        color: white;
         margin: 0;
-    }
-    .controls {
-        float: right;
     }
     .header {
         box-sizing: border-box;
@@ -35,32 +27,14 @@
         height: 1.5em;
         padding: 0 0.4em;
     }
-    .btn {
-        display: inline-block;
-        width: 0.6em;
-        height: 0.6em;
-        margin-left: 0.4em;
-        border-radius: 50%;
-        background-color: #777;
-    }
-    .btn.close {
-        background-color: #e33;
-    }
-    .btn.min {
-        background-color: #ee0;
-    }
-
-    .btn.max {
-        background-color: #0b0;
-    }
-
     div {
-        background-color: #cacaca;
+        background-color: #343434;
         border-radius: 6px;
         width: fit-content;
+        color: rgb(204, 203, 203);
     }
     .cont {
-        background-color: #efefef;
+        background-color: #222;
         border-radius: 6px;
         padding: 12px;
         border-top-left-radius: 0;

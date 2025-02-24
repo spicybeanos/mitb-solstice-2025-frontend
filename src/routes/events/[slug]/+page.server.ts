@@ -1,5 +1,5 @@
 import { verifyAndGetUser } from '$lib/components/backend/Backend.js';
-import { getEventID, getEventInfo, getEvents, getTeams, getUsersInEvent, getUserTeamIDInEvent } from '$lib/components/backend/BackendAgentEvent.js';
+import { getEventID, getEventInfo, getEvents, getTeams, getUserIDsInEvent, getUserTeamIDInEvent } from '$lib/components/backend/BackendAgentEvent.js';
 import { checkEventAccesableByPass } from '$lib/components/backend/BackendAgentPass.js';
 import { addUserToTeam, createTeamAndAttach, getTeamDetails, getUsersInTeam } from '$lib/components/backend/BackendAgentTeam.js';
 import { getUserId, getUserInfo } from '$lib/components/backend/BackendAgentUser.js';
@@ -63,7 +63,7 @@ export const actions = {
             });
         }
 
-        const users = await getUsersInEvent(eventId);
+        const users = await getUserIDsInEvent(eventId);
         if (users != null) {
             users.forEach(us => {
                 if (us == hostID) { return fail(409, { msg: "You're already in a team!" }); }
@@ -99,7 +99,7 @@ export const actions = {
             });
         }
 
-        const users = await getUsersInEvent(eventId);
+        const users = await getUserIDsInEvent(eventId);
         if (users != null) {
             users.forEach(us => {
                 if (us == userID) { return fail(409, { msg: "You're already in a team!" }); }

@@ -4,6 +4,7 @@
   import type { User } from "@auth/sveltekit";
   let { cookieJwt } = $props();
   import { isSigningOut } from "./GoogleLogin.svelte.ts";
+    import { PUBLIC_G_CLIENT } from "$env/static/public";
 
   interface UserProfile {
     name: string;
@@ -86,7 +87,7 @@
       });
 
       (window as any).google.accounts.id.initialize({
-        client_id: "791276530561-516epk75ca30hk173asit5cp3ftfj0bj",
+        client_id: PUBLIC_G_CLIENT,
         callback: handleGoogleSignIn,
       });
 

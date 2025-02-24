@@ -1,52 +1,60 @@
-<script lang='ts'>
-    import type { FalakPass } from '$lib/components/FalakPass.js';
-    import { onMount } from 'svelte';
-    import PassCard from '$lib/components/PassCard.svelte';
-    import BuyPass from '$lib/components/BuyPass.svelte';
-    import QRCode from '$lib/components/QR.svelte';
-    import type { SolsticePassInfo } from '$lib/components/backend/BackendAgentPass.js';
-    import type { EventInAllPasses } from './+page.server.js';
-    import type { SolsticeUserPass } from '$lib/components/backend/BackendAgentUser.js';
-    import { fade,slide,scale } from 'svelte/transition'
-    import { cubicOut, quintOut } from 'svelte/easing';
-    
-    let {data} = $props();
-    
-    let loading = $state(true);
-    let SolsticeAllPassInfo:SolsticePassInfo[]|null = $state([]);
-    let EventsInAllPasses:EventInAllPasses[]|null = $state([]);
+<script lang="ts">
+    import type { FalakPass } from "$lib/components/FalakPass.js";
+    import { onMount } from "svelte";
+    import PassCard from "$lib/components/PassCard.svelte";
+    import BuyPass from "$lib/components/BuyPass.svelte";
+    import QRCode from "$lib/components/QR.svelte";
+    import type { SolsticePassInfo } from "$lib/components/backend/BackendTypes.ts";
+    import type { EventInAllPasses } from "./+page.server.ts";
+    import { fade, slide, scale } from "svelte/transition";
+    import { cubicOut, quintOut } from "svelte/easing";
 
-    let userPassInfo:SolsticeUserPass|null=$state(null)
+    let { data } = $props();
+
+    let loading = $state(true);
+    let SolsticeAllPassInfo: SolsticePassInfo[] | null = $state([]);
+    let EventsInAllPasses: EventInAllPasses[] | null = $state([]);
+
+    let userPassInfo: SolsticePassInfo | null = $state(null);
 
     onMount(async () => {
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
         SolsticeAllPassInfo = data.SolsticeAllPassInfo;
         EventsInAllPasses = data.EventsInAllPasses;
         userPassInfo = data.userPassInfo;
         loading = false;
     });
-    
 </script>
 
 {#if !loading}
-    <div class="outer" in:fade={{duration: 300,delay: 150}}>
-        <div class="inner ">
-            {#if userPassInfo==null}
-                {#if SolsticeAllPassInfo!==null}
-                    {#each SolsticeAllPassInfo as pass,i}
+    <div class="outer" in:fade={{ duration: 300, delay: 150 }}>
+        <div class="inner">
+            {#if userPassInfo == null}
+                {#if SolsticeAllPassInfo !== null}
+                    {#each SolsticeAllPassInfo as pass, i}
                         {#if pass.name !== undefined}
-                            
-                                <div class="container"
-                                    in:slide={{
+                            <div
+                                class="container"
+                                in:slide={{
+                                    delay: i * 200,
+                                    duration: 1000,
+                                    easing: quintOut,
+                                    axis: "y",
+                                }}
+                                out:fade|global={{
+                                    duration: 300,
+                                }}
+                            >
+                                <div
+                                    class="card-wrapper"
+                                    in:scale|global={{
                                         delay: i * 200,
-                                        duration: 1000,
-                                        easing: quintOut,
-                                        axis: 'y'
-                                    }}
-                                    out:fade|global={{
-                                        duration: 300
+                                        duration: 800,
+                                        start: 0.95,
+                                        opacity: 0,
                                     }}
                                 >
+
                                     <div class="card-wrapper"
                                         in:scale|global={{
                                             delay: i * 200,
@@ -84,18 +92,20 @@
                                                     </BuyPass>  
                                                 </div>
                                             </div>
-                                        </PassCard>
-                                    </div>                                    
+                                        </div>
+                                    </PassCard>
                                 </div>
+                            </div>
                         {/if}
                     {/each}
-                    {:else}
-                        <div class="emptyPassOuter">
-                            <div class="emptyPassInner">
-                                No Passes Online at the moment. Check Another time
-                            </div>
+                {:else}
+                    <div class="emptyPassOuter">
+                        <div class="emptyPassInner">
+                            No Passes Online at the moment. Check Another time
                         </div>
+                    </div>
                 {/if}
+
                 {:else}
                 <div class="container single-container" in:fade={{duration: 300}}>
                     <PassCard>
@@ -125,16 +135,16 @@
             {/if}
         </div>
     </div>
-    {:else}
+{:else}
     <div class="loading-container" in:fade>
         <div class="loading-spinner"></div>
     </div>
 {/if}
 
-
 <style>
 
     .outer {
+
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -249,37 +259,121 @@
         flex: 0 1 calc(50% - 20px);
         max-width: 48%;
     }
-}
 
-@media screen and (max-width: 768px) {
     .container {
+
         flex: 0 1 100%;
         max-width: 100%;
     }
-    .detailContainer h1 {
-        font-size: 2rem;
-        margin-top: -5px;
-    }
-    .desc {
-        font-size: 1rem; 
-    }
-    
-}
 
-@media screen and (max-width: 480px) {
-    .inner{
-        max-width: 300px;
-        margin-left: 0px;
-    }
-    
-    .detailContainer h1 {
-        font-size: 1.8rem;
-        margin-top: 0px; 
+    .PassCard {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
     }
 
     .desc {
-        font-size: 0.7rem; 
+        flex-grow: 1;
+        text-align: center;
+        font-size: 1rem;
+        margin-bottom: 32px;
+        margin-top: 20px;
     }
+    .uniqueString {
+        color: #ab83fe;
+        flex-grow: 1;
+        text-align: center;
+        font-size: 1rem;
+        margin-bottom: 32px;
+        margin-top: 20px;
+        word-break: break-word;
+        white-space: normal;
+    }
+
+    .button {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .text {
+        color: #000000;
+    }
+
+    .detailContainer h1 {
+        font-size: 2.5rem;
+        margin-top: -10px;
+        font-weight: 800;
+        line-height: 1.1;
+        padding-bottom: 16px;
+    }
+
+    .button AButton {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+    }
+
+    .detailContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        font-size: 1.5rem;
+        margin-top: 2%;
+        transition: opacity 1s ease;
+        color: #c7ae93;
+        text-align: center;
+        flex-grow: 1;
+        height: 100%;
+    }
+
+    @media screen and (max-width: 1024px) {
+        .container {
+            flex: 1 1 calc(50% - 20px);
+            max-width: 48%;
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        .container {
+            flex: 1 1 100%;
+            max-width: 100%;
+        }
+        .detailContainer h1 {
+            font-size: 2rem;
+            margin-top: -5px;
+        }
+        .desc {
+            font-size: 1rem;
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .inner {
+            max-width: 300px;
+            margin-left: 0px;
+        }
+
+        .detailContainer h1 {
+            font-size: 1.8rem;
+            margin-top: 0px;
+        }
+
+        .desc {
+            font-size: 0.7rem;
+        }
+    }
+
+    .price {
+        text-align: center;
+        font-size: 0.9rem;
+        flex-grow: 1;
+        margin-top: 14px;
+        margin-bottom: 2px;
+    }
+
 }
 
 .price{
@@ -336,12 +430,25 @@
 
 @media screen and (max-width: 480px) {
     .emptyPassInner {
-        font-size: 1rem;
-        padding: 1.5rem;
+        background-color: #2a2a2a;
+        padding: 2rem;
+        border-radius: 10px;
+        text-align: center;
+        color: #c7ae93;
+        font-size: 1.2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 90%;
     }
-}
 
-.card-wrapper {
+    @media screen and (max-width: 480px) {
+        .emptyPassInner {
+            font-size: 1rem;
+            padding: 1.5rem;
+        }
+    }
+
+    .card-wrapper {
         height: 100%;
         width: 100%;
     }
@@ -356,26 +463,32 @@
     .loading-spinner {
         width: 50px;
         height: 50px;
-        border: 3px solid #AB83FE;
+        border: 3px solid #ab83fe;
         border-top: 3px solid transparent;
         border-radius: 50%;
         animation: spin 1s linear infinite;
     }
 
     @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
     }
 
     @keyframes slideUp {
-    from {
-        transform: translateY(600px);
-        opacity: 0;
+        from {
+            transform: translateY(600px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
     }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+
 }
 
 
@@ -548,4 +661,3 @@
     }
 }
 </style>
-

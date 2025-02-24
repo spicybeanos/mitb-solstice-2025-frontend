@@ -35,7 +35,6 @@
             console.log("done logging out!");
         });
     }
-    
 </script>
 
 <div class="flex h-full justify-center items-center py-[6rem]">
@@ -43,7 +42,7 @@
         <GoogleLogin cookieJwt={data.authToken} />
     {:else}
         <div>
-        <!-- transition:fly={{
+            <!-- transition:fly={{
             y: -200,
             duration: 200,
         }} -->
@@ -61,24 +60,35 @@
                         <div>{UserProfileData.email}</div>
                     </div>
                 </div>
-                <div class="self-center  ">
+                <div class="self-center">
                     <Button danger OnClicked={LogOut}>Sign Out</Button>
                 </div>
             </div>
 
-            {#if !UserProfileData.registered}
-                <h1 class="w-full text-center sm:py-4 py-8">You haven't registered yet!</h1>
+            {#if data.user == null}
+                <h1 class="w-full text-center sm:py-4 py-8">
+                    You haven't registered yet!
+                </h1>
                 <br />
                 <div>
                     <SimpleCard>
-                        <h1 class="w-full text-center text-2xl font-semibold">Register</h1>
-                        <form action="?/register" method="post" class="w-[80vw] sm:w-[60vw] grid place-items-center pt-6 gap-6">
+                        <h1 class="w-full text-center text-2xl font-semibold">
+                            Register
+                        </h1>
+                        <form
+                            action="?/register"
+                            method="post"
+                            class="w-[80vw] sm:w-[60vw] grid place-items-center pt-6 gap-6"
+                        >
                             <TextInput
                                 placeholder="First Name"
                                 name="first_name"
                                 required
                             ></TextInput>
-                            <TextInput placeholder="Last Name" name="last_name" required
+                            <TextInput
+                                placeholder="Last Name"
+                                name="last_name"
+                                required
                             ></TextInput>
                             <TextInput
                                 placeholder="Phone Number"
@@ -93,42 +103,64 @@
                                 required
                             ></TextInput>
                             <Button OnClicked={() => {}}
-                                ><div style="color: black;">Submit</div></Button
+                                ><div style="color: white   ;">
+                                    Submit
+                                </div></Button
                             >
                         </form>
+                        <span class="text-white"
+                            >*Event organizers and volunteers may use your
+                            mobile number and email to contact you for event and
+                            fest related matters</span
+                        >
                     </SimpleCard>
                 </div>
-            {:else}
+            {:else if data.user != null}
                 <div>
                     <SimpleCard>
-                        <h1 class="w-full text-center text-2xl font-semibold">Update Information</h1>
-                        <form action="?/update" method="post" class="w-[80vw] sm:w-[60vw] grid place-items-center pt-6 gap-6">
+                        <h1 class="w-full text-center text-2xl font-semibold">
+                            Update Information
+                        </h1>
+                        <form
+                            action="?/update"
+                            method="post"
+                            class="w-[80vw] sm:w-[60vw] grid place-items-center pt-6 gap-6"
+                        >
                             <TextInput
                                 placeholder="First Name"
                                 name="f-name"
                                 required
+                                text={data?.user?.first_name}
                             ></TextInput>
-                            <TextInput 
-                            placeholder="Last Name" 
-                            name="l-name" 
-                            required
+                            <TextInput
+                                placeholder="Last Name"
+                                name="l-name"
+                                required
+                                text={data?.user?.last_name}
                             ></TextInput>
                             <TextInput
                                 placeholder="Phone Number"
                                 name="ph-num"
                                 type="number"
                                 required
+                                text={data?.user?.phone_number}
                             ></TextInput>
                             <TextInput
                                 placeholder="Mahe Registration Number"
                                 name="mahe_num_update"
                                 type="number"
                                 required
+                                text={data?.user?.mahe_registration_number}
                             ></TextInput>
                             <Button OnClicked={() => {}}
-                                ><div style="color: black;">Submit</div></Button
+                                ><div style="color: white;">Submit</div></Button
                             >
                         </form>
+                        <span class="text-white"
+                            >*Event organizers and volunteers may use your
+                            mobile number and email to contact you for event and
+                            fest related matters</span
+                        >
                     </SimpleCard>
                 </div>
                 <!-- <div>All good :)</div> -->

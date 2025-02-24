@@ -1,31 +1,48 @@
 import { verifyAndGetUser, type Result } from "./Backend";
-import type { SolsticeUser } from "./BackendAgentUser";
+import { getEventInfo } from "./BackendAgentEvent";
+import { getUserId } from "./BackendAgentUser";
 
-const admins = ['aryan.d.dalal@gmail.com'];
-const ocs = ['']
+const admins: string[] = ['aryan.d.dalal@gmail.com'];
+const IT_OCs: string[] = [];
+const OC_team: string[] = []
 
 export async function checkAdminAccess(jwt: string | null | undefined): Promise<boolean> {
     const user = await verifyAndGetUser(jwt);
     if (user.success == false) { return false; }
     if (user.result == null) { return false; }
-    for (let index = 0; index < admins.length; index++) {
-        const element = admins[index];
-        if(element == user.result.email_address){return true;}
-    }
+    if (user.result.email_address in admins) { return true; }
     return false;
 }
 
-export async function checkOCAccess(jwt: string | null | undefined): Promise<boolean> {
+export async function check_OC_Access(jwt: string | null | undefined): Promise<boolean> {
     const user = await verifyAndGetUser(jwt);
     if (user.success == false) { return false; }
     if (user.result == null) { return false; }
-    for (let index = 0; index < admins.length; index++) {
-        const element = admins[index];
-        if(element == user.result.email_address){return true;}
-    }
-    for (let index = 0; index < ocs.length; index++) {
-        const element = ocs[index];
-        if(element == user.result.email_address){return true;}
-    }
+    if (admins.includes(user.result?.email_address)) { return true; }
+    if (OC_team.includes(user.result?.email_address)) { return true; }
     return false;
+}
+
+export async function check_ITOC_Access(jwt: string | null | undefined): Promise<boolean> {
+    const user = await verifyAndGetUser(jwt);
+    if (user.success == false) { return false; }
+    if (user.result == null) { return false; }
+    if (admins.includes(user.result?.email_address)) { return true; }
+    if (IT_OCs.includes(user.result?.email_address)) { return true; }
+    return false;
+}
+
+export async function check_EventRW_Access(jwt: string | null | undefined, eventID: string): Promise<boolean> {
+    const user = await verifyAndGetUser(jwt);
+    if (user.success == false) { return false; }
+    if (user.result == null) { return false; }
+    if (admins.includes(user.result?.email_address)) { return true; }
+    const org = await getUserId(user.result.email_address);
+    const event = await getEventInfo(eventID);
+
+    if (org == null) { return false; }
+    if (event == null) { return false; }
+    if (event.organizer_id == null) { return false; }
+
+    return event.organizer_id == org;
 }

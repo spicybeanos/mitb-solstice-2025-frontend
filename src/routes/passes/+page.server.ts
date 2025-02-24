@@ -1,8 +1,8 @@
 
-import { EventInPass, getAllEventsInPass, getAllPasses, type SolsticePassInfo } from "$lib/components/backend/BackendAgentPass";
-import { getUserId, getUserPassInfo } from "$lib/components/backend/BackendAgentUser";
-import { events } from "$lib/components/Events";
-import type { FalakPass } from "$lib/components/FalakPass";
+import { getAllEventsInPass, getAllPasses } from "$lib/components/backend/BackendAgentPass.ts";
+import { getUserId, getUserPassInfo } from "$lib/components/backend/BackendAgentUser.ts";
+import type { SolsticePassInfo } from "$lib/components/backend/BackendTypes.ts";
+
 import { UserProfileData } from "../GoogleLogin.svelte.ts";
 import { getEventsAccessableByPass } from "$lib/components/backend/BackendAgentPass";
 
