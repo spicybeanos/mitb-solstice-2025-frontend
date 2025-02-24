@@ -29,7 +29,7 @@ export interface SolsticeEventInfo {
     start: DateTime | null,
     venue: string | null,
     id: string,
-    organizer_id: string | null
+    organizer_id: UserID | null
 }
 export interface UpdateEvent {
     name: string,
@@ -50,10 +50,10 @@ export interface SolsticePassInfo {
 
 export interface SolsticeTeamInfo {
     name: string;
-    host_id: string;
+    host_id: UserID;
     id: string;
 }
-
+export type UserID = string;
 export interface SolsticeUser {
     first_name: string;
     last_name: string;
@@ -61,5 +61,14 @@ export interface SolsticeUser {
     phone_number: string | null;
     mahe_registration_number: number | null;
     pass_id: string | null;
-    id: string;
+    id: UserID;
+}
+
+export interface SolsticeEventRegRow{
+    team_name:string,
+    player_name:string,
+    player_email:string,
+    player_phno:string,
+    player_reg:string,
+    is_captain:boolean
 }

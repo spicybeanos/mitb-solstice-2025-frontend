@@ -1,16 +1,21 @@
+import { verifyAndGetUser } from '$lib/components/backend/Backend.js';
 import { getUserId, registerUser, updateUserInfo } from '$lib/components/backend/BackendAgentUser.js';
 import { getUserObjectFromJWT } from '$lib/components/GAuth.js';
 import { json, redirect } from '@sveltejs/kit';
 
-export function load({cookies}){
-    return {authToken : cookies.get('authToken')};
+export async function load({ cookies }) {
+    const usr = await verifyAndGetUser(cookies.get('authToken'));
+    if (usr.success) {
+        return { user: usr.result, authToken: cookies.get('authToken') }
+    }
+    return { authToken: cookies.get('authToken') };
 }
 
 export const actions = {
-    register: async ({request,cookies}) => {
+    register: async ({ request, cookies }) => {
         const jwt = cookies.get('authToken');
-        if(jwt == null){
-            redirect(302,'/profile');
+        if (jwt == null) {
+            redirect(302, '/profile');
         }
         const user = getUserObjectFromJWT(jwt);
         const form = await request.formData();
@@ -20,21 +25,21 @@ export const actions = {
         const reg = parseInt(form.get('mahe_num') as string);
 
         const soluser = registerUser({
-            email_address:user.email,
-            first_name:fname,
-            last_name:lname,
-            mahe_registration_number:reg,
-            phone_number:phone,
-            id:'',
-            pass_id:null
+            email_address: user.email,
+            first_name: fname,
+            last_name: lname,
+            mahe_registration_number: reg,
+            phone_number: phone,
+            id: '',
+            pass_id: null
         });
 
-        
+
     },
-    update: async({request, cookies}) => {
+    update: async ({ request, cookies }) => {
         const jwt = cookies.get('authToken');
-        if(jwt == null){
-            redirect(302,'/profile');
+        if (jwt == null) {
+            redirect(302, '/profile');
         }
         const user = getUserObjectFromJWT(jwt);
         const form = await request.formData();
@@ -43,7 +48,7 @@ export const actions = {
         const phone = form.get('ph-num') as string;
         const reg = parseInt(form.get('mahe_num_update') as string);
         const uid = await getUserId(user.email);
-        const userObject= {
+        const userObject = {
             email_address: user.email,
             first_name: fname,
             last_name: lname,
@@ -62,6 +67,6 @@ export const actions = {
             console.error('Error updating user:', error);
             return { success: false, error: 'An error occurred while updating user information' };
         }
-        
+
     }
 }

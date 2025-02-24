@@ -64,7 +64,8 @@ export async function updateUserInfo(userId: string, info: SolsticeUser): Promis
     const res = await fetch(`${backendURL}/user/${userId}`, {
         method: 'PATCH',
         headers: {
-            "Content-type": "application/json"
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${BEARER_TOKEN}`
         },
         body: JSON.stringify(info)
     });

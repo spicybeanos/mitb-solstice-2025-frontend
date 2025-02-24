@@ -60,7 +60,7 @@ export async function removeUserFromTeam(teamId: string, userID: string): Promis
     return null;
 }
 export async function getUsersInTeam(teamId: string) {
-    const res = await fetch(`${backendURL}/team/${teamId}/user`, {
+    const res = await fetch(`${backendURL}/team/${teamId}/users`, {
         method: 'GET',
         headers:{
             "Authorization": `Bearer ${BEARER_TOKEN}`
