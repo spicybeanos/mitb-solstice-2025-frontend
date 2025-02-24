@@ -1,7 +1,7 @@
 import type { DateTime } from "@auth/core/providers/kakao";
 
 export type EventType = 'cultural' | 'e_sports' | 'experiences' | 'finance' | 'hackathon' | 'other' | 'pro_show' | 'robotics' | 'sports' | 'technical';
-export function isValidEvent(type:string) : boolean{
+export function isValidEvent(type: string): boolean {
     switch (type) {
         case 'cultural':
         case 'e_sports':
@@ -15,7 +15,7 @@ export function isValidEvent(type:string) : boolean{
         case 'technical':
             return true
             break;
-    
+
         default:
             return false;
             break;
@@ -29,6 +29,15 @@ export interface SolsticeEventInfo {
     start: DateTime | null,
     venue: string | null,
     id: string,
+    organizer_id: string | null
+}
+export interface UpdateEvent {
+    name: string,
+    description:string,
+    type: EventType,
+    team_members: number | null,
+    start: DateTime,
+    venue: string,
     organizer_id: string | null
 }
 

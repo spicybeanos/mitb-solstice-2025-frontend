@@ -3,9 +3,9 @@
     import BasicButtonFilled from "$lib/components/ui/Basic/BasicButtonFilled.svelte";
     import BasicHeader from "$lib/components/ui/Basic/BasicHeader.svelte";
     import SimpleCard from "$lib/components/SimpleCard.svelte";
-    import { type SolsticeEventInfo } from "$lib/components/backend/BackendAgentEvent.ts";
+    import { type EventType, type SolsticeEventInfo } from "$lib/components/backend/BackendTypes.ts";
     import { onMount } from "svelte";
-    let { data } = $props();
+    let { data, form } = $props();
     let event: SolsticeEventInfo = $state({
         description: null,
         id: "none",
@@ -13,7 +13,7 @@
         organizer_id: null,
         start: null,
         team_members: null,
-        type: "cultural",
+        type: "cultural" as EventType,
         venue: null,
     } as SolsticeEventInfo);
     onMount(() => {
@@ -37,6 +37,12 @@
 <div class="flex justify-center">
     <div class="p-[30px] m-[10px] rounded-xl border border-white">
         <BasicHeader>Edit event details</BasicHeader>
+        {#if form?.error}
+            <div class="text-white">Encountered an error: {form.error}</div>
+        {/if}
+        {#if form?.success == true}
+            <div class="text-white">Success!</div>
+        {/if}
         <div class="text-white">Event id: <code>{event.id}</code></div>
         <form action="?/updateEvent" method="POST" class="flex flex-col">
             <label class="text-white" for="name">Name:</label>

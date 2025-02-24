@@ -1,12 +1,14 @@
 import { get } from "svelte/store";
-import { backendURL } from "./Backend";
+import { backendURL, type Result } from "./Backend";
 import { getUsersInTeam } from "./BackendAgentTeam";
 import type { DateTime } from "@auth/core/providers/kakao";
 import { BEARER_TOKEN } from "$env/static/private";
-import type { SolsticeEventInfo, SolsticeTeamInfo } from "./BackendTypes.ts";
+import type { EventType, SolsticeEventInfo, SolsticeTeamInfo, UpdateEvent } from "./BackendTypes.ts";
 
 
 let serverEvents: SolsticeEventInfo[] = [];
+
+
 
 export async function getEvents() {
     const res = await fetch(`${backendURL}/event`, {
@@ -49,14 +51,19 @@ export async function getUsersInEvent(eventId: string): Promise<string[] | null>
 
     return users;
 }
-export async function updateeventDetails(eventID: string, info: SolsticeEventInfo) {
+export async function updateEventDetails(eventID: string, info: UpdateEvent) {
     const res = await fetch(`${backendURL}/event/${eventID}`, {
         method: 'PATCH',
+        headers: {
+            'Content-type': 'application/json',
+            "Authorization": `Bearer ${BEARER_TOKEN}`
+        },
         body: JSON.stringify(info)
     });
-    if (res.ok) { return true; }
-    console.log(`Could not update event: ${await res.json()}`);
-    return false;
+    if (res.ok) { return {success:true}; }
+    const body = await res.json();
+    console.log(`Could not update event: ${JSON.stringify(body)}`);
+    return {success:false,error: JSON.stringify(body),code:res.status};
 }
 export async function getUserTeamIDInEvent(userID: string, eventID: string): Promise<string | null> {
     const teams = await getTeams(eventID);

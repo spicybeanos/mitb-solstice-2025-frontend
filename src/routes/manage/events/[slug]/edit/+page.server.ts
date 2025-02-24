@@ -1,8 +1,10 @@
 import { check_EventRW_Access } from "$lib/components/backend/BackendAdmin";
-import { getEventInfo } from "$lib/components/backend/BackendAgentEvent.ts";
-import { fail, redirect } from "@sveltejs/kit";
+import { getEventInfo, updateEventDetails } from "$lib/components/backend/BackendAgentEvent.ts";
+import { error, fail, redirect } from "@sveltejs/kit";
 import type { DateTime } from "@auth/core/providers/kakao";
-import type { EventType } from "$lib/components/backend/BackendTypes.ts";
+import type { EventType, SolsticeEventInfo, UpdateEvent } from "$lib/components/backend/BackendTypes.ts";
+import { getUserId } from "$lib/components/backend/BackendAgentUser.js";
+import { getUserObjectFromJWT } from "$lib/components/GAuth.js";
 
 export async function load({ cookies, params }) {
     const jwt = cookies.get('authToken');
@@ -13,6 +15,7 @@ export async function load({ cookies, params }) {
     if (event == null) {
         console.log('trying to edit a non existing event!');
         return {
+            permitted: true,
             event: {
                 description: null,
                 id: "none",
@@ -25,36 +28,53 @@ export async function load({ cookies, params }) {
             }
         }
     }
-    return { event: event }
+    return { permitted: true, event: event }
 }
 
 export const actions = {
     updateEvent: async ({ cookies, request, params }) => {
         const check = await check_EventRW_Access(cookies.get('authToken'), params.slug);
-        if (check == false) { return fail(403, { error: 'Unauthorized edit' }); }
+        if (check == false) { return fail(403, { success: false, error: 'Unauthorized edit' }); }
+
+        const eventInfo = await getEventInfo(params.slug);
+        if (eventInfo == null) {
+            return fail(403, { success: false, error: 'Non existant event!' });
+        }
 
         const form = await request.formData();
-        try {
-            const name = form.get('name') as string|null;
-            const desc = form.get('desc') as string | null;
-            const venue = form.get('venue') as string | null;
-            const team_mem_str = form.get('team_mem') as string|null;
-            const type_str = form.get('type') as string | null;
-            const start_str = form.get('start') as string | null;
 
-            if(name == undefined || name == null) {return fail(400,{error:'name field undefined/null!'})}
-            if(desc == undefined || desc == null) {return fail(400,{error:'description field undefined/null!'})}
-            if(venue == undefined || venue == null) {return fail(400,{error:'venue field undefined/null!'})}
-            if(team_mem_str == undefined || team_mem_str == null) {return fail(400,{error:'team members field undefined/null!'})}
-            if(type_str == undefined || type_str == null) {return fail(400,{error:'category field undefined/null!'})}
-            if(start_str == undefined || start_str == null) {return fail(400,{error:'event start time field undefined/null!'})}
-        
-            const team_mem = parseInt(team_mem_str);
-            const start : DateTime = start_str;
-            const type : EventType = type_str as EventType;
-        } 
-        catch (err) {
-            
+        const name = form.get('name') as string | null;
+        const desc = form.get('desc') as string | null;
+        const venue = form.get('venue') as string | null;
+        const team_mem_str = form.get('team_mem') as string | null;
+        const type_str = form.get('type') as string | null;
+        const start_str = form.get('start') as string | null;
+
+        if (name == undefined || name == null) { return fail(400, { success: false, error: 'name field undefined/null!' }) }
+        if (desc == undefined || desc == null) { return fail(400, { success: false, error: 'description field undefined/null!' }) }
+        if (venue == undefined || venue == null) { return fail(400, { success: false, error: 'venue field undefined/null!' }) }
+        if (team_mem_str == undefined || team_mem_str == null) { return fail(400, { success: false, error: 'team members field undefined/null!' }) }
+        if (type_str == undefined || type_str == null) { return fail(400, { success: false, error: 'category field undefined/null!' }) }
+        if (start_str == undefined || start_str == null) { return fail(400, { success: false, error: 'event start time field undefined/null!' }) }
+
+        const team_mem = parseInt(team_mem_str);
+        const start: DateTime = start_str;
+        const type: EventType = type_str as EventType;
+
+        const new_event: UpdateEvent = {
+            description: desc,
+            name: name,
+            start: start,
+            team_members: team_mem == 0 ? null : team_mem,
+            type: type,
+            venue: venue,
+            organizer_id: eventInfo.organizer_id
         }
+        const result = await updateEventDetails(params.slug, new_event);
+        if (result.success == true) { return { success: true }; }
+        if (result.code == undefined) { return fail(500, { success: false, error: 'Error code is undefined! This should never happen' }); }
+        return fail(result?.code, { success: false, error: result.error })
+
+
     }
 }
