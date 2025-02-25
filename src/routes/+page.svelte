@@ -32,11 +32,9 @@
         {/each}
         </div>
         <div class="text-[#d9d9d9] flex flex-col gap-4">
-            <h1 class="font-akira text-2xl sm:text-6xl text-center
+            <h1 class="font-akira text-2xl sm:text-6xl text-center gradient-text
             ">Book your tickets now!</h1>
-            <h1 class="font-akira text-2xl sm:text-6xl text-center
-           from-indigo-500 via-purple-500 to-indigo-500
-            animate-text
+            <h1 class="font-akira text-2xl sm:text-6xl text-center gradient-text
             ">This fest will be a blast</h1>
         </div>
         <div class="w-full grid place-items-center my-8">
@@ -95,4 +93,21 @@
         align-items: center;
         flex-wrap: wrap;
     } */
+    .gradient-text {
+        background: linear-gradient(90deg, #b41e8e, #9933ff, #8a2be2, #9933ff, #b4218f);
+        background-size: 200% auto;
+        color: transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
+        animation: gradient 3s linear infinite;
+    }
+
+    @keyframes gradient {
+        0% {
+            background-position: 0% center;
+        }
+        100% {
+            background-position: 200% center;
+        }
+    }
 </style>
