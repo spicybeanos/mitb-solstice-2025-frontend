@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { Hamburger } from "svelte-hamburgers";
     import "./app.css";
     import { UserProfileData } from "./GoogleLogin.svelte.ts";
@@ -17,7 +17,8 @@
     import { checkLoggedIn } from "./GoogleLogin.svelte.ts";
 
     let { children, data } = $props();
-
+    let manageAccess = data.manageAccess;
+    
     onMount(() => {
         if (!data.authToken) {
             console.log("user not logged in!");
@@ -29,6 +30,9 @@
         }
     });
     const navItems = [{name: "Passes", link: "/passes"}, {name: "Events", link: "/events"}, {name: "Support", link: "/support"}, {name: "Stay", link: "/stay"}];
+    if(manageAccess){
+        navItems.push({ name: "Manage", link: "/manage" });
+    }
     let open = $state(false);
     function toggleOpen(){
         open = !open;
