@@ -1,10 +1,6 @@
-import { get } from "svelte/store";
-import { backendURL, type Result } from "./Backend";
+import { get, post, patch, del } from "./Backend";
 import { getUsersInTeam } from "./BackendAgentTeam";
-import type { DateTime } from "@auth/core/providers/kakao";
-import { BEARER_TOKEN } from "$env/static/private";
-import type { EventType, SolsticeEventInfo, SolsticeEventRegRow, SolsticeTeamInfo, SolsticeUser, UpdateEvent, UserID } from "./BackendTypes.ts";
-import { getUserInfo } from "./BackendAgentUser.ts";
+import type { SolsticeEventInfo, SolsticeEventRegRow, SolsticeTeamInfo, SolsticeUser, UpdateEvent, UserID } from "./BackendTypes.ts";
 
 let serverEvents: SolsticeEventInfo[] = [];
 
@@ -24,9 +20,9 @@ export async function getEventRegisTable(eventID: string): Promise<SolsticeEvent
                 rows.push({
                     player_email: u.email_address,
                     player_name: `${u.first_name} ${u.last_name}`,
-                    player_phno: u.phone_number ?? 'none',
+                    player_phno: u.phone_number ?? "none",
                     team_name: t.name,
-                    player_reg: u.mahe_registration_number !== null ? `${u.mahe_registration_number}` : 'none',
+                    player_reg: u.mahe_registration_number !== null ? `${u.mahe_registration_number}` : "none",
                     is_captain: u.id == t.host_id
                 });
             }
@@ -37,13 +33,8 @@ export async function getEventRegisTable(eventID: string): Promise<SolsticeEvent
     return rows;
 }
 
-
-export async function getEvents() {
-    const res = await fetch(`${backendURL}/event`, {
-        method: 'GET',
-        headers: { "Authorization": `Bearer ${BEARER_TOKEN}` }
-    });
-
+export async function getEvents(): Promise<SolsticeEventInfo[] | null> {
+    const res = await get("event");
     if (res.status === 200) {
         serverEvents = await res.json();
         return serverEvents;
@@ -61,7 +52,7 @@ export async function getUserIDsInEvent(eventId: string): Promise<UserID[] | nul
     if (!teams) return null;
 
     let users: UserID[] = [];
-    
+
     for (const t of teams) {
         users.push(t.host_id);
         const usrs = await getUsersInTeam(t.id);
@@ -78,7 +69,7 @@ export async function getUserInfosInEvent(eventId: string): Promise<SolsticeUser
     if (!teams) return null;
 
     let users: SolsticeUser[] = [];
-    
+
     for (const t of teams) {
         const usrs = await getUsersInTeam(t.id);
         if (usrs) {
@@ -90,14 +81,7 @@ export async function getUserInfosInEvent(eventId: string): Promise<SolsticeUser
 }
 
 export async function updateEventDetails(eventID: string, info: UpdateEvent) {
-    const res = await fetch(`${backendURL}/event/${eventID}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-type': 'application/json',
-            "Authorization": `Bearer ${BEARER_TOKEN}`
-        },
-        body: JSON.stringify(info)
-    });
+    const res = await patch(`event/${eventID}`, info);
 
     if (res.ok) return { success: true };
     const body = await res.json();
@@ -119,43 +103,21 @@ export async function getUserTeamIDInEvent(userID: string, eventID: string): Pro
 }
 
 export async function getEventInfo(eventId: string): Promise<SolsticeEventInfo | null> {
-    const res = await fetch(`${backendURL}/event/${eventId}`, {
-        method: 'GET',
-        headers: { "Authorization": `Bearer ${BEARER_TOKEN}` }
-    });
-
+    const res = await get(`event/${eventId}`);
     return res.status === 200 ? (await res.json()) as SolsticeEventInfo : null;
 }
 
-export async function getTeams(eventId: string) {
-    const res = await fetch(`${backendURL}/event/${eventId}/teams`, {
-        method: 'GET',
-        headers: { "Authorization": `Bearer ${BEARER_TOKEN}` }
-    });
-
+export async function getTeams(eventId: string): Promise<SolsticeTeamInfo[] | null> {
+    const res = await get(`event/${eventId}/teams`);
     return res.status === 200 ? (await res.json()) as SolsticeTeamInfo[] : null;
 }
 
-export async function addTeamToEvent(eventId: string, teamId: string) {
-    const res = await fetch(`${backendURL}/event/${eventId}/teams/${teamId}`, {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json',
-            "Authorization": `Bearer ${BEARER_TOKEN}`
-        }
-    });
-
+export async function addTeamToEvent(eventId: string, teamId: string): Promise<string | null> {
+    const res = await post(`event/${eventId}/teams/${teamId}`);
     return res.status === 200 ? (await res.json()) as string : null;
 }
 
-export async function removeTeamFromEvent(eventId: string, teamId: string) {
-    const res = await fetch(`${backendURL}/event/${eventId}/teams/${teamId}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-type': 'application/json',
-            "Authorization": `Bearer ${BEARER_TOKEN}`
-        }
-    });
-
+export async function removeTeamFromEvent(eventId: string, teamId: string): Promise<string | null> {
+    const res = await del(`event/${eventId}/teams/${teamId}`);
     return res.status === 200 ? (await res.json()) as string : null;
 }

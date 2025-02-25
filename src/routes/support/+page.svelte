@@ -1,10 +1,10 @@
 <script lang="ts">
     import Button from "$lib/components/Button.svelte";
-    import Card from "$lib/components/Card.svelte";
     import TextInput from "$lib/components/TextInput.svelte";
     import AButton from "$lib/components/AButton.svelte";
-    import BasicInput from '$lib/components/ui/Basic/BasicInput.svelte'
     import SimpleCard from "$lib/components/SimpleCard.svelte";
+    import { Categories } from '$lib/components/Support.js';
+
 
     interface ProblemTicket {
         name: String;
@@ -49,6 +49,10 @@
             id: 6,
             text: "Contests/ Contest results",
         },
+        {
+            id: 7,
+            text: "Special request",
+        },
     ];
 </script>
 
@@ -61,26 +65,13 @@
             <h1 class="text-white">Make a ticket</h1>
             <form method="post" action="?/postTicket" class="mid">
                 <TextInput
-                    bind:text={name}
-                    required
-                    placeholder="Your name"
-                    name="name"
-                /><br />
-                <TextInput
-                    bind:text={phoneNumber}
-                    required
-                    maxLength={10}
-                    placeholder="Your phone number (whatsapp)"
-                    name="phone"
-                /><br />
-                <TextInput
                     bind:text={college}
                     required
                     placeholder="Your college/ organisation"
                     name="college"
                 /><br />
-                <div style="align-items: start;">
-                    Category:
+                <div style="align-items: start; text-white">
+                    <div class="text-white">Category:</div>
                     <select bind:value={selected} required name="category">
                         {#each categories as cat}
                             <option value={cat.id}>

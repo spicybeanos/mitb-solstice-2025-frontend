@@ -1,84 +1,57 @@
-import { BEARER_TOKEN } from "$env/static/private";
-import { backendURL } from "./Backend";
+import { get } from "./Backend";
 import type { SolsticeEventInfo, SolsticePassInfo } from "./BackendTypes.ts";
 
+const DEFAULT_PASS_NAME = "default-pass";
 
-const DEFAULT_PASS_NAME = 'default-pass';
-
-export async function getAllPasses() {
-    const res = await fetch(`${backendURL}/pass`, {
-        method: 'GET',
-        headers:{
-            "Authorization": `Bearer ${BEARER_TOKEN}`
-        }
-    });
+export async function getAllPasses(): Promise<SolsticePassInfo[] | null> {
+    const res = await get("pass");
 
     if (res.status === 200) {
         return (await res.json()) as SolsticePassInfo[];
     }
     return null;
 }
-export async function getPassInfo(passID:string) {
-    const res = await fetch(`${backendURL}/pass/${passID}`, {
-        method: 'GET',
-        headers:{
-            "Authorization": `Bearer ${BEARER_TOKEN}`
-        }
-    });
+
+export async function getPassInfo(passID: string): Promise<SolsticePassInfo | null> {
+    const res = await get(`pass/${passID}`);
 
     if (res.status === 200) {
         return (await res.json()) as SolsticePassInfo;
     }
     return null;
 }
-export async function getPass(passId: string) {
-    const res = await fetch(`${backendURL}/pass/${passId}`, {
-        method: 'GET',
-        headers:{
-            "Authorization": `Bearer ${BEARER_TOKEN}`
-        }
-    });
+
+export async function getPass(passId: string): Promise<SolsticePassInfo | null> {
+    return await getPassInfo(passId);
+}
+
+export async function getEventsAccessibleByPass(passID: string): Promise<SolsticeEventInfo[] | null> {
+    const res = await get(`pass/${passID}/events`);
 
     if (res.status === 200) {
-        return (await res.json()) as SolsticePassInfo;
-    }
-    return null;
-}
-export async function getEventsAccessableByPass(passID: string): Promise<SolsticeEventInfo[] | null> {
-    const res = await fetch(`${backendURL}/pass/${passID}/events`, {
-        method: 'GET',
-        headers:{
-            "Authorization": `Bearer ${BEARER_TOKEN}`
-        }
-    });
-
-    if (res.status == 200) {
         return (await res.json()) as SolsticeEventInfo[];
     }
-
     return null;
 }
-export async function checkEventAccesableByPass(eventID: string, passID: string | null): Promise<boolean> {
-    if (passID == null) return false;
-    const events = await getEventsAccessableByPass(passID);
-    if (events == null) { return false; }
-    let flag = false;
-    for (let index = 0; index < events.length; index++) {
-        if(events[index].id == eventID) return true;    
-    }
 
-    return flag;
+export async function checkEventAccessibleByPass(eventID: string, passID: string | null): Promise<boolean> {
+    if (!passID) return false;
+    const events = await getEventsAccessibleByPass(passID);
+    if (!events) return false;
+
+    return events.some(event => event.id === eventID);
 }
-export async function getDefaultPass() : Promise<string|null> {
+
+export async function getDefaultPass(): Promise<string | null> {
     const passes = await getAllPasses();
+    if (!passes) return null;
 
-    if (passes == null) { return null; }
-    passes.forEach(pas => {
-        if (pas.name == DEFAULT_PASS_NAME){return pas.id;}
-    });
+    for (const pass of passes) {
+        if (pass.name === DEFAULT_PASS_NAME) return pass.id;
+    }
     return null;
-
 }
-export async function getAllEventsInPass(passId:string) {
-    return await getEventsAccessableByPass(passId);
+
+export async function getAllEventsInPass(passId: string) {
+    return await getEventsAccessibleByPass(passId);
 }

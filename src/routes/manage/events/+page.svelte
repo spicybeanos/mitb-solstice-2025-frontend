@@ -1,8 +1,24 @@
 <script lang="ts">
     import BasicInput from "$lib/components/ui/Basic/BasicInput.svelte";
+    import { onMount } from "svelte";
 
     let eventID = $state("");
     let { data } = $props();
+
+    let events: { name: string; eventID: string }[] = $state([]);
+
+    onMount(() => {
+        events = [];
+        if (data.events != undefined) {
+            for (const event of data.events) {
+                events.push({
+                    name: event.name,
+                    eventID: event.id,
+                });
+            }
+            eventID = events[0].eventID;
+        }
+    });
 </script>
 
 <div class="flex justify-center">
@@ -16,6 +32,13 @@
             bind:value={eventID}
             placeholder="Enter event ID"
         />
+        <select bind:value={eventID} class="border p-[8px] rounded-md bg-black text-white">
+            {#each events as event}
+                <option value={event.eventID}>
+                    {event.name}
+                </option>
+            {/each}
+        </select>
 
         <a href={`/manage/events/${eventID.trim()}/edit`}>Edit event</a>
         <a href={`/manage/events/${eventID.trim()}/teams`}>View teams</a>

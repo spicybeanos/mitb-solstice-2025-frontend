@@ -1,121 +1,77 @@
-import { BEARER_TOKEN } from "$env/static/private";
-import { backendURL } from "./Backend";
+import { get, post, patch, del } from "./Backend";
 import { addTeamToEvent } from "./BackendAgentEvent";
-import type { SolsticeUser } from "./BackendTypes.ts"
+import type { SolsticeUser } from "./BackendTypes.ts";
 import type { SolsticeTeamInfo } from "./BackendTypes";
 
-
 export async function createTeam(teamName: string, hostId: string): Promise<SolsticeTeamInfo | null> {
-    const res = await fetch(`${backendURL}/team`, {
-        method: 'POST',
-        headers: {
-            "Content-type": "application/json"
-        },
-        body: JSON.stringify({
-            name: teamName,
-            host_id: hostId
-        })
-    });
+    const res = await post("team", { name: teamName, host_id: hostId });
 
     if (res.status === 200) {
-        return (await res.json()) as SolsticeTeamInfo;
+        const team_info = (await res.json()) as SolsticeTeamInfo;
+        await addUserToTeam(team_info.id, hostId);
+        return team_info;
     }
     return null;
 }
 
 export async function createTeamAndAttach(teamName: string, hostId: string, eventId: string): Promise<SolsticeTeamInfo | null> {
     const createRes = await createTeam(teamName, hostId);
-    if (createRes == null) { return null; }
+    if (!createRes) return null;
 
     const att = await addTeamToEvent(eventId, createRes.id);
-    if (att == null) { return null; }
-    return createRes;
+    return att ? createRes : null;
 }
+
 export async function addUserToTeam(teamId: string, userID: string): Promise<SolsticeTeamInfo | null> {
-    const res = await fetch(`${backendURL}/team/${teamId}/user/${userID}`, {
-        method: 'POST',
-        headers: {
-            "Content-type": "application/json",
-            "Authorization": `Bearer ${BEARER_TOKEN}`
-        }
-    });
+    const res = await post(`team/${teamId}/user/${userID}`);
 
     if (res.status === 200) {
         return (await res.json()) as SolsticeTeamInfo;
     }
     return null;
 }
+
 export async function removeUserFromTeam(teamId: string, userID: string): Promise<SolsticeTeamInfo | null> {
-    const res = await fetch(`${backendURL}/team/${teamId}/user/${userID}`, {
-        method: 'DELETE',
-        headers: {
-            "Content-type": "application/json",
-            "Authorization": `Bearer ${BEARER_TOKEN}`
-        }
-    });
+    const res = await del(`team/${teamId}/user/${userID}`);
 
     if (res.status === 200) {
         return (await res.json()) as SolsticeTeamInfo;
     }
     return null;
 }
-export async function getUsersInTeam(teamId: string) {
-    const res = await fetch(`${backendURL}/team/${teamId}/users`, {
-        method: 'GET',
-        headers:{
-            "Authorization": `Bearer ${BEARER_TOKEN}`
-        }
-    });
+
+export async function getUsersInTeam(teamId: string): Promise<SolsticeUser[] | null> {
+    const res = await get(`team/${teamId}/users`);
 
     if (res.status === 200) {
         return (await res.json()) as SolsticeUser[];
     }
     return null;
 }
+
 export async function updateTeam(teamName: string, hostId: string): Promise<SolsticeTeamInfo | null> {
-    const res = await fetch(`${backendURL}/team`, {
-        method: 'PATCH',
-        headers: {
-            "Content-type": "application/json",
-            "Authorization": `Bearer ${BEARER_TOKEN}`
-        },
-        body: JSON.stringify({
-            name: teamName,
-            host_id: hostId
-        })
-    });
+    const res = await patch("team", { name: teamName, host_id: hostId });
 
     if (res.status === 200) {
         return (await res.json()) as SolsticeTeamInfo;
     }
     return null;
 }
+
 export async function getTeamDetails(teamId: string): Promise<SolsticeTeamInfo | null> {
-    const res = await fetch(`${backendURL}/team/${teamId}`, {
-        method: 'GET',
-        headers:{
-            "Authorization": `Bearer ${BEARER_TOKEN}`
-        }
-    });
+    const res = await get(`team/${teamId}`);
 
     if (res.status === 200) {
         return (await res.json()) as SolsticeTeamInfo;
     }
-
     return null;
 }
+
 export async function deleteTeam(teamId: string): Promise<SolsticeTeamInfo | null> {
-    const res = await fetch(`${backendURL}/team/${teamId}`, {
-        method: 'DELETE',
-        headers:{
-            "Authorization": `Bearer ${BEARER_TOKEN}`
-        }
-    });
+    const res = await del(`team/${teamId}`);
 
     if (res.status === 200) {
         return (await res.json()) as SolsticeTeamInfo;
     }
-
     return null;
-
 }

@@ -1,20 +1,22 @@
 import Database from 'better-sqlite3';
-import type { UserProfile } from './GAuth';
-import { v4 as uuidv4 } from 'uuid';
-import type { ProblemTicket } from '../../routes/support/+page.server';
-import { tick } from 'svelte';
 
+export interface ProblemTicket {
+    name: string;
+    description: string;
+    college: string;
+    problem: string;
+    category: string;
+    phone: string;
+    ticketID: string;
+    email: string;
+    timestamp: string;
+    solved: boolean;
+}
 
 // Connect to the SQLite database
-const db = new Database('./database.db');
+const db = new Database('./tickets.db');
 db.pragma('journal_mode = WAL');
-export interface UsersTable {
-    userID: string;
-    email: string;
-    name: string;
-    passID: string;
-    guserid: string;
-}
+
 export interface QuerryResult {
     success: boolean;
     value?: any;
@@ -41,63 +43,6 @@ db.exec(`
     console.error('Error adding column:', err.message);
   }
 
-export function userExistsGSub(guserid: string): QuerryResult {
-    try {
-        const stmt = db.prepare('SELECT * FROM users WHERE guserid = ?');
-        const user = stmt.get(guserid); // `.get()` retrieves a single row
-        if (!user) {
-            return { success: false }
-        }
-        return { success: true, value: (user as UsersTable) };
-    } catch {
-        return { success: false };
-    }
-}
-export function userExistsUserID(userID: string): QuerryResult {
-    try {
-        const stmt = db.prepare('SELECT * FROM users WHERE userID = ?');
-        const user = stmt.get(userID); // `.get()` retrieves a single row
-        if (!user) {
-            return { success: false }
-        }
-        return { success: true, value: (user as UsersTable) };
-    } catch {
-        return { success: false };
-    }
-}
-export function userExistsEmail(email: string): QuerryResult {
-    try {
-        const stmt = db.prepare('SELECT * FROM users WHERE email = ?');
-        const user = stmt.get(email); // `.get()` retrieves a single row
-        if (!user) {
-            return { success: false }
-        }
-        return { success: true, value: (user as UsersTable) };
-    } catch {
-        return { success: false };
-    }
-}
-export function addUserToTable(user: UsersTable) {
-    const stmt = db.prepare('INSERT INTO users (userID, email, name, passID, guserid) VALUES (?, ?, ?, ?, ?)');
-    stmt.run(user.userID, user.email, user.name, user.passID, user.guserid);
-}
-export function manageUserLogin(userProfile: UserProfile) {
-    const exists = userExistsEmail(userProfile.email);
-
-    if (!exists.success) {
-        const userID = uuidv4(), passID = '@none';
-        const user: UsersTable = {
-            userID: userID,
-            passID: passID,
-            name: userProfile.name,
-            guserid: userProfile.sub,
-            email: userProfile.email
-        };
-
-        addUserToTable(user);
-        return;
-    }
-}
 export function addTicketToDB(ticket: ProblemTicket) {
     const stmt = db.prepare(`
         INSERT INTO tickets (name, description, college, problem, category, phone, ticketID, email, timestamp, solved)
@@ -123,5 +68,21 @@ export function getTicketsFromEmail(email:string)
 {
     const stmt = db.prepare('SELECT * FROM tickets WHERE email = ?');
     const tickets = stmt.all(email);
-    return tickets;
+    return tickets as ProblemTicket[];
 }
+
+export function setTicketSolved(ticketID: string, solved: boolean) {
+    const stmt = db.prepare(`
+        UPDATE tickets 
+        SET solved = ? 
+        WHERE ticketID = ?
+    `);
+    stmt.run(solved ? 1 : 0, ticketID);
+}
+
+export function getTicketByID(ticketID: string): ProblemTicket | null {
+    const stmt = db.prepare('SELECT * FROM tickets WHERE ticketID = ?');
+    const ticket = stmt.get(ticketID) as ProblemTicket | undefined;
+    return ticket ?? null;
+}
+

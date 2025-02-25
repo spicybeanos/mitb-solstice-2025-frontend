@@ -1,12 +1,17 @@
 export const information = [
     {
-        position:"Fest president",
+        position:"Fest President",
         name:"Krishna Saraf",
-        contact:"Contact number / email"
+        contact:"+91 72328 57488"
     },
     {
-        position:"Fest <something>",
-        name:"Full Name",
-        contact:"Contact number / email"
+        position:"Fest HR CC",
+        name:"Atharv Maikhuri ",
+        contact:"+91 79069 52055"
+    },
+    {
+        position:"Fest Tech CC",
+        name:"Aryan Dalal ",
+        contact:"+91 86522 07970"
     }
 ]

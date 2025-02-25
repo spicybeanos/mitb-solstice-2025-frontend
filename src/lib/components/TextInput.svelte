@@ -7,5 +7,7 @@
 <textarea class="w-full p-2 border text-white bg-[#1d1d1d]" bind:value={text} placeholder={placeholder} name={name} required={required} maxlength={maxLength}></textarea>
 {/if}
 <style>
-    
+    input,textarea{
+        outline: none;
+    }
 </style>

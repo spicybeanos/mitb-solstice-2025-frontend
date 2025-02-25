@@ -1,22 +1,9 @@
-import { redirect } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { Categories } from '$lib/components/Support.js';
 import { v4 as uuidv4 } from 'uuid';
-import { getUserObjectFromJWT ,verifyGJWT} from '$lib/components/GAuth.js';
-import { addTicketToDB } from '$lib/components/database.js';
+import { getUserObjectFromJWT, verifyGJWT } from '$lib/components/GAuth.js';
+import { addTicketToDB, type ProblemTicket } from '$lib/components/database.js';
 import { verifyAndGetUser } from '$lib/components/backend/Backend.js';
-
-export interface ProblemTicket {
-    name: string;
-    description: string;
-    college: string;
-    problem: string;
-    category: string;
-    phone: string;
-    ticketID:string;
-    email:string;
-    timestamp:string;
-    solved:boolean;
-}
 
 export function load({ cookies }) {
     let sessionId = cookies.get('sessionId');
@@ -32,21 +19,36 @@ export const actions = {
         const formData = (await request.formData());
         const token = cookies.get('authToken');
         const user = await verifyAndGetUser(token);
-        if(user.success == false){
-            redirect(302,'/profile');
-            return;
+        if (user.success == false) {
+            redirect(302, '/profile');
         }
+        const name = formData.get('name');
+        const phone = user.result?.phone_number;
+        const college = formData.get('college');
+        const problem = formData.get('problem');
+        const desc = formData.get('description');
+        const cat = Categories[formData.get('category') as keyof typeof Categories];
+
+        if (name == null || phone == null || college == null || problem == null || desc == null || cat == null) {
+            return fail(400, { success: false, error: 'Field(s) are null or undefined!' })
+        }
+
+        const ticketID = uuidv4();
+        const email = user.result?.email_address as string;
+        const time = new Date().toISOString();
+        const solved = false;
+
         const ticket: ProblemTicket = {
-            name: formData.get('name') as string,
-            phone: formData.get('phone') as string,
-            college: formData.get('college') as string,
-            problem: formData.get('problem') as string,
-            description: formData.get('description') as string,
-            category: Categories[formData.get('category') as keyof typeof Categories] as string,
-            ticketID:uuidv4(),
-            email: user.result?.email_address as string,
-            timestamp:new Date().toISOString(),
-            solved:false
+            name: name as string,
+            phone: phone as string,
+            college: college as string,
+            problem: problem as string,
+            description: desc as string,
+            category: cat,
+            ticketID: ticketID,
+            email: email,
+            timestamp: time,
+            solved: solved
         };
         addTicketToDB(ticket);
         console.log(ticket);

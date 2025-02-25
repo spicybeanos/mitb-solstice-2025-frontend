@@ -1,8 +1,9 @@
+import { BACKEND_URL, BEARER_TOKEN } from "$env/static/private";
 import { verifyGJWT } from "../GAuth";
 import { getUserId, getUserInfo } from "./BackendAgentUser";
 import type { SolsticeUser } from "./BackendTypes";
 
-export const backendURL = "http://127.0.0.1:8000";
+export const backendURL = BACKEND_URL;
 /*
     these functions are to be called in +server.ts, 
     +page.server.ts, +layout.server.ts files only
@@ -30,3 +31,32 @@ export async function verifyAndGetUser(jwt: string | null | undefined): Promise<
     if (userInfo == null) { return { success: false, error: 'user does not exist on database', result: null }; }
     return { success: true, error: null, result: userInfo };
 }
+const headers = () => ({
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${BEARER_TOKEN}`
+});
+
+async function request(method: string, localURL: string, body?: any) {
+    try {
+        const options: RequestInit = {
+            method,
+            headers: headers(),
+            ...(body ? { body: JSON.stringify(body) } : {})
+        };
+        const response = await fetch(`${backendURL}/${localURL}`, options);
+
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status}`);
+        }
+
+        return response;
+    } catch (error) {
+        console.error(`Request failed: ${method} ${localURL}`, error);
+        throw error;
+    }
+}
+
+export const get = (localURL: string) => request("GET", localURL);
+export const del = (localURL: string) => request("DELETE", localURL);
+export const post = (localURL: string, body?: any) => request("POST", localURL, body);
+export const patch = (localURL: string, body?: any) => request("PATCH", localURL, body);
