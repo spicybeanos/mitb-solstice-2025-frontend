@@ -16,43 +16,61 @@ export function load({ cookies }) {
 
 export const actions = {
     postTicket: async ({ cookies, request }) => {
-        const formData = (await request.formData());
-        const token = cookies.get('authToken');
-        const user = await verifyAndGetUser(token);
-        if (user.success == false) {
-            redirect(302, '/profile');
+        try {
+            const formData = (await request.formData());
+            const token = cookies.get('authToken');
+            const user = await verifyAndGetUser(token);
+            if (user.success == false) {
+                redirect(302, '/profile');
+            }
+            const name = `${user.result?.first_name} ${user.result?.last_name}`;
+            const phone = user.result?.phone_number;
+            const college = formData.get('college');
+            const problem = formData.get('problem');
+            const desc = formData.get('description');
+            const cat = formData.get('category') as CategoryType;
+
+            if (name == null) {
+                return fail(400, { success: false, error: 'name is null!' })
+            }
+            if (phone == null) {
+                return fail(400, { success: false, error: 'phone is null!' })
+            }
+            if (college == null) {
+                return fail(400, { success: false, error: 'name is null!' })
+            }
+            if (desc == null) {
+                return fail(400, { success: false, error: 'description is null!' })
+            }
+            if (cat == null) {
+                return fail(400, { success: false, error: 'category is null!' })
+            }
+
+            const ticketID = uuidv4();
+            const email = user.result?.email_address as string;
+            const time = new Date().toISOString();
+            const solved = false;
+
+            const ticket: ProblemTicket = {
+                name: name as string,
+                phone: phone as string,
+                college: college as string,
+                problem: problem as string,
+                description: desc as string,
+                category: cat,
+                ticketID: ticketID,
+                email: email,
+                timestamp: time,
+                solved: solved,
+                solved_by_email: null
+            };
+            addTicketToDB(ticket);
+            console.log(ticket);
+            return {success:true}
+        } catch (err) {
+            return {success:false,error:JSON.stringify(err)}
         }
-        const name = formData.get('name');
-        const phone = user.result?.phone_number;
-        const college = formData.get('college');
-        const problem = formData.get('problem');
-        const desc = formData.get('description');
-        const cat = formData.get('category') as  CategoryType;
 
-        if (name == null || phone == null || college == null || problem == null || desc == null || cat == null) {
-            return fail(400, { success: false, error: 'Field(s) are null or undefined!' })
-        }
-
-        const ticketID = uuidv4();
-        const email = user.result?.email_address as string;
-        const time = new Date().toISOString();
-        const solved = false;
-
-        const ticket: ProblemTicket = {
-            name: name as string,
-            phone: phone as string,
-            college: college as string,
-            problem: problem as string,
-            description: desc as string,
-            category: cat,
-            ticketID: ticketID,
-            email: email,
-            timestamp: time,
-            solved: solved,
-            solved_by_email:null
-        };
-        addTicketToDB(ticket);
-        console.log(ticket);
     }
 }
 

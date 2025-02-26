@@ -19,7 +19,7 @@
         college = $state(""),
         phoneNumber = $state("");
 
-    let { data } = $props();
+    let { data, form } = $props();
     let selected = $state("Website");
 
     let categories = [
@@ -36,6 +36,11 @@
 
 <div class="centre">
     <div class="mid">
+        {#if form?.success == true}
+            <div class="text-white">Successful!</div>
+        {:else if form?.success == false}
+            <div class="text-white">Failed! [{form?.error}]</div>
+        {/if}
         <AButton href="/tickets"
             ><div class="text-white">Tickets you've submitted</div></AButton
         >
@@ -58,7 +63,7 @@
                         {/each}
                     </select>
                 </div>
-                {#if selected === 'Other'}
+                {#if selected === "Other"}
                     <TextInput
                         bind:text={problemType}
                         placeholder="Problem category if other (NA other wise)"
