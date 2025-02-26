@@ -59,7 +59,7 @@
 				<a
 					href={navItem.link}
 					class={cn(
-						` relative flex p-1 items-center space-x-1 text-neutral-600 hover:text-neutral-500 dark:text-neutral-50 dark:hover:text-neutral-300`, idx === 3 ? "pr-6" : ""
+						`hover:z-50 hover:scale-[1.15] transition-all relative flex p-1 items-center space-x-1 text-neutral-600 text-[#696666] hover:text-white`, idx === 3 ? "pr-6" : ""
 					)}
 				>
 					<span class="text-sm">{navItem.name}</span>
