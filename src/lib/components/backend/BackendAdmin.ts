@@ -14,6 +14,17 @@ export async function checkAdminAccess(jwt: string | null | undefined): Promise<
     return false;
 }
 
+export async function check_manage_Access(jwt: string | null | undefined) {
+    const user = await verifyAndGetUser(jwt);
+    if (user.success == false) { return false; }
+    if (user.result == null) { return false; }
+    if (admins.includes(user.result?.email_address)) { return true; }
+    if (OC_team.includes(user.result?.email_address)) { return true; }
+    if (IT_OCs.includes(user.result?.email_address)) { return true; }
+    if (HR_team.includes(user.result?.email_address)) { return true; }
+    return false;
+}
+
 export async function check_OC_Access(jwt: string | null | undefined): Promise<boolean> {
     const user = await verifyAndGetUser(jwt);
     if (user.success == false) { return false; }
