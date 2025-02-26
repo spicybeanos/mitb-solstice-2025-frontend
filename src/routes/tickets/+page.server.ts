@@ -1,5 +1,5 @@
-import { verifyAndGetUser } from '$lib/components/backend/Backend.js';
-import { getTicketsFromEmail } from '$lib/components/database.js';
+import { verifyAndGetUser } from '$lib/components/backend/Backend.ts';
+import { getTicketsFromEmail } from '$lib/components/database.ts';
 import { redirect } from '@sveltejs/kit';
 
 export async function load({ cookies }) {

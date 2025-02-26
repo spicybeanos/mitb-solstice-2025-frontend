@@ -3,8 +3,6 @@
     import TextInput from "$lib/components/TextInput.svelte";
     import AButton from "$lib/components/AButton.svelte";
     import SimpleCard from "$lib/components/SimpleCard.svelte";
-    import { Categories } from '$lib/components/Support.js';
-
 
     interface ProblemTicket {
         name: String;
@@ -22,37 +20,17 @@
         phoneNumber = $state("");
 
     let { data } = $props();
-    let selected = $state(1);
+    let selected = $state("Website");
 
     let categories = [
-        {
-            id: 1,
-            text: "Website",
-        },
-        {
-            id: 2,
-            text: "Passes",
-        },
-        {
-            id: 3,
-            text: "Payment",
-        },
-        {
-            id: 4,
-            text: "Other",
-        },
-        {
-            id: 5,
-            text: "Organisation",
-        },
-        {
-            id: 6,
-            text: "Contests/ Contest results",
-        },
-        {
-            id: 7,
-            text: "Special request",
-        },
+        "Special request",
+        "Website",
+        "Passes",
+        "Payment",
+        "Other",
+        "Organisation",
+        "Contests/ Contest results",
+        "Event",
     ];
 </script>
 
@@ -74,13 +52,13 @@
                     <div class="text-white">Category:</div>
                     <select bind:value={selected} required name="category">
                         {#each categories as cat}
-                            <option value={cat.id}>
-                                {cat.text}
+                            <option value={cat}>
+                                {cat}
                             </option>
                         {/each}
                     </select>
                 </div>
-                {#if selected === 4}
+                {#if selected === 'Other'}
                     <TextInput
                         bind:text={problemType}
                         placeholder="Problem category if other (NA other wise)"

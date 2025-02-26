@@ -3,7 +3,7 @@ import { getEventInfo } from "./BackendAgentEvent";
 import { getUserId } from "./BackendAgentUser";
 
 const admins: string[] = ['aryan.d.dalal@gmail.com'];
-const IT_OCs: string[] = [];
+const IT_OCs: string[] = ['blucraft2104@gmail.com'];
 const OC_team: string[] = [];
 const HR_team: string[] = [];
 

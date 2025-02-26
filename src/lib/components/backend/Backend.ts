@@ -3,21 +3,16 @@ import { verifyGJWT } from "../GAuth";
 import { getUserId, getUserInfo } from "./BackendAgentUser";
 import type { SolsticeUser } from "./BackendTypes";
 
-export const backendURL = BACKEND_URL;
-/*
-    these functions are to be called in +server.ts, 
-    +page.server.ts, +layout.server.ts files only
-
-    these functions will not function and are not meant to function in
-    the browser
-*/
+const headers = () => ({
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${BEARER_TOKEN}`
+});
 
 export interface Result<T> {
     success: boolean;
     result: T | null;
     error: string | null;
 }
-
 export async function verifyAndGetUser(jwt: string | null | undefined): Promise<Result<SolsticeUser>> {
     if (jwt == null) { return { success: false, error: 'jwt is null!', result: null }; }
     if (jwt == undefined) { return { success: false, error: 'jwt is undefined!', result: null }; }
@@ -31,32 +26,40 @@ export async function verifyAndGetUser(jwt: string | null | undefined): Promise<
     if (userInfo == null) { return { success: false, error: 'user does not exist on database', result: null }; }
     return { success: true, error: null, result: userInfo };
 }
-const headers = () => ({
-    "Content-Type": "application/json",
-    "Authorization": `Bearer ${BEARER_TOKEN}`
-});
-
-async function request(method: string, localURL: string, body?: any) {
+async function request<T>(method: string, url: string, body?: any): Promise<Result<T>> {
     try {
         const options: RequestInit = {
             method,
             headers: headers(),
-            ...(body ? { body: JSON.stringify(body) } : {})
+            body: body ? JSON.stringify(body) : undefined,
         };
-        const response = await fetch(`${backendURL}/${localURL}`, options);
 
-        if (!response.ok) {
-            throw new Error(`HTTP Error: ${response.status}`);
+        const res = await fetch(`${BACKEND_URL}/${url}`, options);
+        const contentType = res.headers.get("content-type");
+
+        let responseBody: any = null;
+        if (contentType && contentType.includes("application/json")) {
+            responseBody = await res.json();
+        } else {
+            responseBody = await res.text();
         }
 
-        return response;
+        return {
+            success: res.ok, // True for 2xx responses
+            result: res.ok ? (responseBody as T) : null,
+            error: res.ok ? null : responseBody?.error || `HTTP Error: ${res.status}`,
+        };
     } catch (error) {
-        console.error(`Request failed: ${method} ${localURL}`, error);
-        throw error;
+        return {
+            success: false,
+            result: null,
+            error: error instanceof Error ? error.message : "Unknown error occurred",
+        };
     }
 }
 
-export const get = (localURL: string) => request("GET", localURL);
-export const del = (localURL: string) => request("DELETE", localURL);
-export const post = (localURL: string, body?: any) => request("POST", localURL, body);
-export const patch = (localURL: string, body?: any) => request("PATCH", localURL, body);
+// Corrected function calls with method parameters
+export const get = <T>(localURL: string) => request<T>("GET", localURL);
+export const del = <T>(localURL: string) => request<T>("DELETE", localURL);
+export const post = <T>(localURL: string, body?: any) => request<T>("POST", localURL, body);
+export const patch = <T>(localURL: string, body?: any) => request<T>("PATCH", localURL, body);

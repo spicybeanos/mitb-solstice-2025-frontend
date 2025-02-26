@@ -3,7 +3,7 @@
     import { UserProfileData } from "../GoogleLogin.svelte.ts";
     import Button from "$lib/components/Button.svelte";
     import SimpleCard from "$lib/components/SimpleCard.svelte";
-    import type { ProblemTicket } from "../support/+page.server.ts";
+    import type { ProblemTicket } from '$lib/components/database.ts';
 
     let tickets = $state([] as ProblemTicket[]);
     let { data } = $props();

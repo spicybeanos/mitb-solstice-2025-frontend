@@ -34,9 +34,9 @@ export async function getEventRegisTable(eventID: string): Promise<SolsticeEvent
 }
 
 export async function getEvents(): Promise<SolsticeEventInfo[] | null> {
-    const res = await get("event");
-    if (res.status === 200) {
-        serverEvents = await res.json();
+    const res = await get<SolsticeEventInfo[]>("event");
+    if (res.success) {
+        serverEvents = res.result as SolsticeEventInfo[];
         return serverEvents;
     }
     return null;
@@ -83,9 +83,9 @@ export async function getUserInfosInEvent(eventId: string): Promise<SolsticeUser
 export async function updateEventDetails(eventID: string, info: UpdateEvent) {
     const res = await patch(`event/${eventID}`, info);
 
-    if (res.ok) return { success: true };
-    const body = await res.json();
-    return { success: false, error: JSON.stringify(body), code: res.status };
+    if (res.success) return { success: true };
+    const body = await res.error
+    return { success: false, error: body};
 }
 
 export async function getUserTeamIDInEvent(userID: string, eventID: string): Promise<string | null> {
@@ -104,20 +104,20 @@ export async function getUserTeamIDInEvent(userID: string, eventID: string): Pro
 
 export async function getEventInfo(eventId: string): Promise<SolsticeEventInfo | null> {
     const res = await get(`event/${eventId}`);
-    return res.status === 200 ? (await res.json()) as SolsticeEventInfo : null;
+    return res.success ? (await res.result) as SolsticeEventInfo : null;
 }
 
 export async function getTeams(eventId: string): Promise<SolsticeTeamInfo[] | null> {
     const res = await get(`event/${eventId}/teams`);
-    return res.status === 200 ? (await res.json()) as SolsticeTeamInfo[] : null;
+    return res.success ? (await res.result) as SolsticeTeamInfo[] : null;
 }
 
 export async function addTeamToEvent(eventId: string, teamId: string): Promise<string | null> {
     const res = await post(`event/${eventId}/teams/${teamId}`);
-    return res.status === 200 ? (await res.json()) as string : null;
+    return res.success ? (await res.result) as string : null;
 }
 
 export async function removeTeamFromEvent(eventId: string, teamId: string): Promise<string | null> {
     const res = await del(`event/${eventId}/teams/${teamId}`);
-    return res.status === 200 ? (await res.json()) as string : null;
+    return res.success ? (await res.result) as string : null;
 }

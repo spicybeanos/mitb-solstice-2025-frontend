@@ -95,7 +95,7 @@
                                         <th
                                             >{#if row.is_captain}
                                                 <span class="text-red-300"
-                                                    >(Captain){row.player_name}</span
+                                                    >(C) {row.player_name}</span
                                                 >
                                             {:else}
                                                 <span class="text-white"

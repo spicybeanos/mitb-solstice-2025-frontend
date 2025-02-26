@@ -1,9 +1,9 @@
 import { fail, redirect } from '@sveltejs/kit';
-import { Categories } from '$lib/components/Support.js';
+import type { CategoryType } from '$lib/components/database.ts';
 import { v4 as uuidv4 } from 'uuid';
-import { getUserObjectFromJWT, verifyGJWT } from '$lib/components/GAuth.js';
-import { addTicketToDB, type ProblemTicket } from '$lib/components/database.js';
-import { verifyAndGetUser } from '$lib/components/backend/Backend.js';
+import { getUserObjectFromJWT, verifyGJWT } from '$lib/components/GAuth.ts';
+import { addTicketToDB, type ProblemTicket } from '$lib/components/database.ts';
+import { verifyAndGetUser } from '$lib/components/backend/Backend.ts';
 
 export function load({ cookies }) {
     let sessionId = cookies.get('sessionId');
@@ -27,7 +27,7 @@ export const actions = {
         const college = formData.get('college');
         const problem = formData.get('problem');
         const desc = formData.get('description');
-        const cat = Categories[formData.get('category') as keyof typeof Categories];
+        const cat = formData.get('category') as  CategoryType;
 
         if (name == null || phone == null || college == null || problem == null || desc == null || cat == null) {
             return fail(400, { success: false, error: 'Field(s) are null or undefined!' })
@@ -48,7 +48,8 @@ export const actions = {
             ticketID: ticketID,
             email: email,
             timestamp: time,
-            solved: solved
+            solved: solved,
+            solved_by_email:null
         };
         addTicketToDB(ticket);
         console.log(ticket);

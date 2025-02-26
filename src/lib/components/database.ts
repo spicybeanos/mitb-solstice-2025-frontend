@@ -1,16 +1,25 @@
 import Database from 'better-sqlite3';
 
+export type CategoryType = 'Special request' |
+    "Website" |
+    "Passes" |
+    "Payment" |
+    "Other" |
+    "Organisation" |
+    "Contests/ Contest results"|
+    'Event';
 export interface ProblemTicket {
     name: string;
     description: string;
     college: string;
     problem: string;
-    category: string;
+    category: CategoryType;
     phone: string;
     ticketID: string;
     email: string;
     timestamp: string;
     solved: boolean;
+    solved_by_email: string | null
 }
 
 // Connect to the SQLite database
@@ -36,19 +45,19 @@ db.exec(`
       timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
     );
   `);
-  try {
+try {
     db.exec('ALTER TABLE tickets ADD COLUMN solved BOOLEAN DEFAULT 0 NOT NULL');
     console.log('Column "solved" added successfully.');
-  } catch (err:any) {
+} catch (err: any) {
     console.error('Error adding column:', err.message);
-  }
+}
 
 export function addTicketToDB(ticket: ProblemTicket) {
     const stmt = db.prepare(`
         INSERT INTO tickets (name, description, college, problem, category, phone, ticketID, email, timestamp, solved)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
-    
+
     stmt.run(
         ticket.name,
         ticket.description,
@@ -64,8 +73,7 @@ export function addTicketToDB(ticket: ProblemTicket) {
 }
 
 
-export function getTicketsFromEmail(email:string)
-{
+export function getTicketsFromEmail(email: string) {
     const stmt = db.prepare('SELECT * FROM tickets WHERE email = ?');
     const tickets = stmt.all(email);
     return tickets as ProblemTicket[];

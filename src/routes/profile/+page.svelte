@@ -8,8 +8,11 @@
     import { UserProfileData } from "../GoogleLogin.svelte.ts";
     import { json } from "@sveltejs/kit";
     import SimpleCard from "$lib/components/SimpleCard.svelte";
+    import { Checkbox } from "bits-ui";
 
     let { data } = $props();
+
+    let isMahe = $state(true);
 
     function LogOut() {
         isSigningOut.status = true;
@@ -80,28 +83,42 @@
                             method="post"
                             class="w-[80vw] sm:w-[60vw] grid place-items-center pt-6 gap-6"
                         >
-                            <TextInput
-                                placeholder="First Name"
-                                name="first_name"
-                                required
-                            ></TextInput>
-                            <TextInput
-                                placeholder="Last Name"
-                                name="last_name"
-                                required
-                            ></TextInput>
+                            <div class="flex flex-row w-[100%]">
+                                <TextInput
+                                    placeholder="First Name"
+                                    name="first_name"
+                                    required
+                                ></TextInput>
+                                <TextInput
+                                    placeholder="Last Name"
+                                    name="last_name"
+                                    required
+                                ></TextInput>
+                            </div>
                             <TextInput
                                 placeholder="Phone Number"
                                 name="phone_num"
                                 type="number"
                                 required
                             ></TextInput>
-                            <TextInput
-                                placeholder="Mahe Registration Number"
-                                name="mahe_num"
-                                type="number"
-                                required
-                            ></TextInput>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    name="is_mahe"
+                                    bind:checked={isMahe}
+                                />
+                                <span class="text-white p-[5px]"
+                                    >I am a MAHE student</span
+                                >
+                            </div>
+                            {#if isMahe}
+                                <TextInput
+                                    placeholder="Mahe Registration Number"
+                                    name="mahe_num"
+                                    type="number"
+                                    required
+                                ></TextInput>
+                            {/if}
                             <Button OnClicked={() => {}}
                                 ><div style="color: white   ;">
                                     Submit
@@ -115,7 +132,7 @@
                         >
                     </SimpleCard>
                 </div>
-            {:else if data.user != null}
+            {:else if data.user != null || UserProfileData.registered}
                 <div>
                     <SimpleCard>
                         <h1 class="w-full text-center text-2xl font-semibold">
