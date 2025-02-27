@@ -57,25 +57,9 @@
         </div>
     </div>
 
-    <div class="landing-sec-2 h-screen flex flex-col justify-center items-center w-[95vw] bg-cover hidden sm:block">
-        <!-- <div class="h-[70%] w-[80%] flex flex-col justify-center items-center text-white gap-3">
-            <h1 class="font-akira text-6xl text-center">Book your tickets now!</h1>
-            <h1 class="font-akira text-6xl text-center">The fest will be a blast</h1>
-            <p class="text-[#5F4C86] text-3xl">This will be the best fest you will ever encounter</p>
-            <button class="mt-5 bg-black rounded-md p-5 min-w-[20%] max-w-[20%] text-2xl font-semibold cursor-pointer hover:scale-105 transition-[scale] duration-200 ease-in-out">Book Tickets</button>
-        </div> -->
-    </div>
-    
 </main>
 
 <style>
-    .landing-sec-2 {
-        background-image: 
-        linear-gradient(black, black),
-        url("../lib/landing_sec_2_image.jpg");
-        background-blend-mode: saturation;
-        
-    }
 
     main{
         /* background-color: #AB83FE; */

@@ -4,7 +4,7 @@
     import { UserProfileData } from "./GoogleLogin.svelte.ts";
     // import logo from "$lib/falak.png";
     import logo from '$lib/icons/logo.svg'
-    import profile_circle from "$lib/icons/account_circle.png";
+    import profile_circle from "$lib/icons/account.svg";
     import hamburger from '$lib/icons/hamburger.svg'
     import tickets_icon from "$lib/icons/ticket.png";
     import support_icon from "$lib/icons/support.png";
