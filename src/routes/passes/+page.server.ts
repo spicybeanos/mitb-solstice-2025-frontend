@@ -4,7 +4,6 @@ import { getUserId, getUserPassInfo } from "$lib/components/backend/BackendAgent
 import type { SolsticePassInfo, UserID } from "$lib/components/backend/BackendTypes.ts";
 import { error } from "@sveltejs/kit";
 import { UserProfileData } from "../GoogleLogin.svelte.ts";
-import { getEventsAccessableByPass } from "$lib/components/backend/BackendAgentPass";
 
 export interface EventInAllPasses {
     pass: string,
