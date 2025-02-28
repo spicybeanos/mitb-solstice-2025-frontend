@@ -78,6 +78,7 @@
                         <h1 class="w-full text-center text-2xl font-semibold">
                             Register
                         </h1>
+                        <div class="text-white">If you have already registered, please refresh the page.</div>
                         <form
                             action="?/register"
                             method="post"
@@ -120,7 +121,7 @@
                                 ></TextInput>
                             {/if}
                             <Button OnClicked={() => {}}
-                                ><div style="color: white   ;">
+                                ><div style="color: white ;">
                                     Submit
                                 </div></Button
                             >

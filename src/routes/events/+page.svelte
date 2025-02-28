@@ -53,8 +53,8 @@
     </div>
 
     <div class="eventCont">
-        <div class="e-centre" in:fade={{duration: 300,delay: 150}}>
-            {#each events as event,i}
+        <div class="e-centre" in:fade={{ duration: 300, delay: 150 }}>
+            {#each events as event, i}
                 {#if search.length > 0}
                     {#if searchEvent(event)}
                         {#if event.id != undefined}
@@ -217,11 +217,7 @@
                                     <div
                                         class=" w-full bg-[#D9D9D9] rounded-lg flex justify-center p-2 cursor-pointer"
                                     >
-                                        <a
-                                            href={UserProfileData.loggedIn
-                                                ? `/events/${event.id}/`
-                                                : `/profile`}
-                                        >
+                                        <a href={`/events/${event.id}/`}>
                                             <CardItem
                                                 {isMouseEntered}
                                                 translateZ={20}

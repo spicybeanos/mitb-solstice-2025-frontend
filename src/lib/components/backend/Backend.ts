@@ -1,4 +1,5 @@
 import { BACKEND_URL, BEARER_TOKEN } from "$env/static/private";
+import { ID_VALIDITY_KEY } from "$env/static/private";
 import { verifyGJWT } from "../GAuth";
 import { getUserId, getUserInfo } from "./BackendAgentUser";
 import type { SolsticeUser } from "./BackendTypes";
@@ -12,6 +13,13 @@ export interface Result<T> {
     success: boolean;
     result: T | null;
     error: string | null;
+}
+function toNumber(str:string) {
+    return parseInt(str, 36);
+}
+export async function isUserIdInvalid(userID:string) {
+    let key = parseInt(ID_VALIDITY_KEY);
+    return toNumber(userID) % key === 0;
 }
 export async function verifyAndGetUser(jwt: string | null | undefined): Promise<Result<SolsticeUser>> {
     if (jwt == null) { return { success: false, error: 'jwt is null!', result: null }; }

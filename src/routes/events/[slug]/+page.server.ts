@@ -10,15 +10,36 @@ export const load = async ({ params, cookies }) => {
         if (eventID == null) redirect(300, '/events');
         const eventInfo = await getEventInfo(eventID);
         if (eventInfo == null) {
-            error(404, 'Event not found')
+            error(404, 'Event not found');
         }
         const token = cookies.get('authToken');
 
         const user = await verifyAndGetUser(token);
 
-        if (user.success == false) { redirect(300, '/profile'); }
+        const events = await getEvents();
+        if (events == null) { redirect(300, '/') }
+
+        if (user.success == false) {
+            return {
+                slug: eventID,
+                in_team: false,
+                events: events,
+                team: null,
+                canAccess: false,
+                isRegistered: false
+            }
+        }
         //this should NEVER happen
-        if (user.result == null) { redirect(300, '/profile'); }
+        if (user.result == null) {
+            return {
+                slug: eventID,
+                in_team: false,
+                events: events,
+                team: null,
+                canAccess: false,
+                isRegistered: false
+            };
+        }
 
         const canAccess = await checkEventAccessibleByPass(eventID, user.result.pass_id);
         console.log(`Access attempt for ${eventID} : ${canAccess}`)
@@ -26,14 +47,14 @@ export const load = async ({ params, cookies }) => {
         const teamID = await getUserTeamIDInEvent(user.result.id, eventID);
         let is_in_team = teamID == null;
         let team = teamID != null ? await getTeamDetails(teamID) : null;
-        const events = await getEvents();
-        if (events == null) { redirect(300, '/') }
+
         return {
             slug: eventID,
             in_team: is_in_team,
             team: team,
             events: events,
-            canAccess: canAccess
+            canAccess: canAccess,
+            isRegistered: true
         }
     } catch (err) {
         error(500, 'Cannot fetch event details')
