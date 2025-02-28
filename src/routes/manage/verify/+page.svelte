@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { SolsticePassInfo } from "$lib/components/backend/BackendTypes.ts";
+    import type { SolsticePassInfo } from "$lib/server/backend/BackendTypes.js";
     import { error, text } from "@sveltejs/kit";
     import { fade, fly } from "svelte/transition";
     import Textfield from "@smui/textfield";

@@ -1,4 +1,4 @@
-import { verifyAndGetUser } from '$lib/components/backend/Backend.ts';
+import { verifyAndGetUser } from '$lib/server/Backend';
 import { getTicketsFromEmail } from '$lib/components/database.ts';
 import { redirect } from '@sveltejs/kit';
 

@@ -1,4 +1,4 @@
-import { getUserId } from '$lib/components/backend/BackendAgentUser.ts';
+import { getUserId } from '$lib/backend/BackendAgentUser';
 import { json } from '@sveltejs/kit';
 
 

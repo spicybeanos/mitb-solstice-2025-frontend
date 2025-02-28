@@ -1,6 +1,6 @@
-import { check_OC_Access } from '$lib/components/backend/BackendAdmin'
-import { getPassInfo } from '$lib/components/backend/BackendAgentPass';
-import { getUserId, getUserInfo } from '$lib/components/backend/BackendAgentUser.js';
+import { check_OC_Access } from '$lib/backend/BackendAdmin'
+import { getPassInfo } from '$lib/backend/BackendAgentPass';
+import { getUserId, getUserInfo } from '$lib/backend/BackendAgentUser.js';
 import { error, fail, redirect } from '@sveltejs/kit';
 
 export const actions = {

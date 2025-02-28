@@ -3,7 +3,7 @@ import type { CategoryType } from '$lib/components/database.ts';
 import { v4 as uuidv4 } from 'uuid';
 import { getUserObjectFromJWT, verifyGJWT } from '$lib/components/GAuth.ts';
 import { addTicketToDB, type ProblemTicket } from '$lib/components/database.ts';
-import { verifyAndGetUser } from '$lib/components/backend/Backend.ts';
+import { verifyAndGetUser } from '$lib/backend/Backend';
 
 export function load({ cookies }) {
     let sessionId = cookies.get('sessionId');

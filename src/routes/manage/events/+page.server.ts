@@ -1,5 +1,5 @@
-import { check_EventRW_Access, check_OC_Access } from "$lib/components/backend/BackendAdmin";
-import { getEvents } from "$lib/components/backend/BackendAgentEvent.js";
+import { check_EventRW_Access, check_OC_Access } from "$lib/backend/BackendAdmin";
+import { getEvents } from "$lib/backend/BackendAgentEvent.js";
 import { redirect } from "@sveltejs/kit";
 
 export async function load({ cookies }) {

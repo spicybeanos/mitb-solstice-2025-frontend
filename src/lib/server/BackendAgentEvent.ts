@@ -1,5 +1,5 @@
-import { get, post, patch, del } from "./Backend";
-import { getUsersInTeam } from "./BackendAgentTeam";
+import { get, post, patch, del } from "./Backend.ts";
+import { getUsersInTeam } from "./BackendAgentTeam.ts";
 import type { SolsticeEventInfo, SolsticeEventRegRow, SolsticeTeamInfo, SolsticeUser, UpdateEvent, UserID } from "./BackendTypes.ts";
 
 let serverEvents: SolsticeEventInfo[] = [];

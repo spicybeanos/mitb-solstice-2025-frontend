@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { SolsticeUser } from "$lib/components/backend/BackendTypes.ts";
+    import type { SolsticeUser } from "$lib/server/BackendTypes";
     import BasicButtonFilled from "$lib/components/ui/Basic/BasicButtonFilled.svelte";
     import BasicButtonOutline from "$lib/components/ui/Basic/BasicButtonOutline.svelte";
     import BasicInput from "$lib/components/ui/Basic/BasicInput.svelte";
@@ -98,20 +98,5 @@
     }
     h1 {
         font-size: xx-large;
-    }
-    input {
-        border-style: solid;
-        border-width: 1px;
-        border-color: lightblue;
-        padding: 5px 5px 5px 5px;
-        color: lightblue;
-    }
-    button {
-        border-style: solid;
-        border-width: 1px;
-        border-color: lightblue;
-        color: black;
-        padding: 5px 5px 5px 5px;
-        background-color: lightblue;
     }
 </style>

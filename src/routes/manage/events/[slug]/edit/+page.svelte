@@ -3,7 +3,7 @@
     import BasicButtonFilled from "$lib/components/ui/Basic/BasicButtonFilled.svelte";
     import BasicHeader from "$lib/components/ui/Basic/BasicHeader.svelte";
     import SimpleCard from "$lib/components/SimpleCard.svelte";
-    import { type EventType, type SolsticeEventInfo } from "$lib/components/backend/BackendTypes.ts";
+    import { type EventType, type SolsticeEventInfo } from "$lib/server/backend/BackendTypes.js";
     import { onMount } from "svelte";
     let { data, form } = $props();
     let event: SolsticeEventInfo = $state({

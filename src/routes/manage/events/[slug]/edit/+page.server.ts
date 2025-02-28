@@ -1,9 +1,9 @@
-import { check_EventRW_Access } from "$lib/components/backend/BackendAdmin";
-import { getEventInfo, updateEventDetails } from "$lib/components/backend/BackendAgentEvent.ts";
+import { check_EventRW_Access } from "$lib/backend/BackendAdmin";
+import { getEventInfo, updateEventDetails } from "$lib/backend/BackendAgentEvent";
 import { error, fail, redirect } from "@sveltejs/kit";
 import type { DateTime } from "@auth/core/providers/kakao";
-import type { EventType, SolsticeEventInfo, UpdateEvent } from "$lib/components/backend/BackendTypes.ts";
-import { getUserId } from "$lib/components/backend/BackendAgentUser.js";
+import type { EventType, SolsticeEventInfo, UpdateEvent } from "$lib/backend/BackendTypes";
+import { getUserId } from "$lib/backend/BackendAgentUser.js";
 import { getUserObjectFromJWT } from "$lib/components/GAuth.js";
 
 export async function load({ cookies, params }) {

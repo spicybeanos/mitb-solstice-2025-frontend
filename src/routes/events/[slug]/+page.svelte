@@ -13,7 +13,7 @@
         CardContainer,
         CardItem,
     } from "$lib/components/ui/ThreeDCardEffect/index.js";
-    import type { SolsticeTeamInfo } from "../../../lib/components/backend/BackendTypes";
+    import type { SolsticeTeamInfo } from "$lib/server/BackendTypes.ts";
     import CopyToClipboard from "$lib/components/CopyToClipboard.svelte";
 
     let isLoaded = $state(false);

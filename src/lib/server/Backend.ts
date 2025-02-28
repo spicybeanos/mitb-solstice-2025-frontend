@@ -1,6 +1,6 @@
 import { BACKEND_URL, BEARER_TOKEN } from "$env/static/private";
 import { ID_VALIDITY_KEY } from "$env/static/private";
-import { verifyGJWT } from "../GAuth";
+import { verifyGJWT } from "../components/GAuth";
 import { getUserId, getUserInfo } from "./BackendAgentUser";
 import type { SolsticeUser } from "./BackendTypes";
 

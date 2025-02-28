@@ -1,4 +1,4 @@
-import { getEvents } from '$lib/components/backend/BackendAgentEvent.ts';
+import { getEvents } from '$lib/backend/BackendAgentEvent';
 import { placeholderEvents, toSolsticeEvents, type SolsticeEvent } from '$lib/components/Events';
 import { error } from '@sveltejs/kit';
 

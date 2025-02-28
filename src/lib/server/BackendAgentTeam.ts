@@ -1,5 +1,5 @@
-import { get, post, patch, del } from "./Backend";
-import { addTeamToEvent } from "./BackendAgentEvent";
+import { get, post, patch, del } from "./Backend.ts";
+import { addTeamToEvent } from "./BackendAgentEvent.ts";
 import type { SolsticeUser, SolsticeTeamInfo } from "./BackendTypes.ts";
 
 export async function createTeam(teamName: string, hostId: string): Promise<SolsticeTeamInfo | null> {

@@ -1,5 +1,5 @@
-import { check_EventRW_Access } from '$lib/components/backend/BackendAdmin.js';
-import { getEventRegisTable, getUserTeamIDInEvent } from '$lib/components/backend/BackendAgentEvent.js';
+import { check_EventRW_Access } from '$lib/backend/BackendAdmin.js';
+import { getEventRegisTable, getUserTeamIDInEvent } from '$lib/backend/BackendAgentEvent.js';
 
 export async function load({ cookies, params }) {
     const perm = await check_EventRW_Access(cookies.get('authToken'), params.slug);

@@ -1,4 +1,4 @@
-import { check_manage_Access } from '$lib/components/backend/BackendAdmin.js';
+import { check_manage_Access } from '$lib/backend/BackendAdmin.js';
 
 export async function load({cookies}){
     const jwt = cookies.get('authToken');

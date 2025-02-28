@@ -1,7 +1,7 @@
-import { verifyAndGetUser } from '$lib/components/backend/Backend.ts';
-import { getEventID, getEventInfo, getEvents, getTeams, getUserIDsInEvent, getUserTeamIDInEvent } from '$lib/components/backend/BackendAgentEvent.ts';
-import { checkEventAccessibleByPass } from '$lib/components/backend/BackendAgentPass.ts';
-import { addUserToTeam, createTeamAndAttach, getTeamDetails, getUsersInTeam } from '$lib/components/backend/BackendAgentTeam.ts';
+import { verifyAndGetUser } from '$lib/server/Backend';
+import { getEventID, getEventInfo, getEvents, getTeams, getUserIDsInEvent, getUserTeamIDInEvent } from '$lib/server/BackendAgentEvent';
+import { checkEventAccessibleByPass } from '$lib/server/BackendAgentPass';
+import { addUserToTeam, createTeamAndAttach, getTeamDetails, getUsersInTeam } from '$lib/server/BackendAgentTeam';
 import { error, fail, json, redirect } from '@sveltejs/kit';
 
 export const load = async ({ params, cookies }) => {

@@ -1,8 +1,8 @@
 
 
-import { check_OC_Access } from "$lib/components/backend/BackendAdmin";
-import { getPassInfo } from "$lib/components/backend/BackendAgentPass";
-import { getUserId, getUserInfo } from "$lib/components/backend/BackendAgentUser";
+import { check_OC_Access } from "$lib/backend/BackendAdmin";
+import { getPassInfo } from "$lib/backend/BackendAgentPass";
+import { getUserId, getUserInfo } from "$lib/backend/BackendAgentUser";
 import { error, fail, json, type Cookies } from "@sveltejs/kit";
 
 export async function GET({ url, cookies }: { url: URL, cookies: Cookies }) {

@@ -4,7 +4,7 @@
     import PassCard from "$lib/components/PassCard.svelte";
     import BuyPass from "$lib/components/BuyPass.svelte";
     import QRCode from "$lib/components/QR.svelte";
-    import type { SolsticePassInfo } from "$lib/components/backend/BackendTypes.ts";
+    import type { SolsticePassInfo } from "$lib/server/BackendTypes.ts";
     import type { EventInAllPasses } from "./+page.server.ts";
     import { fade, slide, scale } from "svelte/transition";
     import { cubicOut, quintOut } from "svelte/easing";
