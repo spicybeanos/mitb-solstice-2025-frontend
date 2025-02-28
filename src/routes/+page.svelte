@@ -1,7 +1,7 @@
 <script lang="ts">
     import { UserProfileData } from "./GoogleLogin.svelte.ts";
-    import landing_solstice from '../lib/icons/landing_solstice.svg'
-    import tech from '../lib/icons/landing_tech.svg'
+    let landing_solstice = '/media/landing_solstice.svg'
+    let tech = '/media/landing_tech.svg'
     import RetroGrid from "$lib/components/ui/RetroGrid.svelte";
     import { cn } from "$lib/utils/cn.ts";
   import InteractiveHover from "$lib/components/ui/InteractiveHover.svelte";
@@ -11,13 +11,8 @@
 <main class="flex flex-col items-center justify-center min-h-screen">
     <div class="h-screen flex flex-col justify-center items-center w-full overflow-hidden">
         <div class="relative  h-[70%] w-[90%] flex flex-col justify-center items-center text-white gap-5 md:gap-3">
-            <!-- <h1 class="font-akira md:text-6xl text-5xl text-left">Book your tickets now!</h1> -->
-            <!-- <h1 class="font-akira md:text-6xl text-5xl text-right">The fest will be a blast</h1> -->
-            <!-- <p class="text-[#5F4C86] md:text-3xl text-xl text-center">This will be the best fest you will ever encounter</p> -->
-             <!-- <h1 class="font-akira md:text-7xl text-5xl text-center" >Tech</h1> -->
-             <img src={tech} class="sm:w-[25%] w-[45%] z-20" alt="tech"/>
+             <img src={tech} class="sm:w-[25%] w-[45%] z-20 mt-[120px]" alt="tech"/>
              <img src={landing_solstice} class="sm:w-3/5 w-full z-20" alt="solstice"/>
-            <!-- <a href="/passes" class="md:mt-5 text-nowrap bg-black text-center rounded-md md:p-5 p-3 min-w-[50%] md:min-w-[20%]  text-lg md:text-2xl font-semibold cursor-pointer hover:scale-105 transition-[scale] duration-200 ease-in-out">Book Tickets</a> -->
             <a href="/passes" class="pt-12"><InteractiveHover text="Book your tickets" class="text-nowrap min-w-[12rem] z-20"></InteractiveHover></a> 
         </div>
         <RetroGrid />
@@ -61,22 +56,6 @@
 
 <style>
 
-    main{
-        /* background-color: #AB83FE; */
-    }
-
-    /* .mid {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: fit-content;
-    }
-    .centre {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-    } */
     .gradient-text {
         background: linear-gradient(90deg, #b41e8e, #9933ff, #8a2be2, #9933ff, #b4218f);
         background-size: 200% auto;

@@ -37,7 +37,7 @@ export async function POST({ request, cookies }) {
 			}
 		}
 		else {
-			console.log("Recieved log out request");
+			console.log("Recieved log in request");
 			cookies.delete('authToken',
 				{
 					path: '/',

@@ -23,7 +23,7 @@ export interface ProblemTicket {
 }
 
 // Connect to the SQLite database
-const db = new Database('./tickets.db');
+const db = new Database('./database.db');
 db.pragma('journal_mode = WAL');
 
 export interface QuerryResult {
