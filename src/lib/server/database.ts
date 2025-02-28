@@ -23,7 +23,7 @@ export interface ProblemTicket {
 }
 
 // Connect to the SQLite database
-const db = new Database('./database.db');
+const db = new Database('database.db');
 db.pragma('journal_mode = WAL');
 
 export interface QuerryResult {
@@ -43,14 +43,10 @@ db.exec(`
       ticketID TEXT PRIMARY KEY NOT NULL,
       email TEXT NOT NULL,
       timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
+      solved BOOLEAN DEFAULT 0 NOT NULL
     );
   `);
-try {
-    db.exec('ALTER TABLE tickets ADD COLUMN solved BOOLEAN DEFAULT 0 NOT NULL');
-    console.log('Column "solved" added successfully.');
-} catch (err: any) {
-    console.error('Error adding column:', err.message);
-}
+
 
 export function addTicketToDB(ticket: ProblemTicket) {
     const stmt = db.prepare(`

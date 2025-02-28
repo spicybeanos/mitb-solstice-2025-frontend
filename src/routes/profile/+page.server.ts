@@ -1,5 +1,5 @@
-import { verifyAndGetUser } from '$lib/backend/Backend';
-import { getUserId, registerUser, updateUserInfo } from '$lib/backend/BackendAgentUser';
+import { verifyAndGetUser } from '$lib/server/Backend';
+import { getUserId, registerUser, updateUserInfo } from '$lib/server/BackendAgentUser';
 import { getUserObjectFromJWT } from '$lib/components/GAuth.ts';
 import { error, fail, json, redirect } from '@sveltejs/kit';
 

@@ -1,5 +1,5 @@
 import { verifyAndGetUser } from '$lib/server/Backend';
-import { getTicketsFromEmail } from '$lib/components/database.ts';
+import { getTicketsFrom_email } from '$lib/server/BackendAgentSupport.ts';
 import { redirect } from '@sveltejs/kit';
 
 export async function load({ cookies }) {
@@ -7,7 +7,7 @@ export async function load({ cookies }) {
 
     if (user.success == false) { redirect(308, '/support'); }
     if (user.result == undefined) { redirect(308, '/profile'); }
-    const tickets = getTicketsFromEmail(user.result?.email_address);
+    const tickets =await getTicketsFrom_email(user.result?.email_address);
     console.log(`Tickets for ${user.result.email_address} : ${tickets.length}`)
     return {tickets:tickets}
 }

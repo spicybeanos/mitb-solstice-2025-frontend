@@ -1,9 +1,9 @@
 import { fail, redirect } from '@sveltejs/kit';
-import type { CategoryType } from '$lib/components/database.ts';
+import type { CategoryType, ProblemTicket } from '$lib/server/BackendTypes.ts';
 import { v4 as uuidv4 } from 'uuid';
 import { getUserObjectFromJWT, verifyGJWT } from '$lib/components/GAuth.ts';
-import { addTicketToDB, type ProblemTicket } from '$lib/components/database.ts';
-import { verifyAndGetUser } from '$lib/backend/Backend';
+import { verifyAndGetUser } from '$lib/server/Backend';
+import { createTicket } from '$lib/server/BackendAgentSupport.js';
 
 export function load({ cookies }) {
     let sessionId = cookies.get('sessionId');
@@ -25,6 +25,7 @@ export const actions = {
             }
             const name = `${user.result?.first_name} ${user.result?.last_name}`;
             const phone = user.result?.phone_number;
+            
             const college = formData.get('college');
             const problem = formData.get('problem');
             const desc = formData.get('description');
@@ -46,6 +47,7 @@ export const actions = {
                 return fail(400, { success: false, error: 'category is null!' })
             }
 
+
             const ticketID = uuidv4();
             const email = user.result?.email_address as string;
             const time = new Date().toISOString();
@@ -55,7 +57,7 @@ export const actions = {
                 name: name as string,
                 phone: phone as string,
                 college: college as string,
-                problem: problem as string,
+                problem: problem == null ? '' : problem as string,
                 description: desc as string,
                 category: cat,
                 ticketID: ticketID,
@@ -64,11 +66,11 @@ export const actions = {
                 solved: solved,
                 solved_by_email: null
             };
-            addTicketToDB(ticket);
+            createTicket(ticket);
             console.log(ticket);
-            return {success:true}
+            return { success: true }
         } catch (err) {
-            return {success:false,error:JSON.stringify(err)}
+            return { success: false, error: JSON.stringify(err) }
         }
 
     }

@@ -1,9 +1,7 @@
 <script lang="ts">
-    import { UserProfileData } from "./GoogleLogin.svelte.ts";
     let landing_solstice = '/media/landing_solstice.svg'
     let tech = '/media/landing_tech.svg'
     import RetroGrid from "$lib/components/ui/RetroGrid.svelte";
-    import { cn } from "$lib/utils/cn.ts";
   import InteractiveHover from "$lib/components/ui/InteractiveHover.svelte";
   const content = ["A", "B", "C", "D"];
 </script>

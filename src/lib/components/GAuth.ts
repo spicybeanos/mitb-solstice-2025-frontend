@@ -17,31 +17,27 @@ export interface VerificationResult {
     object?: UserProfile;
     userid?: string;
 }
-export async function verifyGJWT(token: string) : Promise<VerificationResult> {
-    if (!isSigningOut.status) {
-        try {
-            const ticket = await gclient.verifyIdToken({
-                idToken: token,
-                audience: G_CLIENT_AUD,  // Specify the CLIENT_ID of the app that accesses the backend
-                // Or, if multiple clients access the backend:
-                //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
-            });
-            const payload = ticket.getPayload();
-            if (payload == undefined) {
-                return { result: false } as VerificationResult;
-            }
-            const userid = payload['sub'];
-            return { result: true, object: getUserObjectFromJWT(token), userid: userid } as VerificationResult
-            // If the request specified a Google Workspace domain:
-            // const domain = payload['hd'];
-        }
-        catch {
+export async function verifyGJWT(token: string): Promise<VerificationResult> {
+    try {
+        const ticket = await gclient.verifyIdToken({
+            idToken: token,
+            audience: G_CLIENT_AUD,  // Specify the CLIENT_ID of the app that accesses the backend
+            // Or, if multiple clients access the backend:
+            //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+        });
+        const payload = ticket.getPayload();
+        if (payload == undefined) {
             return { result: false } as VerificationResult;
         }
+        const userid = payload['sub'];
+        return { result: true, object: getUserObjectFromJWT(token), userid: userid } as VerificationResult
+        // If the request specified a Google Workspace domain:
+        // const domain = payload['hd'];
     }
-    else{
+    catch {
         return { result: false } as VerificationResult;
     }
+
 }
 
 export function getUserObjectFromJWT(jwt: string) {

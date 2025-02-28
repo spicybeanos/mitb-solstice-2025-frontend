@@ -72,3 +72,25 @@ export interface SolsticeEventRegRow{
     player_reg:string,
     is_captain:boolean
 }
+
+export type CategoryType = 'Special request' |
+    "Website" |
+    "Passes" |
+    "Payment" |
+    "Other" |
+    "Organisation" |
+    "Contests/ Contest results" |
+    'Event';
+export interface ProblemTicket {
+    name: string;
+    description: string;
+    college: string;
+    problem: string;
+    category: CategoryType;
+    phone: string;
+    ticketID: string;
+    email: string;
+    timestamp: string;
+    solved: boolean;
+    solved_by_email: string | null
+}

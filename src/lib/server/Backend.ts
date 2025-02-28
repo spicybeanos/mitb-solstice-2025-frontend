@@ -21,6 +21,9 @@ export async function isUserIdInvalid(userID:string) {
     let key = parseInt(ID_VALIDITY_KEY);
     return toNumber(userID) % key === 0;
 }
+function reportAction(){
+    
+}
 export async function verifyAndGetUser(jwt: string | null | undefined): Promise<Result<SolsticeUser>> {
     if (jwt == null) { return { success: false, error: 'jwt is null!', result: null }; }
     if (jwt == undefined) { return { success: false, error: 'jwt is undefined!', result: null }; }
