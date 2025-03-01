@@ -9,6 +9,9 @@
     import { onMount } from "svelte";
     import * as Sheet from "$lib/components/ui/sheet";
     import { checkLoggedIn } from "./GoogleLogin.svelte.ts";
+     import matrix from"$lib/matrix2.svg"
+  import { WavyBackground } from "$lib/components/ui/Waves/index.ts";
+  
 
     let { children, data } = $props();
     let manageAccess = data.manageAccess;
@@ -34,8 +37,9 @@
 </script>
 
 
-<div class="desktop pb-[120px]">
-        <a href="/" class="grow max-w-[33%] absolute top-7.5 left-3.5"
+<div class="desktop pb-[120px] z-20">
+    
+        <a href="/" class="grow max-w-[33%] absolute top-7.5 left-3.5 z-50"
             ><img class="logo w-[26vw] md:w-[15vw]" src={logo} alt="logo" /></a
         >
         <FloatingNavbar navItems={navItems} />
@@ -47,6 +51,7 @@
                 <img class="icon" src={UserProfileData.picture} alt="profile" />
             {/if}
         </a>
+
 </div>
 
 
@@ -96,12 +101,14 @@
         </div>
 </div>
 
-<div class="bg-[#1E1E1E]" style="min-height: 70vh; height:fit-content">
-    {@render children()}
+<div class="bg-[#1E1E1E] z-20" style="min-height: 70vh; height:fit-content ">
+    <WavyBackground >       
+        {@render children()}
+    </WavyBackground>
 </div>
 
-<footer class="flex flex-col p-6 md:p-8 text-xs md:text-base text-white" style="z-index: -33333;">
-    <div class="flex flex-row justify-between">
+<footer class="flex flex-col p-6 md:p-8 text-xs md:text-base text-white z-20 bg-[#1e1e1e]" >
+    <div class="flex flex-row justify-between z-50">
         <div class="flex flex-col">
             <p>Manipal Institute of technology</p>
             <p>Yelahanka, Bengaluru</p>
