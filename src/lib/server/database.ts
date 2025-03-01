@@ -42,7 +42,7 @@ db.exec(`
       phone TEXT NOT NULL,
       ticketID TEXT PRIMARY KEY NOT NULL,
       email TEXT NOT NULL,
-      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
+      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
       solved BOOLEAN DEFAULT 0 NOT NULL
     );
   `);
