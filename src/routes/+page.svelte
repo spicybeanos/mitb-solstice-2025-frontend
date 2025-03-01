@@ -9,7 +9,7 @@
 
 <main class="flex flex-col items-center justify-center min-h-screen">
     <img src={retro} alt="retrogrid" class="w-screen h-screen absolute top-0 left-0 object-cover sm:hidden" />
-    <img src={matrix} alt="retrogrid" class="size-full object-cover fixed top-0 left-0 max-sm:hidden"  />
+    <!-- <img src={matrix} alt="retrogrid" class="size-full object-cover fixed top-0 left-0 max-sm:hidden"  /> -->
     <div class="h-screen flex flex-col justify-center items-center w-full overflow-hidden sm:pb-[16rem]">
         <div class="relative  h-[70%] w-[90%] flex flex-col justify-center items-center text-white gap-5 md:gap-3">
              <img src={tech} class="sm:w-[25%] w-[45%] z-20 mt-[120px]" alt="tech"/>
