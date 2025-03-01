@@ -7,6 +7,7 @@ const IT_OCs: string[] = ['blucraft2104@gmail.com'];
 const OC_team: string[] = [];
 const HR_team: string[] = [];
 
+
 export async function checkAdminAccess(jwt: string | null | undefined): Promise<boolean> {
     const user = await verifyAndGetUser(jwt);
     if (user.success == false) { return false; }
@@ -22,14 +23,6 @@ export async function check_manage_Access(jwt: string | null | undefined) {
     if (OC_team.includes(user.result?.email_address)) { return true; }
     if (IT_OCs.includes(user.result?.email_address)) { return true; }
     if (HR_team.includes(user.result?.email_address)) { return true; }
-    return false;
-}
-export async function check_OC_Access(jwt: string | null | undefined): Promise<boolean> {
-    const user = await verifyAndGetUser(jwt);
-    if (user.success == false) { return false; }
-    if (user.result == null) { return false; }
-    if (admins.includes(user.result?.email_address)) { return true; }
-    if (OC_team.includes(user.result?.email_address)) { return true; }
     return false;
 }
 
@@ -66,6 +59,17 @@ export async function check_EventRW_Access(jwt: string | null | undefined, event
 
     return event.organizer_id == org;
 }
+
+export async function check_TicketsRW_Access(jwt: string | null | undefined): Promise<boolean> {
+    const user = await verifyAndGetUser(jwt);
+    if (user.success == false) { return false; }
+    if (user.result == null) { return false; }
+    if (admins.includes(user.result?.email_address)) { return true; }
+    if (IT_OCs.includes(user.result?.email_address)) { return true; }
+    if (HR_team.includes(user.result?.email_address)) { return true; }
+    return false;
+}
+
 export async function check_EventRead_Access(jwt: string | null | undefined, eventID: string): Promise<boolean> {
     const user = await verifyAndGetUser(jwt);
     if (user.success == false) { return false; }

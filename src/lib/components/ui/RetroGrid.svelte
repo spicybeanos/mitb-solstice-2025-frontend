@@ -25,12 +25,12 @@
           // Dark styles
           "dark:[background-image:linear-gradient(to_right,rgba(171,131,254,0.8)_3px,transparent_0),linear-gradient(to_bottom,rgba(171,131,254,0.8)_3px,transparent_0)]"
         )}
-      />
+      ></div>
     </div>
   
     <!-- Background Gradient -->
     <div
       class="absolute inset-0 bg-gradient-to-t from-white to-transparent to-90% dark:from-black"
-    />
+    ></div>
   </div>
   

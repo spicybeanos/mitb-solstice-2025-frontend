@@ -1,12 +1,12 @@
 
 
-import { check_OC_Access } from "$lib/backend/BackendAdmin";
-import { getPassInfo } from "$lib/backend/BackendAgentPass";
-import { getUserId, getUserInfo } from "$lib/backend/BackendAgentUser";
+import { check_manage_Access } from "$lib/server/BackendAdmin";
+import { getPassInfo } from "$lib/server/BackendAgentPass";
+import { getUserId, getUserInfo } from "$lib/server/BackendAgentUser";
 import { error, fail, json, type Cookies } from "@sveltejs/kit";
 
 export async function GET({ url, cookies }: { url: URL, cookies: Cookies }) {
-    const isOC = await check_OC_Access(cookies.get('authToken'));
+    const isOC = await check_manage_Access(cookies.get('authToken'));
     if (isOC == false) { return json({ error: 'Unauthorized user!' }, { status: 403 }); }
 
     const email = url.searchParams.get('email');

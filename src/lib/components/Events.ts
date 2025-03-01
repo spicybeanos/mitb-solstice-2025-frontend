@@ -1,5 +1,5 @@
 import type { DateTime } from "@auth/core/providers/kakao";
-import type { SolsticeEventInfo } from "../backend/BackendAgentEvent";
+import type { SolsticeEventInfo } from "../server/BackendTypes";
 
 export interface SolsticeEvent {
     img_alt:string;

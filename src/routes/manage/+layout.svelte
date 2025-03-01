@@ -12,7 +12,7 @@
 {@render children()}
 
 <style>
-    h1,h2,div{
+    h2{
         color: white;
         padding: 5px 5px 5px 5px;
 

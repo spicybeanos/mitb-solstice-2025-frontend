@@ -1,10 +1,10 @@
-import { check_EventRW_Access, check_OC_Access } from "$lib/backend/BackendAdmin";
-import { getEvents } from "$lib/backend/BackendAgentEvent.js";
+import { check_EventRW_Access, check_manage_Access } from "$lib/server/BackendAdmin";
+import { getEvents } from "$lib/server/BackendAgentEvent.js";
 import { redirect } from "@sveltejs/kit";
 
 export async function load({ cookies }) {
     const jwt = cookies.get('authToken');
-    const canAccess = await check_OC_Access(jwt);
+    const canAccess = await check_manage_Access(jwt);
     if (canAccess == false) { redirect(308, '/profile'); }
 
     const events = await getEvents();

@@ -9,9 +9,7 @@
 </div>
 
 <style>
-    p{
-        margin: 5px;
-    }
+   
     .mid{
         height: 60vh;
         display: flex;

@@ -1,12 +1,12 @@
-import { check_OC_Access } from '$lib/backend/BackendAdmin'
-import { getPassInfo } from '$lib/backend/BackendAgentPass';
-import { getUserId, getUserInfo } from '$lib/backend/BackendAgentUser.js';
+import { check_manage_Access } from '$lib/server/BackendAdmin'
+import { getPassInfo } from '$lib/server/BackendAgentPass';
+import { getUserId, getUserInfo } from '$lib/server/BackendAgentUser.js';
 import { error, fail, redirect } from '@sveltejs/kit';
 
 export const actions = {
     verifyPassEmail: async ({ cookies, request, url }) => {
         try {
-            const isOC = await check_OC_Access(cookies.get('authToken'));
+            const isOC = await check_manage_Access(cookies.get('authToken'));
             if (isOC == false) { return fail(403, { error: 'Unauthorized user!' }); }
 
             const form = await request.formData();

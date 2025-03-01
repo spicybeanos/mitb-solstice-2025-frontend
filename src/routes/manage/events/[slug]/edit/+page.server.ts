@@ -1,10 +1,8 @@
-import { check_EventRW_Access } from "$lib/backend/BackendAdmin";
-import { getEventInfo, updateEventDetails } from "$lib/backend/BackendAgentEvent";
+import { check_EventRW_Access } from "$lib/server/BackendAdmin";
+import { getEventInfo, updateEventDetails } from "$lib/server/BackendAgentEvent";
 import { error, fail, redirect } from "@sveltejs/kit";
 import type { DateTime } from "@auth/core/providers/kakao";
-import type { EventType, SolsticeEventInfo, UpdateEvent } from "$lib/backend/BackendTypes";
-import { getUserId } from "$lib/backend/BackendAgentUser.js";
-import { getUserObjectFromJWT } from "$lib/components/GAuth.js";
+import type { EventType, SolsticeEventInfo, UpdateEvent } from "$lib/server/BackendTypes";
 
 export async function load({ cookies, params }) {
     const jwt = cookies.get('authToken');
@@ -74,7 +72,6 @@ export const actions = {
         if (result.success == true) { return { success: true }; }
         if (result.code == undefined) { return fail(500, { success: false, error: 'Error code is undefined! This should never happen' }); }
         return fail(result?.code, { success: false, error: result.error })
-
 
     }
 }

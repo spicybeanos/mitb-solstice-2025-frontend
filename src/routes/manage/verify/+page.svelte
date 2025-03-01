@@ -101,13 +101,5 @@
     h1 {
         font-size: xx-large;
     }
-    button {
-        border-style: solid;
-        border-width: 1px;
-        border-color: lightblue;
-        color: black;
-        padding: 5px 5px 5px 5px;
-        margin: 10px 5px 5px 5px;
-        background-color: lightblue;
-    }
+   
 </style>

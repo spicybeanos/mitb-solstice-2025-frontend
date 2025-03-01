@@ -184,11 +184,7 @@
     will-change: transform, opacity;
 }
 
-.PassCard {
-    display: flex;
-    flex-direction: column;
-    height: 100%; 
-}
+
 
 .desc {
     flex-grow: 1;
@@ -228,11 +224,6 @@
     
 }
 
-.button AButton {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-}
 
 .detailContainer {
     display: flex;
@@ -255,12 +246,6 @@
     .container {
         flex: 0 1 calc(50% - 20px);
         max-width: 48%;
-    }
-
-    .PassCard {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
     }
 
     .desc {
@@ -299,11 +284,7 @@
         padding-bottom: 16px;
     }
 
-    .button AButton {
-        flex-grow: 1;
-        display: flex;
-        justify-content: center;
-    }
+   
 
     .detailContainer {
         display: flex;

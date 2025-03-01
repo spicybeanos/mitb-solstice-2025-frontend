@@ -609,9 +609,7 @@
         transition: opacity 0.3s ease;
     }
 
-    .image-container:hover .image-overlay {
-        opacity: 1;
-    }
+   
 
     @media (hover: hover) and (min-width: 768px) {
         .image-container img:hover {

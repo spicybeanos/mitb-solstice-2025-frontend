@@ -247,12 +247,7 @@
         width: 100%;
         padding: 60px;
     }
-    .mid {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: fit-content;
-    }
+   
     .centre {
         display: flex;
         justify-content: center;

@@ -63,21 +63,5 @@
         margin: 15px 15px 15px 15px;
         margin-top: 30px;
     }
-    input {
-        border-style: solid;
-        border-width: 1px;
-        border-color: lightblue;
-        padding: 5px 5px 5px 5px;
-        color: lightblue;
-        margin: 1em 1em 1em 1em;
-    }
-    button {
-        border-style: solid;
-        border-width: 1px;
-        border-color: lightblue;
-        color: black;
-        padding: 5px 5px 5px 5px;
-        margin: 10px 5px 5px 5px;
-        background-color: lightblue;
-    }
+   
 </style>

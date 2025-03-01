@@ -1,6 +1,6 @@
 import { verifyAndGetUser } from '$lib/server/Backend';
 import { getUserId, registerUser, updateUserInfo } from '$lib/server/BackendAgentUser';
-import { getUserObjectFromJWT } from '$lib/components/GAuth.ts';
+import { getUserObjectFromJWT } from '$lib/server/GAuth';
 import { error, fail, json, redirect } from '@sveltejs/kit';
 
 export async function load({ cookies }) {

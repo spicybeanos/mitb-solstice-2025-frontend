@@ -1,7 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { CategoryType, ProblemTicket } from '$lib/server/BackendTypes.ts';
 import { v4 as uuidv4 } from 'uuid';
-import { getUserObjectFromJWT, verifyGJWT } from '$lib/components/GAuth.ts';
+import { getUserObjectFromJWT, verifyGJWT } from '$lib/server/GAuth';
 import { verifyAndGetUser } from '$lib/server/Backend';
 import { createTicket } from '$lib/server/BackendAgentSupport.js';
 
@@ -25,7 +25,7 @@ export const actions = {
             }
             const name = `${user.result?.first_name} ${user.result?.last_name}`;
             const phone = user.result?.phone_number;
-            
+
             const college = formData.get('college');
             const problem = formData.get('problem');
             const desc = formData.get('description');

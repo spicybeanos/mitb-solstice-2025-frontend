@@ -1,4 +1,4 @@
-import { check_EventRW_Access } from "$lib/backend/BackendAdmin";
+import { check_EventRW_Access } from "$lib/server/BackendAdmin";
 import { redirect } from "@sveltejs/kit";
 
 export async function load({ cookies,params }) {

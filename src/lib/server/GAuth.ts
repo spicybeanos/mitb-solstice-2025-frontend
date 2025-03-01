@@ -1,6 +1,5 @@
 import { json } from '@sveltejs/kit';
 import { OAuth2Client } from 'google-auth-library';
-import { isSigningOut } from '../../routes/GoogleLogin.svelte.ts';
 import { G_CLIENT_AUD } from '$env/static/private';
 
 const gclient = new OAuth2Client();

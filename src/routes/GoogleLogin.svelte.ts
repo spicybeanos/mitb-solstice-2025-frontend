@@ -8,10 +8,7 @@ export async function checkLoggedIn(cookieJwt: string | undefined) {
 
     if (!isSigningOut.status) {
         if (cookieJwt == undefined) { return false; }
-        if (cookieJwt === undefined) { return false; }
-        if (cookieJwt === null) { return false; }
         if (cookieJwt == null) { return false; }
-        if (cookieJwt === '') { return false; }
         if (cookieJwt == '') { return false; }
 
         try {
@@ -45,6 +42,4 @@ export async function checkLoggedIn(cookieJwt: string | undefined) {
             return false;
         }
     }
-
-
 }
