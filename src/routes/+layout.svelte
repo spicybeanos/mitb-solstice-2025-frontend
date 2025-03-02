@@ -46,9 +46,9 @@
 
         <a href="/profile" class="grow flex flex-row justify-end max-w-[33%] absolute top-3.5 right-3.5">
             {#if !UserProfileData.loggedIn}
-                <img class="icon" src={profile_circle} alt="profile" />
+                <img class="icon z-20" src={profile_circle} alt="profile" />
             {:else}
-                <img class="icon" src={UserProfileData.picture} alt="profile" />
+                <img class="icon z-20" src={UserProfileData.picture} alt="profile" />
             {/if}
         </a>
 
