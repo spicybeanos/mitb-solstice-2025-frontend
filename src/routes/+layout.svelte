@@ -112,6 +112,8 @@
             <p>Contact @</p>
             <p>+91 79069 52055</p>
             <p>( Atharva Maikhuri - HR Head )</p>
+            <p>+91 72045 87438</p>
+            <p>( Rohit Nandagopal - HR Head )</p>
         </div>
     </div>
 </footer>

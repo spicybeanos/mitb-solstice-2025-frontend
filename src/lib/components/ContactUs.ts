@@ -10,6 +10,11 @@ export const information = [
         contact:"+91 79069 52055"
     },
     {
+        position:"Fest HR CC",
+        name:"Rohit Nandagopal ",
+        contact:"+91 72045 87438"
+    },
+    {
         position:"Fest Tech CC",
         name:"Aryan Dalal ",
         contact:"+91 86522 07970"
