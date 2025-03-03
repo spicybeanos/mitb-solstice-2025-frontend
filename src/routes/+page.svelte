@@ -2,6 +2,7 @@
     let landing_solstice = '/media/landing_solstice.svg'
     let tech = '/media/landing_tech.svg'
   import InteractiveHover from "$lib/components/ui/InteractiveHover.svelte";
+import Youtube from "$lib/components/Youtube.svelte";
   import retro from "$lib/retro.svg"
   import matrix from"$lib/matrix2.svg"
   const content = ["A", "B", "C", "D"];
