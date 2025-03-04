@@ -15,6 +15,9 @@
     } from "$lib/components/ui/ThreeDCardEffect/index.js";
     import type { SolsticeTeamInfo } from "$lib/server/BackendTypes.ts";
     import CopyToClipboard from "$lib/components/CopyToClipboard.svelte";
+    import { Link } from "lucide-svelte";
+    import ShareButton from "$lib/components/ShareButton.svelte";
+    import Rulebook from '../../../lib/Rulebook.pdf'
     import BasicButtonFilled from "$lib/components/ui/Basic/BasicButtonFilled.svelte";
 
     let isLoaded = $state(false);
@@ -92,6 +95,11 @@
     let loading = $state(false);
     let error = $state("");
     let successMessage = $state("");
+
+    function openPDF() {
+        let url = Rulebook;
+        window.open(url, "_blank"); 
+    }
 </script>
 
 <div class="centre main">
@@ -100,7 +108,7 @@
         className={`inter-var my-16 fade-in ${isLoaded ? "show" : ""}`}
     >
         <CardBody
-            className=" bg-gray-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-[95%] max-w-[60rem] h-auto rounded-xl p-4 sm:p-6 border mx-auto"
+            className=" bg-gray-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-[#C7AE93]/80 duration-600 dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-[95%] max-w-[60rem] h-auto rounded-xl p-4 sm:p-6 border mx-auto"
         >
             <CardItem
                 {isMouseEntered}
@@ -411,6 +419,19 @@
                     You do not have the pass to register for this event!
                 </div>
             {/if}
+            <div class="flex justify-between text-sm md:text-base pt-2">
+                <div class="flex-col">
+                    <div class="flex justify-evenly underline text-blue-500 space-x-2">
+                        <div class="hidden md:block"><Link></Link></div>
+                        <a href="#" onclick={openPDF}>
+                            RuleBook
+                        </a>
+                    </div>
+                </div>
+                <div class="text-white">
+                    <ShareButton></ShareButton>
+                </div>
+            </div>
         </CardBody>
     </CardContainer>
 </div>
