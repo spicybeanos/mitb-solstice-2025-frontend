@@ -10,7 +10,7 @@
     let { data } = $props();
     let email = $state("");
     let response = $state({
-        error: "",
+        error: null,
         ownsPass: false,
         pass: { name: "", description: "", cost: 0 },
     });
