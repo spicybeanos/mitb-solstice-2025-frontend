@@ -10,11 +10,15 @@ export async function createTicket(ticket: ProblemTicket) {
 }
 
 export async function getTicketsFromEmail(email: string) {
-    const res= await get('')
     return getTicketsFrom_Email(email)
 }
 export async function getUnsolvedTickets() {
-    return getUnsolved_Tickets()
+    const res = await get('support-ticket/');
+    if(res.success == true){
+        return res.result as ProblemTicket[];
+    }else{
+        return null;
+    }
 }
 
 export async function getTicketByTicketID(id: string) {

@@ -1,7 +1,7 @@
 <script lang="ts">
     import BasicHeader from "$lib/components/ui/Basic/BasicHeader.svelte";
 
-    let { data } = $props();
+    let { data } = $props(); 
 </script>
 
 <div class="flex justify-center">
