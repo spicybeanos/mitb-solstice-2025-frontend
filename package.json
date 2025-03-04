@@ -39,6 +39,7 @@
 		"frontend": "file:",
 		"google-auth-library": "^9.15.0",
 		"qrcode": "^1.5.4",
+		"simplex-noise": "^4.0.3",
 		"sqlite3": "^5.1.7",
 		"svelte-hamburgers": "^5.0.0",
 		"svelte-motion": "^0.12.2",

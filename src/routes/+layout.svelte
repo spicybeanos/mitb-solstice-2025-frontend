@@ -10,6 +10,9 @@
    /* import * as Sheet from "$lib/components/ui/sheet";*/
     let hamOpen = $state(false);
     import { checkLoggedIn } from "./GoogleLogin.svelte.ts";
+     import matrix from"$lib/matrix2.svg"
+  import { WavyBackground } from "$lib/components/ui/Waves/index.ts";
+  
     import { Hamburger } from "svelte-hamburgers";
 
     let { children, data } = $props();
@@ -36,19 +39,21 @@
 </script>
 
 
-<div class="desktop pb-[120px]">
-        <a href="/" class="grow max-w-[33%] absolute top-7.5 left-3.5"
+<div class="desktop pb-[120px] z-20">
+    
+        <a href="/" class="grow max-w-[33%] absolute top-7.5 left-3.5 z-50"
             ><img class="logo w-[26vw] md:w-[15vw]" src={logo} alt="logo" /></a
         >
         <FloatingNavbar navItems={navItems} />
 
         <a href="/profile" class="grow flex flex-row justify-end max-w-[33%] absolute top-3.5 right-3.5">
             {#if !UserProfileData.loggedIn}
-                <img class="icon" src={profile_circle} alt="profile" />
+                <img class="icon z-20" src={profile_circle} alt="profile" />
             {:else}
-                <img class="icon" src={UserProfileData.picture} alt="profile" />
+                <img class="icon z-20" src={UserProfileData.picture} alt="profile" />
             {/if}
         </a>
+
 </div>
 
 <div class="mobile">
@@ -57,7 +62,8 @@
             <img class="logo w-[26vw] md:w-[15vw]" src={logo} alt="logo" />
         </a>
         
-        <!-- Hamburger Menu -->
+        <!-- 
+ Menu -->
         <div class="absolute top-4 right-4">
             <Hamburger 
                 bind:open={hamOpen} 
@@ -199,12 +205,14 @@
         </div>
 </div>
 
-<div class="bg-[#1E1E1E]" style="min-height: 70vh; height:fit-content">
-    {@render children()}
+<div class="bg-[#1E1E1E] z-20" style="min-height: 70vh; height:fit-content ">
+    <WavyBackground >       
+        {@render children()}
+    </WavyBackground>
 </div>
 
-<footer class="flex flex-col p-6 md:p-8 text-xs md:text-base text-white" style="z-index: -33333;">
-    <div class="flex flex-row justify-between">
+<footer class="flex flex-col p-6 md:p-8 text-xs md:text-base text-white z-20 bg-[#1e1e1e]" >
+    <div class="flex flex-row justify-between z-50">
         <div class="flex flex-col">
             <p>Manipal Institute of technology</p>
             <p>Yelahanka, Bengaluru</p>
