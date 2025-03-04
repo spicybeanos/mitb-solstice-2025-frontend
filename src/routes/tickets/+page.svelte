@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { UserProfileData } from "../GoogleLogin.svelte.ts";
-    import Button from "$lib/components/Button.svelte";
     import SimpleCard from "$lib/components/SimpleCard.svelte";
     import type { ProblemTicket } from '$lib/server/BackendTypes.ts';
 
@@ -72,6 +71,9 @@
                         >
                             {ticket.description}
                         </div>
+                        {#if ticket.comment != ''}
+                        <div class='text-green-400'>{ticket.comment}</div>
+                        {/if}
                     </div>
                 </SimpleCard>
             </div>

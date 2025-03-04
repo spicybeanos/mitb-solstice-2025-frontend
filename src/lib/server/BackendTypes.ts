@@ -92,5 +92,6 @@ export interface ProblemTicket {
     email: string;
     timestamp: string;
     solved: boolean;
-    solved_by_email: string | null
+    solved_by_email: string | null,
+    comment:string | null
 }

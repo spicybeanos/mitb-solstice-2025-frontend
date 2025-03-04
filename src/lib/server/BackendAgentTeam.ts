@@ -48,3 +48,14 @@ export async function deleteTeam(teamId: string): Promise<SolsticeTeamInfo | nul
     const res = await del<SolsticeTeamInfo>(`team/${teamId}`);
     return res.success ? res.result : null;
 }
+
+export async function disbandTeam(teamID:string) {
+    const parts = await getUsersInTeam(teamID);
+    if(parts != null){
+        for (const usr of parts) {
+             await removeUserFromTeam(teamID,usr.id);
+            
+        }
+    }
+    return await deleteTeam(teamID);
+}

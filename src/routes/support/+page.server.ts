@@ -64,7 +64,8 @@ export const actions = {
                 email: email,
                 timestamp: time,
                 solved: solved,
-                solved_by_email: null
+                solved_by_email: null,
+                comment:''
             };
             createTicket(ticket);
             console.log(ticket);
@@ -75,13 +76,3 @@ export const actions = {
 
     }
 }
-
-//   FormData {
-//    [Symbol(state)]: [
-//        { name: 'name', value: 'Aryan Dalal' },
-//        { name: 'phone', value: '9876543210' },
-//        { name: 'college', value: 'mit blr' },
-//        { name: 'category', value: '1' },
-//        { name: 'description', value: 'i' }
-//      ]
-//    }
