@@ -37,7 +37,6 @@
         alt="retrogrid"
         class="w-screen h-screen absolute top-0 left-0 object-cover sm:hidden"
     />
-    <!-- <img src={matrix} alt="retrogrid" class="size-full object-cover fixed top-0 left-0 max-sm:hidden"  /> -->
     <div
         class="h-screen flex flex-col justify-center items-center w-full overflow-hidden sm:pb-[16rem]"
     >
