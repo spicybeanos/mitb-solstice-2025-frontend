@@ -1,5 +1,6 @@
 <script lang="ts">
     import { page } from "$app/state";
+    import SimpleCard from "$lib/components/SimpleCard.svelte";
     import { error } from "@sveltejs/kit";
 
     function svg() {
@@ -23,26 +24,28 @@
 
 <div class="flex justify-center h-[60vh] items-center">
     <div class=" flex flex-row">
-        <img
-            src={svg().src}
-            width="150px"
-            height="150px"
-            alt="forbidden"
-            class="m-[20px]"
-        />
-        <div>
-            <h1>{page.status} | {svg().title}</h1>
-            <div class="text-white text-lg">
-                {page.error?.message}
+        <SimpleCard>
+            <img
+                src={svg().src}
+                width="150px"
+                height="150px"
+                alt="forbidden"
+                class="m-[20px]"
+            />
+            <div>
+                <h1>{page.status} | {svg().title}</h1>
+                <div class="text-white text-lg">
+                    {page.error?.message}
+                </div>
+                <div class="text-white">
+                    If you think this is an error, please <a
+                        class="text-blue-400"
+                        href="/support">submit a ticket</a
+                    >
+                    or <a class="text-blue-400" href="/contactus">contact us</a>
+                </div>
             </div>
-            <div class="text-white">
-                If you think this is an error, please <a
-                    class="text-blue-400"
-                    href="/support">submit a ticket</a
-                >
-                or <a class="text-blue-400" href="/contactus">contact us</a>
-            </div>
-        </div>
+        </SimpleCard>
     </div>
 </div>
 

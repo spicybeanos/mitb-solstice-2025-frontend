@@ -38,6 +38,7 @@ import Youtube from "$lib/components/Youtube.svelte";
            <a href="/passes"><InteractiveHover text="Book your tickets" class="text-nowrap min-w-[12rem]"></InteractiveHover></a> 
         </div>
     </div>
+    <Youtube />
 
     <div class="max-sm:hidden w-full h-[50vh] mb-24 flex flex-col justify-between text-[#d9d9d9] text-lg sm:text-2xl px-8 z-50">
         <div class="w-full ">
@@ -59,7 +60,6 @@ import Youtube from "$lib/components/Youtube.svelte";
             </div>
         </div>
     </div>
-<Youtube />
 </main>
 
 <style>

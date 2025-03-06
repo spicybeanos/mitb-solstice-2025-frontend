@@ -8,7 +8,7 @@
     import { UserProfileData } from "../GoogleLogin.svelte.ts";
     import { json } from "@sveltejs/kit";
     import SimpleCard from "$lib/components/SimpleCard.svelte";
-    import { Checkbox } from "bits-ui";
+    import InfoCard from "$lib/components/InfoCard.svelte";
 
     let { data } = $props();
 
@@ -45,10 +45,6 @@
         <GoogleLogin cookieJwt={data.authToken} />
     {:else}
         <div>
-            <!-- transition:fly={{
-            y: -200,
-            duration: 200,
-        }} -->
             <div class="flex w-full h-full justify-between mb-4 max-sm:px-4">
                 <div class="flex w-[20%] justify-between gap-3 sm:gap-4">
                     <img
@@ -67,7 +63,7 @@
                     <Button danger OnClicked={LogOut}>Sign Out</Button>
                 </div>
             </div>
-
+            <InfoCard><div>Make sure you bring your ID card when attending any event!</div></InfoCard>
             {#if data.user == null}
                 <h1 class="w-full text-center sm:py-4 py-8">
                     You haven't registered yet!
@@ -121,7 +117,7 @@
                                 ></TextInput>
                             {/if}
                             <Button OnClicked={() => {}}
-                                ><div style="color: white ;">
+                                ><div style="color: white ;" class="border border-white p-[12px] rounded-lg">
                                     Submit
                                 </div></Button
                             >
@@ -171,7 +167,7 @@
                                 text={data?.user?.mahe_registration_number}
                             ></TextInput>
                             <Button OnClicked={() => {}}
-                                ><div style="color: white;">Submit</div></Button
+                                ><div style="color: white;" class="border border-white p-[12px] rounded-lg">Submit</div></Button
                             >
                         </form>
                         <span class="text-white"
