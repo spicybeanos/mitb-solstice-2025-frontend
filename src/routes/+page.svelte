@@ -1,18 +1,25 @@
 <script lang="ts">
     let landing_solstice = '/media/landing_solstice.svg'
     let tech = '/media/landing_tech.svg'
-  import InteractiveHover from "$lib/components/ui/InteractiveHover.svelte";
-import Youtube from "$lib/components/Youtube.svelte";
-  import retro from "$lib/retro.svg"
-  import matrix from"$lib/matrix2.svg"
-  const content = ["A", "B", "C", "D"];
+    import InteractiveHover from "$lib/components/ui/InteractiveHover.svelte";
+    import { useViewportScroll, useTransform, Motion } from 'svelte-motion';
+    import retro from "$lib/retro.svg"
+    import matrix from"$lib/matrix2.svg"
+  import Youtube from "$lib/components/Youtube.svelte";
+    const content = ["A", "B", "C", "D"];
+    let gridRef: HTMLDivElement;
+    const { scrollYProgress } = useViewportScroll();    
+	const translateFirst = useTransform(scrollYProgress, [0, 1], ["100%", "80%"]);
+	const translateSecond = useTransform(scrollYProgress, [0, 1], [0, 200]);
+	const translateThird = useTransform(scrollYProgress, [0, 1], [0, -200]);
+
 </script>
 
 <main class="flex flex-col items-center justify-center min-h-screen">
-    <img src={retro} alt="retrogrid" class="w-screen h-screen absolute top-0 left-0 object-cover sm:hidden" />
+    <!-- <img src={retro} alt="retrogrid" class="w-screen h-screen absolute top-0 left-0 object-cover sm:hidden" /> -->
     <!-- <img src={matrix} alt="retrogrid" class="size-full object-cover fixed top-0 left-0 max-sm:hidden"  /> -->
     <div class="h-screen flex flex-col justify-center items-center w-full overflow-hidden sm:pb-[16rem]">
-        <div class="relative  h-[70%] w-[90%] flex flex-col justify-center items-center text-white gap-5 md:gap-3">
+        <div class="relative  h-[70%] w-[90%] flex flex-col justify-center items-center text-white gap-5 md:gap-3 max-sm:pb-36">
              <img src={tech} class="sm:w-[25%] w-[45%] z-20 mt-[120px]" alt="tech"/>
              <img src={landing_solstice} class="sm:w-3/5 w-full z-20" alt="solstice"/>
             <a href="/passes" class="pt-12"><InteractiveHover text="Book your tickets" class="text-nowrap min-w-[12rem] z-20"></InteractiveHover></a> 
@@ -59,7 +66,7 @@ import Youtube from "$lib/components/Youtube.svelte";
             </div>
         </div>
     </div>
-<Youtube />
+    <Youtube />
 </main>
 
 <style>
