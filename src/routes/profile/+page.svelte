@@ -63,7 +63,11 @@
                     <Button danger OnClicked={LogOut}>Sign Out</Button>
                 </div>
             </div>
-            <InfoCard><div>Make sure you bring your ID card when attending any event!</div></InfoCard>
+            <InfoCard
+                ><div>
+                    Make sure you bring your ID card when attending any event!
+                </div></InfoCard
+            >
             {#if data.user == null}
                 <h1 class="w-full text-center sm:py-4 py-8">
                     You haven't registered yet!
@@ -74,7 +78,10 @@
                         <h1 class="w-full text-center text-2xl font-semibold">
                             Register
                         </h1>
-                        <div class="text-white">If you have already registered, please refresh the page.</div>
+                        <div class="text-white">
+                            If you have already registered, please refresh the
+                            page.
+                        </div>
                         <form
                             action="?/register"
                             method="post"
@@ -117,7 +124,10 @@
                                 ></TextInput>
                             {/if}
                             <Button OnClicked={() => {}}
-                                ><div style="color: white ;" class="border border-white p-[12px] rounded-lg">
+                                ><div
+                                    style="color: white ;"
+                                    class="border border-white p-[12px] rounded-lg"
+                                >
                                     Submit
                                 </div></Button
                             >
@@ -140,34 +150,24 @@
                             method="post"
                             class="w-[80vw] sm:w-[60vw] grid place-items-center pt-6 gap-6"
                         >
-                            <TextInput
-                                placeholder="First Name"
-                                name="f-name"
-                                required
-                                text={data?.user?.first_name}
-                            ></TextInput>
-                            <TextInput
-                                placeholder="Last Name"
-                                name="l-name"
-                                required
-                                text={data?.user?.last_name}
-                            ></TextInput>
-                            <TextInput
-                                placeholder="Phone Number"
-                                name="ph-num"
-                                type="number"
-                                required
-                                text={data?.user?.phone_number}
-                            ></TextInput>
-                            <TextInput
-                                placeholder="Mahe Registration Number"
-                                name="mahe_num_update"
-                                type="number"
-                                required
-                                text={data?.user?.mahe_registration_number}
-                            ></TextInput>
+                            <label>
+                                Mobile Number:
+                                <TextInput
+                                    placeholder="Phone Number"
+                                    name="ph-num"
+                                    type="number"
+                                    required
+                                    text={data?.user?.phone_number}
+                                ></TextInput>
+                            </label>
+
                             <Button OnClicked={() => {}}
-                                ><div style="color: white;" class="border border-white p-[12px] rounded-lg">Submit</div></Button
+                                ><div
+                                    style="color: white;"
+                                    class="border border-white p-[12px] rounded-lg"
+                                >
+                                    Submit
+                                </div></Button
                             >
                         </form>
                         <span class="text-white"
@@ -190,5 +190,4 @@
     div {
         color: white;
     }
-   
 </style>

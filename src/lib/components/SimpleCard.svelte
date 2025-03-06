@@ -16,6 +16,7 @@
         padding: 15px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         transition: all 0.3s ease-in-out;
+        margin: 10px;
     }
 
     div:hover{
