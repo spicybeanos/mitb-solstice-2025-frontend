@@ -64,12 +64,11 @@
         
         <!-- 
  Menu -->
-        <div class="absolute top-4 right-4">
+        <div class="absolute top-4 right-4 z-50">
             <Hamburger 
                 bind:open={hamOpen} 
                 --color="white"
                 type="spin"
-                class="z-50"
             />
         </div>
 
