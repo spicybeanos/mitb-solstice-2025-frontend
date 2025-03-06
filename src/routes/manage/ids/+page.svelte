@@ -6,11 +6,12 @@
     import { fade, fly } from "svelte/transition";
 
     let email = $state("");
+    let userid = $state("");
     let loaded = $state(false);
     let response: { error: string | null; userData: SolsticeUser | null } =
         $state({ error: null, userData: null });
 
-    async function getUserDetails() {
+    async function getUserDetailsByEmail() {
         loaded = false;
         let base_url =
             window === undefined
@@ -21,6 +22,29 @@
         console.log(email_q);
         let url: URL = new URL("manage/ids", base_url);
         url.searchParams.append("email", email);
+
+        const res = await fetch(url.toString(), { method: "GET" });
+        if (res.status == 200) {
+            const info = await res.json();
+            response.error = null;
+            response.userData = info.userData;
+        } else {
+            const info = await res.json();
+            response.error = info.error;
+        }
+        loaded = true;
+    }
+    async function getUserDetailsByUserID() {
+        loaded = false;
+        let base_url =
+            window === undefined
+                ? "http://localhost:5173/manage/ids"
+                : (window as any).location.origin;
+
+        const userid_q = encodeURIComponent(userid);
+        console.log(userid_q);
+        let url: URL = new URL("manage/ids", base_url);
+        url.searchParams.append("userid", userid);
 
         const res = await fetch(url.toString(), { method: "GET" });
         if (res.status == 200) {
@@ -48,7 +72,26 @@
             />
             <BasicButtonFilled
                 OnClick={() => {
-                    getUserDetails();
+                    getUserDetailsByEmail();
+                }}><b>GO</b></BasicButtonFilled
+            >
+            <BasicButtonOutline
+                OnClick={() => {
+                    loaded = false;
+                }}><b>RESET</b></BasicButtonOutline
+            >
+        </div>
+        <div>
+            <BasicInput
+                required
+                name="userid"
+                type="userid"
+                placeholder="User ID"
+                bind:value={userid}
+            />
+            <BasicButtonFilled
+                OnClick={() => {
+                    getUserDetailsByUserID();
                 }}><b>GO</b></BasicButtonFilled
             >
             <BasicButtonOutline
@@ -74,7 +117,7 @@
                         <div>
                             Phone number : {response.userData.phone_number}
                         </div>
-                        <div>User ID : {response.userData.id}</div>
+                        <div>User ID : <code>{response.userData.id}</code></div>
                         <div>
                             Registration number : {response.userData
                                 .mahe_registration_number}

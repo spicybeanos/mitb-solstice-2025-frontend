@@ -4,12 +4,10 @@
     // import logo from "$lib/falak.png";
     import logo from '$lib/icons/logo.svg'
     import profile_circle from "$lib/icons/account.svg";
-    import hamburger from '$lib/icons/hamburger.svg'
     import {FloatingNavbar} from '../lib/components/ui/FloatingNavBar/index.ts';
     import { onMount } from "svelte";
     import { checkLoggedIn } from "./GoogleLogin.svelte.ts";
-     import matrix from"$lib/matrix2.svg"
-     import retro from "$lib/retro.svg"
+
   import { WavyBackground } from "$lib/components/ui/Waves/index.ts";
   import { Hamburger } from "svelte-hamburgers";
   

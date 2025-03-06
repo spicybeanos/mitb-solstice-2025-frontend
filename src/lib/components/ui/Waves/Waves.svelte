@@ -10,20 +10,25 @@
 	export let colors: string[] | undefined = undefined;
 	export let waveWidth: number | undefined = undefined;
 	export let backgroundFill: string | undefined = undefined;
-	export let speed: 'slow' | 'fast' | undefined = 'fast';
+	export let speed: "slow" | "fast" | undefined = "fast";
 	export let waveOpacity: number | undefined = 0.5;
 
-
 	const noise = createNoise3D();
-	let w: number, h: number, nt: number, i: number, x: number, ctx: any, canvas: any;
+	let w: number,
+		h: number,
+		nt: number,
+		i: number,
+		x: number,
+		ctx: any,
+		canvas: any;
 
 	let canvasRef: HTMLCanvasElement;
 
 	const getSpeed = () => {
 		switch (speed) {
-			case 'slow':
+			case "slow":
 				return 0.001;
-			case 'fast':
+			case "fast":
 				return 0.002;
 			default:
 				return 0.001;
@@ -33,8 +38,8 @@
 	const init = () => {
 		console.log(canvasRef);
 		canvas = canvasRef;
-		ctx = canvas.getContext('2d');
-		console.log('ctx', ctx);
+		ctx = canvas.getContext("2d");
+		console.log("ctx", ctx);
 		w = ctx.canvas.width = window.innerWidth;
 		h = ctx.canvas.height = window.innerHeight;
 		nt = 0;
@@ -45,47 +50,55 @@
 		render();
 	};
 
-	const waveColors = colors ?? ['#38bdf8', '#818cf8', '#c084fc', '#e879f9', '#22d3ee'];
-	
-const drawWave = (n: number) => {
-    nt += getSpeed();
-    for (i = 0; i < n; i++) {
-        // Create a strip effect by drawing multiple 1px lines
-        const stripWidth = waveWidth || 50;
-        for (let lineOffset = 0; lineOffset < stripWidth; lineOffset++) {
-            ctx.beginPath();
-            ctx.lineWidth = 1; // Set line width to 1px
-            ctx.strokeStyle = waveColors[i % waveColors.length];
-            
-            for (x = 0; x < w; x += 45) {
-                // Add some subtle variation to each line within the strip
-                const variation = noise(x / 800, 0.3 * i + lineOffset / stripWidth, nt) * 100;
-                const y = variation + h * 0.5 + lineOffset;
-                ctx.lineTo(x, y);
-            }
-            ctx.stroke();
-            ctx.closePath();
-        }
-    }
-};
+	const waveColors = colors ?? [
+		"#38bdf8",
+		"#818cf8",
+		"#c084fc",
+		"#e879f9",
+		"#22d3ee",
+	];
+
+	const drawWave = (n: number) => {
+		nt += getSpeed();
+		for (i = 0; i < n; i++) {
+			// Create a strip effect by drawing multiple 1px lines
+			const stripWidth = waveWidth || 50;
+			for (let lineOffset = 0; lineOffset < stripWidth; lineOffset++) {
+				ctx.beginPath();
+				ctx.lineWidth = 1; // Set line width to 1px
+				ctx.strokeStyle = waveColors[i % waveColors.length];
+
+				for (x = 0; x < w; x += 45) {
+					// Add some subtle variation to each line within the strip
+					const variation =
+						noise(x / 800, 0.3 * i + lineOffset / stripWidth, nt) *
+						100;
+					const y = variation + h * 0.5 + lineOffset;
+					ctx.lineTo(x, y);
+				}
+				ctx.stroke();
+				ctx.closePath();
+			}
+		}
+	};
 
 	let animationId: number;
 	let lastFrameTime = 0;
-	const targetFPS = 30; 
+	const targetFPS = 30;
 	const frameInterval = 1000 / targetFPS;
-	const render = ( timestamp = 0 ) => {
+	const render = (timestamp = 0) => {
 		const elapsed = timestamp - lastFrameTime;
-    
-    if (elapsed > frameInterval) {
-        lastFrameTime = timestamp - (elapsed % frameInterval);
-        
-        ctx.fillStyle = backgroundFill || 'black';
-        ctx.globalAlpha = waveOpacity || 0.5;
-        ctx.fillRect(0, 0, w, h);
-        drawWave(1.5);
-    }
-    
-    animationId = requestAnimationFrame(render);
+
+		if (elapsed > frameInterval) {
+			lastFrameTime = timestamp - (elapsed % frameInterval);
+
+			ctx.fillStyle = backgroundFill || "black";
+			ctx.globalAlpha = waveOpacity || 0.5;
+			ctx.fillRect(0, 0, w, h);
+			drawWave(1.5);
+		}
+
+		animationId = requestAnimationFrame(render);
 	};
 
 	onMount(() => {
@@ -94,10 +107,13 @@ const drawWave = (n: number) => {
 			cancelAnimationFrame(animationId);
 		};
 	});
-	
 </script>
 
-	<canvas class="fixed inset-0 z-0 max-sm:hidden" bind:this={canvasRef} id="canvas"></canvas>
-	<div class={cn('relative z-10', className)} {...$$props}>
-		<slot />
-	</div>
+<canvas
+	class="fixed inset-0 z-0 max-sm:hidden"
+	bind:this={canvasRef}
+	id="canvas"
+></canvas>
+<div class={cn("relative z-10", className)} {...$$props}>
+	<slot />
+</div>

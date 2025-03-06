@@ -2,12 +2,14 @@
     import Button from "$lib/components/Button.svelte";
     import { fly } from "svelte/transition";
     import TextInput from "$lib/components/TextInput.svelte";
+    import QR from "$lib/components/QR.svelte";
     import GoogleLogin from "../GoogleLogin.svelte";
     import { isSigningOut } from "../GoogleLogin.svelte.ts";
 
     import { UserProfileData } from "../GoogleLogin.svelte.ts";
     import { json } from "@sveltejs/kit";
     import SimpleCard from "$lib/components/SimpleCard.svelte";
+    import InfoCard from "$lib/components/InfoCard.svelte";
 
     let { data } = $props();
 
@@ -44,10 +46,6 @@
         <GoogleLogin cookieJwt={data.authToken} />
     {:else}
         <div>
-            <!-- transition:fly={{
-            y: -200,
-            duration: 200,
-        }} -->
             <div class="flex w-full h-full justify-between mb-4 max-sm:px-4">
                 <div class="flex w-[20%] justify-between gap-3 sm:gap-4">
                     <img
@@ -66,7 +64,16 @@
                     <Button danger OnClicked={LogOut}>Sign Out</Button>
                 </div>
             </div>
-
+            <InfoCard
+                ><div>
+                    Make sure you bring your ID card when attending any event!
+                </div>
+            </InfoCard>
+            {#if data.user != null}
+                <div class="flex justify-center">
+                    <QR text={data.user.id} />
+                </div>
+            {/if}
             {#if data.user == null}
                 <h1 class="w-full text-center sm:py-4 py-8">
                     You haven't registered yet!
@@ -77,7 +84,10 @@
                         <h1 class="w-full text-center text-2xl font-semibold">
                             Register
                         </h1>
-                        <div class="text-white">If you have already registered, please refresh the page.</div>
+                        <div class="text-white">
+                            If you have already registered, please refresh the
+                            page.
+                        </div>
                         <form
                             action="?/register"
                             method="post"
@@ -120,7 +130,10 @@
                                 ></TextInput>
                             {/if}
                             <Button OnClicked={() => {}}
-                                ><div style="color: white ;">
+                                ><div
+                                    style="color: white ;"
+                                    class="border border-white p-[12px] rounded-lg"
+                                >
                                     Submit
                                 </div></Button
                             >
@@ -143,34 +156,24 @@
                             method="post"
                             class="w-[80vw] sm:w-[60vw] grid place-items-center pt-6 gap-6"
                         >
-                            <TextInput
-                                placeholder="First Name"
-                                name="f-name"
-                                required
-                                text={data?.user?.first_name}
-                            ></TextInput>
-                            <TextInput
-                                placeholder="Last Name"
-                                name="l-name"
-                                required
-                                text={data?.user?.last_name}
-                            ></TextInput>
-                            <TextInput
-                                placeholder="Phone Number"
-                                name="ph-num"
-                                type="number"
-                                required
-                                text={data?.user?.phone_number}
-                            ></TextInput>
-                            <TextInput
-                                placeholder="Mahe Registration Number"
-                                name="mahe_num_update"
-                                type="number"
-                                required
-                                text={data?.user?.mahe_registration_number}
-                            ></TextInput>
+                            <label>
+                                Mobile Number:
+                                <TextInput
+                                    placeholder="Phone Number"
+                                    name="ph-num"
+                                    type="number"
+                                    required
+                                    text={data?.user?.phone_number}
+                                ></TextInput>
+                            </label>
+
                             <Button OnClicked={() => {}}
-                                ><div style="color: white;">Submit</div></Button
+                                ><div
+                                    style="color: white;"
+                                    class="border border-white p-[12px] rounded-lg"
+                                >
+                                    Submit
+                                </div></Button
                             >
                         </form>
                         <span class="text-white"
@@ -193,5 +196,4 @@
     div {
         color: white;
     }
-   
 </style>

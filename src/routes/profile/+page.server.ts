@@ -1,5 +1,5 @@
 import { verifyAndGetUser } from '$lib/server/Backend';
-import { getUserId, registerUser, updateUserInfo } from '$lib/server/BackendAgentUser';
+import { getUserId, getUserInfo, registerUser, updateUserInfo } from '$lib/server/BackendAgentUser';
 import { getUserObjectFromJWT } from '$lib/server/GAuth';
 import { error, fail, json, redirect } from '@sveltejs/kit';
 
@@ -25,7 +25,7 @@ export const actions = {
             const lname = form.get('last_name') as string;
             const phone = form.get('phone_num') as string;
             const is_mahe = form.get('is_mahe');
-            if (is_mahe == null) { return fail(400, { error: 'is mahe student field is null!' }); }
+            if (is_mahe == null) { return fail(400, { error: 'mahe student field is null!' }); }
             const reg = parseInt(form.get('mahe_num') as string);
 
             const soluser = registerUser({
@@ -41,7 +41,7 @@ export const actions = {
             return { success: true };
 
         } catch (err) {
-            return { success: false,error:'An error occurred while parsing form' };
+            return { success: false, error: 'An error occurred while parsing form' };
         }
 
 
@@ -56,18 +56,18 @@ export const actions = {
             }
             const user = getUserObjectFromJWT(jwt);
             const form = await request.formData();
-            const fname = form.get('f-name') as string;
-            const lname = form.get('l-name') as string;
             const phone = form.get('ph-num') as string;
-            const reg = parseInt(form.get('mahe_num_update') as string);
             const uid = await getUserId(user.email);
+            if (uid == null) { return fail(400, { error: 'User with this email does not exist!' }); }
+            const og = await getUserInfo(uid);
+            if (og == null) { return fail(400, { error: 'User does not exist in records!' }) }
             const userObject = {
                 email_address: user.email,
-                first_name: fname,
-                last_name: lname,
+                first_name: og.first_name,
+                last_name: og.last_name,
                 phone_number: phone,
-                mahe_registration_number: reg,
-                pass_id: "",
+                mahe_registration_number: og.mahe_registration_number,
+                pass_id: og.pass_id,
                 id: String(uid)
             }
             try {
