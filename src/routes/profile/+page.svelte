@@ -8,7 +8,6 @@
     import { UserProfileData } from "../GoogleLogin.svelte.ts";
     import { json } from "@sveltejs/kit";
     import SimpleCard from "$lib/components/SimpleCard.svelte";
-    import { Checkbox } from "bits-ui";
 
     let { data } = $props();
 
