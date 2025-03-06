@@ -44,7 +44,7 @@
         </select>
 
         <a href={`/manage/events/${eventID.trim()}/edit`}>Edit event</a>
-        <a href={`/manage/events/create`}
+        <a href={`/manage/create/event`}
             >Create event (Admin)</a
         >
         <a href={`/manage/events/${eventID.trim()}/teams`}>View teams</a>

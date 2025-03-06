@@ -40,6 +40,7 @@ export const actions = {
         }
 
         const form = await request.formData();
+        if (form == null) { return fail(400, { msg: 'no form!' }); }
 
         const name = form.get('name') as string | null;
         const desc = form.get('desc') as string | null;

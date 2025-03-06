@@ -12,7 +12,9 @@ export async function checkAdminAccess(jwt: string | null | undefined): Promise<
     const user = await verifyAndGetUser(jwt);
     if (user.success == false) { return false; }
     if (user.result == null) { return false; }
-    if (user.result.email_address in admins) { return true; }
+    for (const e of admins) {
+        if (user.result.email_address == e) { return true; }
+    }
     return false;
 }
 export async function check_manage_Access(jwt: string | null | undefined) {

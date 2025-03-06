@@ -88,6 +88,14 @@ export async function updateEventDetails(eventID: string, info: UpdateEvent) {
     return { success: false, error: body,code:500};
 }
 
+export async function createEvent(info: UpdateEvent) {
+    const res = await post(`event/`, info);
+
+    if (res.success) return { success: true };
+    const body = await res.error
+    return { success: false, error: body,code:500};
+}
+
 export async function getUser_s_TeamIDInEvent(userID: string, eventID: string): Promise<string | null> {
     const teams = await getTeams(eventID);
     if (!teams) return null;
