@@ -1,4 +1,5 @@
 <script lang="ts">
+
     interface SolEvent {
         name: string;
         description: string | null;

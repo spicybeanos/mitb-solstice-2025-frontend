@@ -6,12 +6,12 @@
     import profile_circle from "$lib/icons/account.svg";
     import {FloatingNavbar} from '../lib/components/ui/FloatingNavBar/index.ts';
     import { onMount } from "svelte";
-   /* import * as Sheet from "$lib/components/ui/sheet";*/
-    let hamOpen = $state(false);
     import { checkLoggedIn } from "./GoogleLogin.svelte.ts";
+
   import { WavyBackground } from "$lib/components/ui/Waves/index.ts";
+  import { Hamburger } from "svelte-hamburgers";
   
-    import { Hamburger } from "svelte-hamburgers";
+  let hamOpen = $state(false);
 
     let { children, data } = $props();
     let manageAccess = data.manageAccess;
@@ -54,14 +54,13 @@
 
 </div>
 
-<div class="mobile">
+
+<!-- <div class="mobile">
     <div class="relative w-full">
         <a href="/" class="grow max-w-[33%] absolute top-[1.25rem] left-0">
             <img class="logo w-[26vw] md:w-[15vw]" src={logo} alt="logo" />
         </a>
         
-        <!-- 
- Menu -->
         <div class="absolute top-4 right-4 z-50">
             <Hamburger 
                 bind:open={hamOpen} 
@@ -70,7 +69,6 @@
             />
         </div>
 
-        <!-- Sheet/Sidebar -->
         <div class="sheet-overlay" class:active={hamOpen} onclick={() => hamOpen = false}></div>
         <div class="sheet" class:active={hamOpen}>
             <div class="sheet-content">
@@ -102,25 +100,22 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 <div class="mobile">
-    <div class="relative w-full">
-        <a href="/" class="grow max-w-[33%] absolute top-[1.25rem] left-0">
+    <div class="relative w-full h-[6.5rem]">
+        <a href="/" class="grow max-w-[33%] absolute top-[1.25rem] left-0 z-20">
             <img class="logo w-[26vw] md:w-[15vw]" src={logo} alt="logo" />
         </a>
         
-        <!-- Hamburger Menu -->
-        <div class="absolute top-4 right-4">
+        <div class="absolute top-4 right-4 z-20">
             <Hamburger 
                 bind:open={hamOpen} 
                 --color="white"
                 type="spin"
-                class="z-50"
             />
         </div>
 
-        <!-- Sheet/Sidebar -->
         <div class="sheet-overlay" class:active={hamOpen} onclick={() => hamOpen = false}></div>
         <div class="sheet" class:active={hamOpen}>
             <div class="sheet-content">
@@ -156,7 +151,7 @@
 
 
 
-<div class="mobile">
+<!-- <div class="mobile">
         <div
             class="relative w-full"
         >
@@ -168,16 +163,17 @@
                 /></a
             >
         </div>
-</div>
+</div> -->
 
 <div class="bg-[#1E1E1E] z-20" style="min-height: 70vh; height:fit-content ">
+    <img src={retro} alt="retrogrid" class="w-screen h-screen fixed top-0 left-0 object-cover sm:hidden" />
     <WavyBackground >       
         {@render children()}
     </WavyBackground>
 </div>
 
 <footer class="flex flex-col p-6 md:p-8 text-xs md:text-base text-white z-20 bg-[#1e1e1e]" >
-    <div class="flex flex-row justify-between z-50">
+    <div class="flex flex-row justify-between z-30">
         <div class="flex flex-col">
             <p>Manipal Institute of technology</p>
             <p>Yelahanka, Bengaluru</p>
@@ -188,8 +184,6 @@
             <p>Contact @</p>
             <p>+91 79069 52055</p>
             <p>( Atharva Maikhuri - HR Head )</p>
-            <p>+91 72045 87438</p>
-            <p>( Rohit Nandagopal - HR Head )</p>
         </div>
     </div>
 </footer>
@@ -266,7 +260,7 @@
 .sheet-content {
     padding: 6rem 2rem 2rem;
     height: 100%;
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 
 .profile-link {
