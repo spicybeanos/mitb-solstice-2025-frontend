@@ -2,6 +2,7 @@
     import Button from "$lib/components/Button.svelte";
     import { fly } from "svelte/transition";
     import TextInput from "$lib/components/TextInput.svelte";
+    import QR from "$lib/components/QR.svelte";
     import GoogleLogin from "../GoogleLogin.svelte";
     import { isSigningOut } from "../GoogleLogin.svelte.ts";
 
@@ -66,8 +67,13 @@
             <InfoCard
                 ><div>
                     Make sure you bring your ID card when attending any event!
-                </div></InfoCard
-            >
+                </div>
+            </InfoCard>
+            {#if data.user != null}
+                <div class="flex justify-center">
+                    <QR text={data.user.id} />
+                </div>
+            {/if}
             {#if data.user == null}
                 <h1 class="w-full text-center sm:py-4 py-8">
                     You haven't registered yet!

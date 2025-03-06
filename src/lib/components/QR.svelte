@@ -1,26 +1,26 @@
 <script lang="ts">
-    import QRCode from 'qrcode';
-    import { onMount } from 'svelte';
-    
-    export let text: string = '';
+    import QRCode from "qrcode";
+    import { onMount } from "svelte";
+
+    let { text } = $props();
     let canvas: HTMLCanvasElement;
-    
+
     onMount(async () => {
         try {
             await QRCode.toCanvas(canvas, text, {
                 width: 200,
                 margin: 1,
                 color: {
-                    dark: '#000000',
-                    light: '#ffffff'
-                }
+                    dark: "#000000",
+                    light: "#ffffff",
+                },
             });
         } catch (error) {
-            console.error('Error generating QR code:', error);
+            console.error("Error generating QR code:", error);
         }
     });
 </script>
 
-<canvas bind:this={canvas}></canvas>
-
-<canvas bind:this={canvas}></canvas>
+<div>
+    <canvas bind:this={canvas}></canvas>
+</div>

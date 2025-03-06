@@ -57,7 +57,7 @@
 
     <div class="eventCont">
         <div class="e-centre" in:fade={{ duration: 300, delay: 150 }}>
-            {#if loading==true}
+            {#if loading==true} 
             <div class="flex flex-col justify-center">
                 <div class="flex justify-center">
                     <Loader2></Loader2>
