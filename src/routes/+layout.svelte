@@ -7,12 +7,13 @@
     import hamburger from '$lib/icons/hamburger.svg'
     import {FloatingNavbar} from '../lib/components/ui/FloatingNavBar/index.ts';
     import { onMount } from "svelte";
-    import * as Sheet from "$lib/components/ui/sheet";
     import { checkLoggedIn } from "./GoogleLogin.svelte.ts";
      import matrix from"$lib/matrix2.svg"
      import retro from "$lib/retro.svg"
   import { WavyBackground } from "$lib/components/ui/Waves/index.ts";
+  import { Hamburger } from "svelte-hamburgers";
   
+  let hamOpen = $state(false);
 
     let { children, data } = $props();
     let manageAccess = data.manageAccess;
@@ -56,53 +57,115 @@
 </div>
 
 
+<!-- <div class="mobile">
+    <div class="relative w-full">
+        <a href="/" class="grow max-w-[33%] absolute top-[1.25rem] left-0">
+            <img class="logo w-[26vw] md:w-[15vw]" src={logo} alt="logo" />
+        </a>
+        
+        <div class="absolute top-4 right-4 z-50">
+            <Hamburger 
+                bind:open={hamOpen} 
+                --color="white"
+                type="spin"
+            />
+        </div>
+
+        <div class="sheet-overlay" class:active={hamOpen} onclick={() => hamOpen = false}></div>
+        <div class="sheet" class:active={hamOpen}>
+            <div class="sheet-content">
+                <a href="/profile" class="profile-link" onclick={() => hamOpen = false}>
+                    {#if !UserProfileData.loggedIn}
+                        <div class="flex items-center justify-center gap-4">
+                            <img class="icon" src={profile_circle} alt="profile" />
+                            <span class="text-lg font-semibold">Log in</span>
+                        </div>
+                    {:else}
+                        <div class="flex items-center justify-center gap-4">
+                            <img class="icon" src={UserProfileData.picture} alt="profile" />
+                            <span class="text-lg font-semibold">{UserProfileData.name}</span>
+                        </div>
+                    {/if}
+                </a>
+
+                <div class="nav-links">
+                    {#each navItems as navItem}
+                        <a 
+                            href={navItem.link} 
+                            class="nav-item"
+                            onclick={() => hamOpen = false}
+                        >
+                            {navItem.name}
+                        </a>
+                    {/each}
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
 <div class="mobile">
+    <div class="relative w-full h-[6.5rem]">
+        <a href="/" class="grow max-w-[33%] absolute top-[1.25rem] left-0 z-20">
+            <img class="logo w-[26vw] md:w-[15vw]" src={logo} alt="logo" />
+        </a>
+        
+        <div class="absolute top-4 right-4 z-20">
+            <Hamburger 
+                bind:open={hamOpen} 
+                --color="white"
+                type="spin"
+            />
+        </div>
+
+        <div class="sheet-overlay" class:active={hamOpen} onclick={() => hamOpen = false}></div>
+        <div class="sheet" class:active={hamOpen}>
+            <div class="sheet-content">
+                <a href="/profile" class="profile-link" onclick={() => hamOpen = false}>
+                    {#if !UserProfileData.loggedIn}
+                        <div class="flex items-center justify-center gap-4">
+                            <img class="icon" src={profile_circle} alt="profile" />
+                            <span class="text-lg font-semibold">Log in</span>
+                        </div>
+                    {:else}
+                        <div class="flex items-center justify-center gap-4">
+                            <img class="icon" src={UserProfileData.picture} alt="profile" />
+                            <span class="text-lg font-semibold">{UserProfileData.name}</span>
+                        </div>
+                    {/if}
+                </a>
+
+                <div class="nav-links">
+                    {#each navItems as navItem}
+                        <a 
+                            href={navItem.link} 
+                            class="nav-item"
+                            onclick={() => hamOpen = false}
+                        >
+                            {navItem.name}
+                        </a>
+                    {/each}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- <div class="mobile">
         <div
-            class="relative w-full h-[6.5rem]"
+            class="relative w-full"
         >
-            <!-- <a href="/" class="grow max-w-[33%] absolute top-[1.25rem] left-0 z-20" -->
-             <a href="/" class="grow max-w-[33%] absolute top-[1.25rem] left-0 z-20"
+            <a href="/" class="grow max-w-[33%] absolute top-[1.25rem] left-0"
                 ><img
-                    class="logo w-[26vw] md:w-[15vw] z-20"
+                    class="logo w-[26vw] md:w-[15vw]"
                     src={logo}
                     alt="logo"
                 /></a
             >
-            <Sheet.Root open={open} >
-                <!-- <Sheet.Trigger><img src={hamburger} alt="menu" width={35} height={35} class="cursor-pointer hover:scale-110 transition-all absolute top-4.5 right-3.5 z-20" /></Sheet.Trigger> -->
-                <Sheet.Trigger><img src={hamburger} alt="menu" width={35} height={35} class="cursor-pointer hover:scale-110 transition-all absolute top-4.5 right-3.5 z-20" /></Sheet.Trigger>
-                <Sheet.Content class="bg-black text-white">
-                  <Sheet.Header class="mt-8 mb-16">
-                    <a href="/profile" class="sm:my-8 px-6 grow flex flex-row justify-center border-[0.25px] border-white rounded-full h-[50%] w-full"  onclick={toggleOpen}>
-                        <Sheet.Title class="w-full h-[10%] flex justify-center items-center gap-2 rounded-full p-1 text-light-100">
-                            {#if !UserProfileData.loggedIn}
-                                <div class="flex w-full items-center justify-center bg-amber-50">
-                                    <img class="icon" src={profile_circle} alt="profile" />
-                                    <h2 class="ml-4 self-center text-sm sm:text-2xl font-semibold text-white text-nowrap">Log in</h2>
-                                </div>
-                            {:else}
-                                <div class="flex w-full items-center justify-center">
-                                    <img class="icon" src={UserProfileData.picture} alt="profile" />
-                                    <h2 class="ml-4 self-center text-sm sm:text-2xl font-semibold text-white text-nowrap">{UserProfileData.name}</h2>
-                                </div>
-                            {/if}
-                        </Sheet.Title>
-                    </a>
-                    <Sheet.Description class="flex flex-col mt-6">
-                        {#each navItems as navItem, idx (`link=${idx}`)}
-                            <a
-                                href={navItem.link}
-                                class="py-4 w-full p-2 bg-amber-200 rounded-full "
-                            >
-                                <span class="text-sm text-black w-full text-center">{navItem.name}</span>
-                            </a>
-                        {/each}
-                    </Sheet.Description>
-                  </Sheet.Header>
-                </Sheet.Content>
-              </Sheet.Root>
         </div>
-</div>
+</div> -->
 
 <div class="bg-[#1E1E1E] z-20" style="min-height: 70vh; height:fit-content ">
     <img src={retro} alt="retrogrid" class="w-screen h-screen fixed top-0 left-0 object-cover sm:hidden" />
@@ -112,7 +175,7 @@
 </div>
 
 <footer class="flex flex-col p-6 md:p-8 text-xs md:text-base text-white z-20 bg-[#1e1e1e]" >
-    <div class="flex flex-row justify-between z-50">
+    <div class="flex flex-row justify-between z-30">
         <div class="flex flex-col">
             <p>Manipal Institute of technology</p>
             <p>Yelahanka, Bengaluru</p>
@@ -161,4 +224,78 @@
             display: block;
         }
     }
+    .sheet-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s;
+    z-index: 40;
+}
+
+.sheet-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.sheet {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 400px;
+    height: 100%;
+    background: #1f1f1f;
+    transition: right 0.3s ease-in-out;
+    z-index: 45;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.sheet.active {
+    right: 0;
+}
+
+.sheet-content {
+    padding: 6rem 2rem 2rem;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.profile-link {
+    display: block;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border: 1px solid #333;
+    border-radius: 999px;
+    transition: background-color 0.2s;
+}
+
+.profile-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.nav-item {
+    display: block;
+    padding: 1rem;
+    border-radius: 999px;
+    background-color: rgb(253 230 138);
+    color: black;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.nav-item:hover {
+    transform: scale(1.02);
+    color: black;
+}
 </style>
