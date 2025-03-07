@@ -33,6 +33,7 @@
 	"dependencies": {
 		"@auth/core": "^0.37.4",
 		"@auth/sveltekit": "^1.7.4",
+		"@supabase/supabase-js": "^2.49.1",
 		"@tailwindcss/vite": "^4.0.3",
 		"better-sqlite3": "^11.7.2",
 		"dotenv": "^16.4.7",

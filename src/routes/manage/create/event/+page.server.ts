@@ -1,7 +1,9 @@
+import { verifyAndGetUser } from '$lib/server/Backend.js';
 import { checkAdminAccess } from '$lib/server/BackendAdmin.js'
 import { createEvent } from '$lib/server/BackendAgentEvent.js';
 import { getUserId } from '$lib/server/BackendAgentUser.js';
 import type { EventType, SolsticeEventInfo, UpdateEvent } from '$lib/server/BackendTypes.js';
+import { generateChecksum } from '$lib/server/CacheMaster';
 import type { DateTime } from '@auth/sveltekit/providers/kakao';
 import { fail } from '@sveltejs/kit';
 
@@ -9,9 +11,27 @@ import { fail } from '@sveltejs/kit';
 export const actions = {
     createEvent: async ({ cookies, request }) => {
         try {
-            const access = await checkAdminAccess(cookies.get('authToken'));
+            const userJson = cookies.get('userInfo');
+            const checksum = cookies.get('userChecksum');
+            const access = await checkAdminAccess(cookies.get('authToken'), userJson, checksum);
             if (access == false) { return fail(403, { success: false, error: 'Unauthorized!' }) }
-
+            if (userJson == null || checksum == null) {
+                const user = await verifyAndGetUser(cookies.get('authToken'), userJson, checksum);
+                if (user.result != null) {
+                    cookies.set('userInfo', JSON.stringify(user.result), {
+                        httpOnly: false, // Accessible by frontend
+                        secure: true,
+                        sameSite: "strict",
+                        path: "/"
+                    });
+                    cookies.set('userChecksum', generateChecksum(user.result), {
+                        httpOnly: false, // Accessible by frontend
+                        secure: true,
+                        sameSite: "strict",
+                        path: "/"
+                    });
+                }
+            }
             const form = await request.formData();
             if (form == null) { return fail(400, { success: false, error: 'no form!' }); }
 
@@ -32,13 +52,13 @@ export const actions = {
             if (org_email == undefined || org_email == null) { return fail(400, { success: false, error: 'organizer email field undefined/null!' }) }
 
             const org = await getUserId(org_email);
-            if(org == undefined || org == null) { return fail(400, { success: false, error: 'organizer does not exist!' }) }
+            if (org == undefined || org == null) { return fail(400, { success: false, error: 'organizer does not exist!' }) }
 
             const team_mem = parseInt(team_mem_str);
             const start: DateTime = start_str;
             const type: EventType = type_str as EventType;
 
-            const event : UpdateEvent = {
+            const event: UpdateEvent = {
                 name: name,
                 description: desc,
                 type: 'cultural',
@@ -48,15 +68,15 @@ export const actions = {
                 organizer_id: org
             }
             const res = await createEvent(event);
-            if(res.success == true){
-                return {success:true}
-            }else if(res.code != undefined){
-                return fail(res.code,{success:false,error:res.error})
-            }else{
-                return fail(503 ,{success:false,error:res.error})
+            if (res.success == true) {
+                return { success: true }
+            } else if (res.code != undefined) {
+                return fail(res.code, { success: false, error: res.error })
+            } else {
+                return fail(503, { success: false, error: res.error })
             }
         } catch (e) {
-            return fail(503 ,{success:false,error:`${e}`})
+            return fail(503, { success: false, error: `${e}` })
         }
     }
 }

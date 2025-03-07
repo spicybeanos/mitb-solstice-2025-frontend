@@ -73,21 +73,15 @@
                 </div>
             {/each}
         </div>
-        <div class="text-[#d9d9d9] flex flex-col gap-4 z-20">
+        <div class="text-[#d9d9d9] flex flex-col gap-4 z-20 m-[30px]">
             <h1
                 class="font-akira text-2xl sm:text-6xl text-center gradient-text
             "
             >
                 Book your tickets now!
             </h1>
-            <h1
-                class="font-akira text-2xl sm:text-6xl text-center gradient-text
-            "
-            >
-                This fest will be a blast
-            </h1>
         </div>
-        <div class="w-full grid place-items-center my-8">
+        <div class="w-full grid place-items-center my-8 ">
             <a href="/passes"
                 ><InteractiveHover
                     text="Book your tickets"
@@ -101,21 +95,7 @@
     <div
         class="max-sm:hidden w-full h-[50vh] mb-24 flex flex-col justify-between text-[#d9d9d9] text-lg sm:text-2xl px-8 z-50"
     >
-        <div class="w-full">
-            <div class="w-fit bg-[#512451] p-4 rounded-2xl">
-                <p>Sponsor</p>
-            </div>
-        </div>
-        <div class="w-full text-end flex justify-end">
-            <div class="w-fit bg-[#512451] p-4 rounded-2xl">
-                <p>Sponsor 2</p>
-            </div>
-        </div>
-        <div class="w-full">
-            <div class="w-fit bg-[#512451] p-4 rounded-2xl">
-                <p>Sponsor 2</p>
-            </div>
-        </div>
+        
     </div>
 </main>
 
