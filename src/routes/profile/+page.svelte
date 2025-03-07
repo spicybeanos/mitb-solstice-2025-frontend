@@ -1,15 +1,23 @@
 <script lang="ts">
     import Button from "$lib/components/Button.svelte";
-    import { fly } from "svelte/transition";
+    import { fly,fade } from "svelte/transition";
     import TextInput from "$lib/components/TextInput.svelte";
     import QR from "$lib/components/QR.svelte";
     import GoogleLogin from "../GoogleLogin.svelte";
     import { isSigningOut } from "../GoogleLogin.svelte.ts";
 
     import { UserProfileData } from "../GoogleLogin.svelte.ts";
-    import { json } from "@sveltejs/kit";
-    import SimpleCard from "$lib/components/SimpleCard.svelte";
-    import InfoCard from "$lib/components/InfoCard.svelte";
+    //import { json } from "@sveltejs/kit";
+    //import SimpleCard from "$lib/components/SimpleCard.svelte";
+    //import InfoCard from "$lib/components/InfoCard.svelte";
+
+    import { backOut } from 'svelte/easing';
+
+    const cardAnimation = {
+        y: 50,
+        duration: 1000,
+        easing: backOut
+    };
 
     let { data } = $props();
 
@@ -37,157 +45,174 @@
         }).finally(() => {
             isSigningOut.status = false;
             console.log("done logging out!");
+            window.location.reload()
         });
     }
 </script>
 
-<div class="flex h-full justify-center items-center py-[6rem]">
-    {#if !UserProfileData.loggedIn}
-        <GoogleLogin cookieJwt={data.authToken} />
-    {:else}
-        <div>
-            <div class="flex w-full h-full justify-between mb-4 max-sm:px-4">
-                <div class="flex w-[20%] justify-between gap-3 sm:gap-4">
-                    <img
-                        src={UserProfileData.picture}
-                        alt="pfp"
-                        width="50px"
-                        height="50px"
-                        class="size-[50%] self-center"
-                    />
-                    <div class="self-center">
-                        <div>{UserProfileData.name}</div>
-                        <div>{UserProfileData.email}</div>
+<!-- Replace the outer container -->
+<div class="min-h-screen flex flex-col justify-between">
+    <!-- Main content -->
+    <main class="flex-grow flex justify-center items-center py-0 px-4 sm:py-16">
+        <div class="w-full max-w-4xl space-y-4 sm:space-y-6" in:fade={{ duration: 1000 }}>
+            {#if !UserProfileData.loggedIn}
+                <!-- Login Card - Center content -->
+                <div class="flex flex-col items-center justify-center min-h-[30vh] sm:min-h-[50vh]">
+                    <div 
+                        class="card-glow w-full max-w-md shadow-[#AB83FE]/40 sm:shadow-0 bg-[#AB83FE]/30 sm:bg-black/40 backdrop-blur-sm rounded-xl p-6 sm:p-8 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500 flex justify-center shadow-lg hover:shadow-[#AB83FE]/40"
+                        in:fly={cardAnimation}
+                    >
+                        <GoogleLogin cookieJwt={data.authToken} />
                     </div>
                 </div>
-                <div class="self-center">
-                    <Button danger OnClicked={LogOut}>Sign Out</Button>
-                </div>
-            </div>
-            <InfoCard
-                ><div>
-                    Make sure you bring your ID card when attending any event!
-                </div>
-            </InfoCard>
-            {#if data.user != null}
-                <div class="flex justify-center">
-                    <QR text={data.user.id} />
-                </div>
-            {/if}
-            {#if data.user == null}
-                <h1 class="w-full text-center sm:py-4 py-8">
-                    You haven't registered yet!
-                </h1>
-                <br />
-                <div>
-                    <SimpleCard>
-                        <h1 class="w-full text-center text-2xl font-semibold">
-                            Register
-                        </h1>
-                        <div class="text-white">
-                            If you have already registered, please refresh the
-                            page.
+            {:else}
+                <!-- Profile Header - Stack on mobile -->
+                <div class="space-y-3 sm:space-y-6">
+                    <div class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-[#AB83FE]/40 sm:bg-black/80 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500" in:fly={{ ...cardAnimation, delay: 600 }}>
+                        <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left w-full sm:w-auto">
+                                <div class="relative">
+                                    <img
+                                        src={UserProfileData.picture}
+                                        alt="Profile"
+                                        class="w-20 h-20 sm:w-16 sm:h-16 rounded-full border-2 border-[#AB83FE]"
+                                    />
+                                </div>
+                                <div>
+                                    <div class="text-[#C7AE93] text-xl">{UserProfileData.name}</div>
+                                    <div class="text-[#C7AE93] text-sm">{UserProfileData.email}</div>
+                                </div>
+                            </div>
+                            <Button OnClicked={() => LogOut()} class="w-full sm:w-auto">
+                                <div class="border border-[#AB83FE] hover:border-red-400 hover:bg-red-500 p-3 rounded-lg text-[#C7AE93] text-center">
+                                    Logout
+                                </div>
+                            </Button>
                         </div>
-                        <form
-                            action="?/register"
-                            method="post"
-                            class="w-[80vw] sm:w-[60vw] grid place-items-center pt-6 gap-6"
-                        >
-                            <div class="flex flex-row w-[100%]">
-                                <TextInput
-                                    placeholder="First Name"
-                                    name="first_name"
-                                    required
-                                ></TextInput>
-                                <TextInput
-                                    placeholder="Last Name"
-                                    name="last_name"
-                                    required
-                                ></TextInput>
-                            </div>
-                            <TextInput
-                                placeholder="Phone Number"
-                                name="phone_num"
-                                type="number"
-                                required
-                            ></TextInput>
-                            <div>
-                                <input
-                                    type="checkbox"
-                                    name="is_mahe"
-                                    bind:checked={isMahe}
-                                />
-                                <span class="text-white p-[5px]"
-                                    >I am a MAHE student</span
-                                >
-                            </div>
-                            {#if isMahe}
-                                <TextInput
-                                    placeholder="Mahe Registration Number"
-                                    name="mahe_num"
-                                    type="number"
-                                    required
-                                ></TextInput>
-                            {/if}
-                            <Button OnClicked={() => {}}
-                                ><div
-                                    style="color: white ;"
-                                    class="border border-white p-[12px] rounded-lg"
-                                >
-                                    Submit
-                                </div></Button
-                            >
-                        </form>
-                        <span class="text-white"
-                            >*Event organizers and volunteers may use your
-                            mobile number and email to contact you for event and
-                            fest related matters</span
-                        >
-                    </SimpleCard>
-                </div>
-            {:else if data.user != null || UserProfileData.registered}
-                <div>
-                    <SimpleCard>
-                        <h1 class="w-full text-center text-2xl font-semibold">
-                            Update Information
-                        </h1>
-                        <form
-                            action="?/update"
-                            method="post"
-                            class="w-[80vw] sm:w-[60vw] grid place-items-center pt-6 gap-6"
-                        >
-                            <label>
-                                Mobile Number:
-                                <TextInput
-                                    placeholder="Phone Number"
-                                    name="ph-num"
-                                    type="number"
-                                    required
-                                    text={data?.user?.phone_number}
-                                ></TextInput>
-                            </label>
+                    </div>
 
-                            <Button OnClicked={() => {}}
-                                ><div
-                                    style="color: white;"
-                                    class="border border-white p-[12px] rounded-lg"
+                    <!-- Info Card - Improve mobile layout -->
+                    <div class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-black/30 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500" in:fly={{ ...cardAnimation, delay: 600 }}>
+                        <div class="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
+                            <img src='/icons/info.svg' alt='info icon' class="w-6 h-6"/>
+                            <div class="text-[#C7AE93]">
+                                Make sure you bring your ID card when attending any event!
+                            </div>
+                        </div>
+                    </div>
+
+                    {#if data.user == null}
+                        <!-- Registration Form  -->
+                        <div class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-[#AB83FE]/40 sm:bg-black/80 backdrop-blur-sm rounded-xl p-4 sm:p-8 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500" in:fly={{ ...cardAnimation, delay: 700 }}>
+                            <div class="flex flex-col justify-center w-full">
+                                <h1 class="text-[#C7AE93] text-2xl font-semibold text-center mb-4 sm:mb-6">Register</h1>
+                                <div class="text-[#C7AE93] text-center mb-4">
+                                    If you have already registered, please refresh the page.
+                                </div>
+                                <form
+                                    action="?/register"
+                                    method="post"
+                                    class="w-full space-y-4 sm:space-y-6"
                                 >
-                                    Submit
-                                </div></Button
-                            >
-                        </form>
-                        <span class="text-white"
-                            >*Event organizers and volunteers may use your
-                            mobile number and email to contact you for event and
-                            fest related matters</span
-                        >
-                    </SimpleCard>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <TextInput
+                                            placeholder="First Name"
+                                            name="first_name"
+                                            required
+                                        />
+                                        <TextInput
+                                            placeholder="Last Name"
+                                            name="last_name"
+                                            required
+                                        />
+                                    </div>
+                                    <TextInput
+                                        placeholder="Phone Number"
+                                        name="phone_num"
+                                        type="number"
+                                        required
+                                    />
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            name="is_mahe"
+                                            bind:checked={isMahe}
+                                        />
+                                        <span class="text-[#C7AE93] p-[5px]"
+                                            >I am a MAHE student</span
+                                        >
+                                    </div>
+                                    {#if isMahe}
+                                        <TextInput
+                                            placeholder="Mahe Registration Number"
+                                            name="mahe_num"
+                                            type="number"
+                                            required
+                                        />
+                                    {/if}
+                                    <Button OnClicked={() => {}}
+                                        ><div
+                                            style="color: white ;"
+                                            class="border border-white p-[12px] rounded-lg"
+                                        >
+                                            Submit
+                                        </div></Button
+                                    >
+                                </form>
+                                <span class="text-[#C7AE93]"
+                                    >*Event organizers and volunteers may use your
+                                    mobile number and email to contact you for event and
+                                    fest related matters</span
+                                >
+                            </div>
+                        </div>
+                    {:else}
+                        <!-- Update Form and QR Section -->
+                        <div class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-[#AB83FE]/40 sm:bg-black/60 backdrop-blur-sm rounded-xl p-4 sm:p-8 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500" in:fly={{ ...cardAnimation, delay: 700 }}>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                <!-- QR Code - Show first on mobile -->
+                                <div class="flex flex-col items-center justify-center order-1 lg:order-2" in:fly={{ ...cardAnimation, delay: 700 }}>
+                                    <h2 class="text-[#AB83FE] text-2xl font-bold mb-4 sm:mb-6">Your Pass QR</h2>
+                                    <div class="bg-white border-1 sm:border-4 border-[#AB83FE]/50 p-1.5 shadow-lg shadow-[#AB83FE]/60 rounded-xl">
+                                        <QR text={data.user.id} />
+                                    </div>
+                                </div>
+
+                                
+
+                                <!-- Update Form -->
+                                <div class="order-2 lg:order-1">
+                                    <h1 class="text-[#C7AE93] text-2xl font-semibold text-center lg:text-left mb-4 sm:mb-6">Update Contact</h1>
+                                    <form
+                                        action="?/update"
+                                        method="post"
+                                        class="space-y-4 sm:space-y-6"
+                                    >
+                                        <label class="block">
+                                            <span class="text-[#C7AE93] mb-2 block">Mobile Number:</span>
+                                            <TextInput
+                                                placeholder="Phone Number"
+                                                name="ph-num"
+                                                type="number"
+                                                required
+                                                text={data?.user?.phone_number}
+                                            />
+                                        </label>
+
+                                        <Button OnClicked={() => {}} class="w-full">
+                                            <div class="border border-[#AB83FE]/80 hover:border-[#AB83FE]/10 hover:bg-[#AB83FE]/40 p-3 rounded-lg text-[#C7AE93] text-center">
+                                                Update
+                                            </div>
+                                        </Button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {/if}
                 </div>
-                <!-- <div>All good :)</div> -->
             {/if}
         </div>
-    {/if}
-</div>
+    </div>
 
 <style>
     img {
@@ -195,5 +220,165 @@
     }
     div {
         color: white;
+    }
+    :global(.card-glow) {
+        position: relative;
+    }
+
+    :global(.card-glow::before) {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(
+        0deg,
+        rgba(171, 131, 254, 0.3),
+        rgba(171, 131, 254, 0.1)
+    );
+    border-radius: 0.75rem;
+    z-index: -1;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+
+
+    :global(.card-glow:hover::before) {
+        opacity: 1;
+    }
+
+    :global(input[type="number"]::-webkit-inner-spin-button),
+    :global(input[type="number"]::-webkit-outer-spin-button) {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    :global(input[type="number"]) {
+        -moz-appearance: textfield;
+    }
+
+    :global(.form-input),
+    :global(.form-checkbox) {
+        background-color: rgba(31, 41, 55, 0.5);
+        border-color: #374151;
+        color: #f3f4f6;
+    }
+
+    :global(.form-input:focus),
+    :global(.form-checkbox:focus) {
+        border-color: #AB83FE;
+        box-shadow: 0 0 0 2px rgba(171, 131, 254, 0.2);
+    }
+
+    /* Input field styling */
+    :global(input[type="text"]),
+    :global(input[type="number"]),
+    :global(input[type="email"]),
+    :global(.form-input) {
+        background-color: rgba(31, 41, 55, 0.5);
+        border: 1px solid #AB83FE;
+        color: #f3f4f6;
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
+    }
+
+    :global(input[type="text"]:focus),
+    :global(input[type="number"]:focus),
+    :global(input[type="email"]:focus),
+    :global(.form-input:focus) {
+        border-color: #AB83FE;
+        box-shadow: 0 0 0 2px rgba(171, 131, 254, 0.2);
+        outline: none;
+    }
+
+    :global(input[type="text"]::placeholder),
+    :global(input[type="number"]::placeholder),
+    :global(input[type="email"]::placeholder),
+    :global(.form-input::placeholder) {
+        color: rgba(199, 174, 147, 0.5);
+    }
+
+    /* Checkbox styling */
+    :global(input[type="checkbox"]) {
+        accent-color: #AB83FE;
+        width: 1.2rem;
+        height: 1.2rem;
+        border-radius: 0.25rem;
+        border: 1px solid #AB83FE;
+        background-color: transparent;
+        cursor: pointer;
+    }
+
+    :global(input[type="checkbox"]:checked) {
+        background-color: #AB83FE;
+        border-color: #AB83FE;
+    }
+
+    /* Remove number input spinners */
+    :global(input[type="number"]::-webkit-inner-spin-button),
+    :global(input[type="number"]::-webkit-outer-spin-button) {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    :global(input[type="number"]) {
+        -moz-appearance: textfield;
+    }
+
+    /* Label styling */
+    :global(label) {
+        color: #C7AE93;
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Form group spacing */
+    :global(.space-y-6 > *) {
+        margin-top: 1.5rem;
+    }
+
+    :global(.space-y-6 > *:first-child) {
+        margin-top: 0;
+    }
+
+    /* Mobile-first responsive styles */
+    @media (max-width: 640px) {
+        :global(.card-glow) {
+            padding: 1rem;
+        }
+
+        :global(input[type="text"]),
+        :global(input[type="number"]),
+        :global(input[type="email"]),
+        :global(.form-input) {
+            font-size: 16px; /* Prevent zoom on iOS */
+        }
+
+        :global(button) {
+            width: 100%;
+        }
+    }
+
+    /* Improved touch targets */
+    :global(input[type="checkbox"]) {
+        min-width: 24px;
+        min-height: 24px;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Better spacing for mobile */
+    :global(.space-y-4 > * + *) {
+        margin-top: 1rem;
+    }
+
+    :global(.space-y-6 > * + *) {
+        margin-top: 1.5rem;
+    }
+
+    /* Prevent overflow on mobile */
+    :global(.min-h-screen) {
+        min-height: 100svh;
     }
 </style>
