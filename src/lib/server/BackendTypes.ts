@@ -46,6 +46,10 @@ export interface SolsticePassInfo {
     cost: string;
     id: string;
 }
+export interface EventImages {
+    thumbnail: string;
+    background: string;
+}
 
 export interface SolsticeTeamInfo {
     name: string;
