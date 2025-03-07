@@ -1,32 +1,42 @@
-import { get, post, patch, del } from "./Backend.ts";
+import { get, post, patch, del, type Result } from "./Backend.ts";
 import { addTeamToEvent } from "./BackendAgentEvent.ts";
 import type { SolsticeUser, SolsticeTeamInfo } from "./BackendTypes.ts";
 
 export async function createTeam(teamName: string, hostId: string): Promise<SolsticeTeamInfo | null> {
+
     const res = await post<SolsticeTeamInfo>(`team`, { name: teamName, host_id: hostId });
 
-    if (!res.success || !res.result) return null;
+    if (!res.success || !res.result) { console.log('Create team post failed!' + res.error); return null; }
 
     const addUserRes = await addUserToTeam(res.result.id, hostId);
-    return addUserRes ? res.result : null;
+    if(addUserRes == null) { console.log('attaching user to team failed!')}
+    return addUserRes != null ? res.result : null;
 }
 
-export async function createTeamAndAttach(teamName: string, hostId: string, eventId: string): Promise<SolsticeTeamInfo | null> {
+export async function createTeamAndAttach(teamName: string, hostId: string, eventId: string): Promise<Result<SolsticeTeamInfo>> {
     const createRes = await createTeam(teamName, hostId);
-    if (!createRes) return null;
+    if (!createRes) return { success: false, error: 'Could not create a team', result: null };
 
     const attachRes = await addTeamToEvent(eventId, createRes.id);
-    return attachRes ? createRes : null;
+    return attachRes ? { success: true, error: null, result: createRes } : { success: false, error: 'Could not attach team to event', result: null };
 }
 
 export async function addUserToTeam(teamId: string, userID: string): Promise<SolsticeTeamInfo | null> {
-    const res = await post<SolsticeTeamInfo>(`team/${teamId}/user/${userID}`);
+    const res = await post<SolsticeTeamInfo>(`team/${teamId}/users/${userID}`);
+    if(res.success == false){console.log(`could not attach user to team: ${res.error}`)}
     return res.success ? res.result : null;
 }
 
 export async function removeUserFromTeam(teamId: string, userID: string): Promise<SolsticeTeamInfo | null> {
-    const res = await del<SolsticeTeamInfo>(`team/${teamId}/user/${userID}`);
+    const res = await del<SolsticeTeamInfo>(`team/${teamId}/users/${userID}`);
+    if(res.success == false){
+        console.log(`error while leaving team : ${res.error}`)
+    }
     return res.success ? res.result : null;
+}
+
+export async function getAllTeams() {
+    return await get<SolsticeTeamInfo[]>(`team`)
 }
 
 export async function getUsersInTeam(teamId: string): Promise<SolsticeUser[] | null> {
@@ -49,12 +59,12 @@ export async function deleteTeam(teamId: string): Promise<SolsticeTeamInfo | nul
     return res.success ? res.result : null;
 }
 
-export async function disbandTeam(teamID:string) {
+export async function disbandTeam(teamID: string) {
     const parts = await getUsersInTeam(teamID);
-    if(parts != null){
+    if (parts != null) {
         for (const usr of parts) {
-             await removeUserFromTeam(teamID,usr.id);
-            
+            await removeUserFromTeam(teamID, usr.id);
+
         }
     }
     return await deleteTeam(teamID);

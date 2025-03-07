@@ -1,7 +1,7 @@
 import { verifyAndGetUser } from '$lib/server/Backend';
 import { getEventID, getEventInfo, getEvents, getHost_sTeamInfo, getTeams, getUserIDsInEvent, getUser_s_TeamIDInEvent } from '$lib/server/BackendAgentEvent';
 import { checkEventAccessibleByPass } from '$lib/server/BackendAgentPass';
-import { addUserToTeam, createTeamAndAttach, disbandTeam, getTeamDetails, getUsersInTeam, removeUserFromTeam } from '$lib/server/BackendAgentTeam';
+import { addUserToTeam, createTeamAndAttach, disbandTeam, getAllTeams, getTeamDetails, getUsersInTeam, removeUserFromTeam } from '$lib/server/BackendAgentTeam';
 import type { SolsticeUser } from '$lib/server/BackendTypes.js';
 import { error, fail, json, redirect } from '@sveltejs/kit';
 
@@ -45,7 +45,7 @@ export const load = async ({ params, cookies }) => {
                 playersInTeam: [] as SolsticeUser[]
             };
         }
-
+        const eventDetails = await getEventInfo(eventID);
         const canAccess = await checkEventAccessibleByPass(eventID, user.result.pass_id);
         const teamID = await getUser_s_TeamIDInEvent(user.result.id, eventID);
         let is_in_team = teamID != null;
@@ -100,9 +100,18 @@ export const actions = {
             if (hostID == null) return fail(400, { msg: 'host does not exist!' });
 
             const teams = await getTeams(eventId);
+            const allteams = await getAllTeams();
             if (teams != null) {
                 for (const t of teams) {
                     if (t.host_id == hostID) { return fail(409, { msg: "You're already in a team!" }); }
+                }
+               
+            }
+
+            if(allteams.success == false){return fail(503,{msg:'Teams service is unavailaible! Submit a ticket or contact the admins! error:' + allteams.error})}
+            if(allteams.result != null){
+                for (const team of allteams.result) {
+                    if(team.name == teamName){return fail(409, { msg: "A team with that name already exists!" });}
                 }
             }
 
@@ -114,8 +123,10 @@ export const actions = {
 
             }
 
-            const teamMade = await createTeamAndAttach(teamName as string, hostID, eventId);
-            if (teamMade == null) { return fail(403, { msg: "Failed to make a team!" }); }
+            const res_team = await createTeamAndAttach(teamName as string, hostID, eventId);
+            if (res_team.success == false) { return fail(403, { msg: "Failed to make a team!" + res_team.error }); }
+            const teamMade = res_team.result;
+            if (teamMade == null) { return fail(403, { msg: "Failed to make a team! is null!" }); }
             console.log(`team made! ${teamMade.id}: ${teamMade.name} by ${teamMade.host_id}`)
             return { team: teamMade };
         } catch (err) {
@@ -214,6 +225,8 @@ export const actions = {
 
             const res = await removeUserFromTeam(teamID, userID);
             if (res == null) { return fail(501, { msg: 'failed to leave team!' }); }
+
+            console.log('Left team!')
         } catch (err) {
             return fail(503, { msg: `service failure: ${err}` });
         }

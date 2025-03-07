@@ -1,6 +1,6 @@
 import { get, post, patch, del } from "./Backend.ts";
 import { getUsersInTeam } from "./BackendAgentTeam.ts";
-import type { SolsticeEventInfo, SolsticeEventRegRow, SolsticeTeamInfo, SolsticeUser, UpdateEvent, UserID } from "./BackendTypes.ts";
+import type { SolsticeEventInfo, SolsticeEventRegRow, SolsticePassInfo, SolsticeTeamInfo, SolsticeUser, UpdateEvent, UserID } from "./BackendTypes.ts";
 
 let serverEvents: SolsticeEventInfo[] = [];
 
@@ -85,7 +85,7 @@ export async function updateEventDetails(eventID: string, info: UpdateEvent) {
 
     if (res.success) return { success: true };
     const body = await res.error
-    return { success: false, error: body,code:500};
+    return { success: false, error: body, code: 500 };
 }
 
 export async function createEvent(info: UpdateEvent) {
@@ -93,7 +93,7 @@ export async function createEvent(info: UpdateEvent) {
 
     if (res.success) return { success: true };
     const body = await res.error
-    return { success: false, error: body,code:500};
+    return { success: false, error: body, code: 500 };
 }
 
 export async function getUser_s_TeamIDInEvent(userID: string, eventID: string): Promise<string | null> {
@@ -109,13 +109,15 @@ export async function getUser_s_TeamIDInEvent(userID: string, eventID: string): 
 
     return null;
 }
-
-export async function getHost_sTeamInfo(hostID:string,eventID:string):Promise<SolsticeTeamInfo|null> {
+export async function getEventPasses(eventID:string) {
+    return await get<SolsticePassInfo[]>(`event/${eventID}/passes`);
+}
+export async function getHost_sTeamInfo(hostID: string, eventID: string): Promise<SolsticeTeamInfo | null> {
     const teams = await getTeams(eventID);
     if (!teams) return null;
 
     for (const team of teams) {
-        if(team.host_id == hostID){
+        if (team.host_id == hostID) {
             return team;
         }
     }
@@ -135,6 +137,9 @@ export async function getTeams(eventId: string): Promise<SolsticeTeamInfo[] | nu
 
 export async function addTeamToEvent(eventId: string, teamId: string): Promise<string | null> {
     const res = await post(`event/${eventId}/teams/${teamId}`);
+    if (res.success == false) {
+        console.log(`Could not attach to event: ${res.error}`)
+    }
     return res.success ? (await res.result) as string : null;
 }
 

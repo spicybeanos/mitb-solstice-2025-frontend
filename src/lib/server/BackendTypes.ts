@@ -1,6 +1,6 @@
 import type { DateTime } from "@auth/core/providers/kakao";
 
-export type EventType = 'cultural' | 'e_sports' | 'experiences' | 'finance' | 'hackathon' | 'other' | 'pro_show' | 'robotics' | 'sports' | 'technical';
+export type EventType = 'cultural' | 'e_sports' | 'experiences' | 'finance' | 'hackathon' | 'other' | 'robotics' | 'sports' | 'technical';
 export function isValidEvent(type: string): boolean {
     switch (type) {
         case 'cultural':
@@ -9,7 +9,6 @@ export function isValidEvent(type: string): boolean {
         case 'finance':
         case 'hackathon':
         case 'other':
-        case 'pro_show':
         case 'robotics':
         case 'sports':
         case 'technical':

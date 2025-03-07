@@ -15,7 +15,6 @@
         | "finance"
         | "hackathon"
         | "other"
-        | "pro_show"
         | "robotics"
         | "sports"
         | "technical";

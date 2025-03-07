@@ -1,19 +1,25 @@
-import { check_EventRW_Access } from "$lib/server/BackendAdmin";
-import { getEventInfo, updateEventDetails } from "$lib/server/BackendAgentEvent";
+import { check_EventRW_Access, checkAdminAccess } from "$lib/server/BackendAdmin";
+import { getEventInfo, getEventPasses, updateEventDetails } from "$lib/server/BackendAgentEvent";
 import { error, fail, redirect } from "@sveltejs/kit";
 import type { DateTime } from "@auth/core/providers/kakao";
-import type { EventType, SolsticeEventInfo, UpdateEvent } from "$lib/server/BackendTypes";
+import type { EventType, SolsticeEventInfo, SolsticePassInfo, UpdateEvent } from "$lib/server/BackendTypes";
+import { getUserId } from "$lib/server/BackendAgentUser.ts";
+import { getAllPasses } from "$lib/server/BackendAgentPass.ts";
+import { get, post } from "$lib/server/Backend";
 
 export async function load({ cookies, params }) {
     const jwt = cookies.get('authToken');
     const canAccess = await check_EventRW_Access(jwt, params.slug);
+    const isAdmin = await checkAdminAccess(jwt);
     if (canAccess == false) { redirect(308, '/profile'); }
-    console.log(`editing event ${params.slug}`);
     const event = await getEventInfo(params.slug);
+    const passes = await getAllPasses() ?? [];
     if (event == null) {
         console.log('trying to edit a non existing event!');
         return {
             permitted: true,
+            isAdmin: false,
+            passes: [],
             event: {
                 description: null,
                 id: "none",
@@ -22,11 +28,12 @@ export async function load({ cookies, params }) {
                 start: null,
                 team_members: null,
                 type: "other",
+
                 venue: null,
             }
         }
     }
-    return { permitted: true, event: event }
+    return { permitted: true, event: event, isAdmin: isAdmin, passes: passes }
 }
 
 export const actions = {
@@ -48,6 +55,7 @@ export const actions = {
         const team_mem_str = form.get('team_mem') as string | null;
         const type_str = form.get('type') as string | null;
         const start_str = form.get('start') as string | null;
+        const org = form.get('org') as string | null;
 
         if (name == undefined || name == null) { return fail(400, { success: false, error: 'name field undefined/null!' }) }
         if (desc == undefined || desc == null) { return fail(400, { success: false, error: 'description field undefined/null!' }) }
@@ -55,6 +63,18 @@ export const actions = {
         if (team_mem_str == undefined || team_mem_str == null) { return fail(400, { success: false, error: 'team members field undefined/null!' }) }
         if (type_str == undefined || type_str == null) { return fail(400, { success: false, error: 'category field undefined/null!' }) }
         if (start_str == undefined || start_str == null) { return fail(400, { success: false, error: 'event start time field undefined/null!' }) }
+
+        let orgID = eventInfo.organizer_id;
+        const isAdmin = await checkAdminAccess(cookies.get('authToken'));
+
+        if (isAdmin == true) {
+            if (org != null) {
+                const ous = await getUserId(org);
+                if (ous != null) {
+                    orgID = ous;
+                }
+            }
+        }
 
         const team_mem = parseInt(team_mem_str);
         const start: DateTime = start_str;
@@ -67,8 +87,9 @@ export const actions = {
             team_members: team_mem == 0 ? null : team_mem,
             type: type,
             venue: venue,
-            organizer_id: eventInfo.organizer_id
+            organizer_id: orgID
         }
+
         const result = await updateEventDetails(params.slug, new_event);
         if (result.success == true) { return { success: true }; }
         if (result.code == undefined) { return fail(500, { success: false, error: 'Error code is undefined! This should never happen' }); }

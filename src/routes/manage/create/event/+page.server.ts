@@ -56,7 +56,7 @@ export const actions = {
                 return fail(503 ,{success:false,error:res.error})
             }
         } catch (e) {
-
+            return fail(503 ,{success:false,error:`${e}`})
         }
     }
 }

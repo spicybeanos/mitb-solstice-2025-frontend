@@ -35,21 +35,14 @@ export async function getEventsAccessibleByPass(passID: string): Promise<Solstic
 }
 
 export async function checkEventAccessibleByPass(eventID: string, passID: string | null): Promise<boolean> {
-    if (!passID) return false;
-    const events = await getEventsAccessibleByPass(passID);
-    if (!events) return false;
-
-    return events.some(event => event.id === eventID);
-}
-
-export async function getDefaultPass(): Promise<string | null> {
-    const passes = await getAllPasses();
-    if (!passes) return null;
-
+    const res = await get(`event/${eventID}/passes`);
+    if (res.success == false) { return false; }
+    const passes = res.result as SolsticePassInfo[];
+    if (passes.length == 0) { return true; }
     for (const pass of passes) {
-        if (pass.name === DEFAULT_PASS_NAME) return pass.id;
+        if (passID == pass.id) { return true; }
     }
-    return null;
+    return false;
 }
 
 export async function getAllEventsInPass(passId: string) {

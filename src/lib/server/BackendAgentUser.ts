@@ -1,5 +1,4 @@
 import { get, post, patch } from "./Backend.ts";
-import { getDefaultPass } from "./BackendAgentPass.ts";
 import type { SolsticeUser, SolsticePassInfo } from "./BackendTypes.ts";
 
 export async function registerUser(user: SolsticeUser): Promise<SolsticeUser | null> {

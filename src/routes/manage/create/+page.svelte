@@ -1,12 +1,16 @@
 <script lang="ts">
-    let { children } = $props();
+    import SimpleCard from "$lib/components/SimpleCard.svelte";
+
+    let { data } = $props();
 </script>
 
-<aside>
-    <a href="/manage/create/pass">Create passes</a>
-    <a href="/manage/create/event">Create event</a>
-</aside>
-{@render children()}
+<div class="flex justify-center">
+    <div class="p-[30px]">
+        <SimpleCard>
+            <div>Hello world</div>
+        </SimpleCard>
+    </div>
+</div>
 
 <style>
     h1,

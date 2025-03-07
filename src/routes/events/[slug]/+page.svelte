@@ -386,7 +386,7 @@
                         {/if}
                     {:else if data.isLeader}
                         <div class="text-white">
-                            You're the leader of team <b>{data.team?.name}</b>
+                            You're the leader of team <b>{data.team?.name} with id <code>{data.team?.id}, host </code></b>
                         </div>
                         <div class="text-white">Players:</div>
                         <ol class="white">
@@ -404,6 +404,9 @@
                         </form>
                     {:else}
                         <div class="text-white">You're already in team <b>{data.team?.name}</b></div>
+                        {#if form?.msg}
+                            <div class="text-white">{form?.msg}</div>
+                        {/if}
                         <form action={`?/leaveTeam`} method="post">
                             <BasicButtonFilled color="red"
                                 ><b>LEAVE</b></BasicButtonFilled

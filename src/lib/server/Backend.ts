@@ -58,7 +58,7 @@ async function request<T>(method: string, url: string, body?: any): Promise<Resu
         return {
             success: res.ok, // True for 2xx responses
             result: res.ok ? (responseBody as T) : null,
-            error: res.ok ? null : responseBody?.error || `HTTP Error: ${res.status}`,
+            error: res.ok ? null : responseBody?.error || `Err_${res.status}`,
         };
     } catch (error) {
         return {

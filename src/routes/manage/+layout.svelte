@@ -1,5 +1,5 @@
-<script lang='ts'>
-    let {data,children} = $props();
+<script lang="ts">
+    let { data, children } = $props();
 </script>
 
 <aside class="m-[30px]">
@@ -7,12 +7,14 @@
     <a href="/manage/ids">Get Details</a>
     <a href="/manage/events">Events</a>
     <a href="/manage/support">Support</a>
+    <a href="/manage/create/">Create (Admin)</a>
+
 </aside>
 
 {@render children()}
 
 <style>
-    a{
+    a {
         border-style: solid;
         border-width: 1px;
         border-radius: 10px;
