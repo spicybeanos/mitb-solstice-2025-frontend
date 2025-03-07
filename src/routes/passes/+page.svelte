@@ -10,6 +10,8 @@
     import { cubicOut, quintOut } from "svelte/easing";
 
     let { data } = $props();
+    let nonmahe_pass_list=["Robotics", "Technical", "Finance", "All Access", "non-mahe"];
+    // last element for demo purposes
 
     let loading = $state(true);
     let SolsticeAllPassInfo: SolsticePassInfo[] | null = $state([]);
@@ -67,14 +69,10 @@
                                         <PassCard>
                                             <div class="detailContainer">
                                                 <div class="content-wrapper">
-                                                    <h1
-                                                        class="text-6xl font-bold mb-1"
-                                                    >
-                                                        {pass.name}
-                                                    </h1>
-                                                    <div
-                                                        class="desc text-sm mb-1"
-                                                    >
+                                                    <h1 class="text-6xl font-bold mb-1">{pass.name}</h1>
+                                                    <h4 class="text-lg font-bold">{ pass.name != "E-SPORTS" ? nonmahe_pass_list.includes(pass.name) ? "For non-MAHE participants" : "For MAHE students only" : "" }</h4>
+                                                    <div class="desc text-sm mb-1">
+
                                                         {pass.description}
                                                     </div>
 

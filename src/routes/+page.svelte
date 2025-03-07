@@ -32,11 +32,6 @@
 </script>
 
 <main class="flex flex-col items-center justify-center min-h-screen">
-    <img
-        src={retro}
-        alt="retrogrid"
-        class="w-screen h-screen absolute top-0 left-0 object-cover sm:hidden"
-    />
     <div
         class="h-screen flex flex-col justify-center items-center w-full overflow-hidden sm:pb-[16rem]"
     >
