@@ -74,7 +74,7 @@
                                                     <div class="eventsIncludedOuter">
                                                         {#if EventsInAllPasses!==null}
                                                             {#each EventsInAllPasses as event}
-                                                                {#if event.pass===pass.name}
+                                                                {#if event.passId===pass.id}
                                                                     <div class="eventsIncluded">
                                                                         <a href={`/events/${event.id}`}>{event.name}</a>
                                                                     </div>
