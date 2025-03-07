@@ -23,13 +23,15 @@ export const load = async ({ params, cookies }) => {
                 httpOnly: false, // Accessible by frontend
                 secure: true,
                 sameSite: "strict",
-                path: "/"
+                path: "/",
+                maxAge:3600
             });
             cookies.set('userChecksum', generateChecksum(user.result), {
                 httpOnly: false, // Accessible by frontend
                 secure: true,
                 sameSite: "strict",
-                path: "/"
+                path: "/",
+                maxAge:3600
             })
         }
 
@@ -120,13 +122,15 @@ export const actions = {
                     httpOnly: false, // Accessible by frontend
                     secure: true,
                     sameSite: "strict",
-                    path: "/"
+                    path: "/",
+                    maxAge:3600
                 });
                 cookies.set('userChecksum', generateChecksum(ver.result), {
                     httpOnly: false, // Accessible by frontend
                     secure: true,
                     sameSite: "strict",
-                    path: "/"
+                    path: "/",
+                    maxAge:3600
                 })
             }
 
@@ -191,13 +195,15 @@ export const actions = {
                         httpOnly: false, // Accessible by frontend
                         secure: true,
                         sameSite: "strict",
-                        path: "/"
+                        path: "/",
+                        maxAge:3600
                     });
                     cookies.set('userChecksum', generateChecksum(user.result), {
                         httpOnly: false, // Accessible by frontend
                         secure: true,
                         sameSite: "strict",
-                        path: "/"
+                        path: "/",
+                        maxAge:3600
                     });
                 }
             }
@@ -217,7 +223,8 @@ export const actions = {
                     httpOnly: false, // Accessible by frontend
                     secure: true,
                     sameSite: "strict",
-                    path: "/"
+                    path: "/",
+                    maxAge:3600
                 })
             }
 
@@ -277,13 +284,15 @@ export const actions = {
                         httpOnly: false, // Accessible by frontend
                         secure: true,
                         sameSite: "strict",
-                        path: "/"
+                        path: "/",
+                        maxAge:3600
                     });
                     cookies.set('userChecksum', generateChecksum(user.result), {
                         httpOnly: false, // Accessible by frontend
                         secure: true,
                         sameSite: "strict",
-                        path: "/"
+                        path: "/",
+                        maxAge:3600
                     });
                 }
             }
@@ -296,13 +305,15 @@ export const actions = {
                     httpOnly: false, // Accessible by frontend
                     secure: true,
                     sameSite: "strict",
-                    path: "/"
+                    path: "/",
+                    maxAge:3600
                 });
                 cookies.set('userChecksum', generateChecksum(ver.result), {
                     httpOnly: false, // Accessible by frontend
                     secure: true,
                     sameSite: "strict",
-                    path: "/"
+                    path: "/",
+                    maxAge:3600
                 })
             }
 
@@ -332,13 +343,15 @@ export const actions = {
                     httpOnly: false, // Accessible by frontend
                     secure: true,
                     sameSite: "strict",
-                    path: "/"
+                    path: "/",
+                    maxAge:3600
                 });
                 cookies.set('userChecksum', generateChecksum(ver.result), {
                     httpOnly: false, // Accessible by frontend
                     secure: true,
                     sameSite: "strict",
-                    path: "/"
+                    path: "/",
+                    maxAge:3600
                 })
             }
             const userID = ver.result?.id;

@@ -21,13 +21,15 @@ export async function load({ cookies, params }) {
                 httpOnly: false, // Accessible by frontend
                 secure: true,
                 sameSite: "strict",
-                path: "/"
+                path: "/",
+                maxAge:3600
             });
             cookies.set('userChecksum', generateChecksum(user.result), {
                 httpOnly: false, // Accessible by frontend
                 secure: true,
                 sameSite: "strict",
-                path: "/"
+                path: "/",
+                maxAge:3600
             });
         }
     }
@@ -69,13 +71,15 @@ export const actions = {
                     httpOnly: false, // Accessible by frontend
                     secure: true,
                     sameSite: "strict",
-                    path: "/"
+                    path: "/",
+                    maxAge:3600
                 });
                 cookies.set('userChecksum', generateChecksum(user.result), {
                     httpOnly: false, // Accessible by frontend
                     secure: true,
                     sameSite: "strict",
-                    path: "/"
+                    path: "/",
+                    maxAge:3600
                 });
             }
         }

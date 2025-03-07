@@ -115,6 +115,18 @@ export const actions = {
                 if (!success) {
                     return { success: false, error: 'Failed to update user information' };
                 }
+                cookies.set('userInfo', JSON.stringify(userObject), {
+                    httpOnly: false, // Accessible by frontend
+                    secure: true,
+                    sameSite: "strict",
+                    path: "/"
+                });
+                cookies.set('userChecksum', generateChecksum(userObject), {
+                    httpOnly: false, // Accessible by frontend
+                    secure: true,
+                    sameSite: "strict",
+                    path: "/"
+                });
                 return { success: true };
             } catch (error) {
                 console.error('Error updating user:', error);
