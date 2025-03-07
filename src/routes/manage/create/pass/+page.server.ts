@@ -1,13 +1,35 @@
-import { patch, post } from "$lib/server/Backend.js";
+import { patch, post, verifyAndGetUser } from "$lib/server/Backend.js";
 import { checkAdminAccess } from "$lib/server/BackendAdmin.js";
 import { getAllPasses } from "$lib/server/BackendAgentPass.js";
+import { generateChecksum } from "$lib/server/CacheMaster";
 import { fail } from "@sveltejs/kit"
 
 
 export const actions = {
     createPass: async ({ cookies, request }) => {
         try {
-            const access = await checkAdminAccess(cookies.get('authToken'));
+            const userJson = cookies.get('userInfo');
+            const checksum = cookies.get('userChecksum');
+            const access = await checkAdminAccess(cookies.get('authToken'), userJson, checksum);
+            if (userJson == null || checksum == null) {
+                const user = await verifyAndGetUser(cookies.get('authToken'), userJson, checksum);
+                if (user.result != null) {
+                    cookies.set('userInfo', JSON.stringify(user.result), {
+                        httpOnly: false, // Accessible by frontend
+                        secure: true,
+                        sameSite: "strict",
+                        path: "/",
+                        maxAge:3600
+                    });
+                    cookies.set('userChecksum', generateChecksum(user.result), {
+                        httpOnly: false, // Accessible by frontend
+                        secure: true,
+                        sameSite: "strict",
+                        path: "/",
+                        maxAge:3600
+                    });
+                }
+            }
             if (access == false) {
                 return fail(403, { msg: 'You shall not pass!' });
             }
@@ -48,14 +70,14 @@ export const actions = {
             };
             let res;
             if (edit == true) {
-                res = await patch(`pass/${ep?.id}`,body);
-            }else{
-                res = await post('pass/',body);
+                res = await patch(`pass/${ep?.id}`, body);
+            } else {
+                res = await post('pass/', body);
             }
-            if(res.success == true){
-                return {msg:`successfully ${edit ? 'edited' : 'created'} pass!`}
-            }else{
-                return fail(400,{msg:`Could not create pass : ${res.error}`})
+            if (res.success == true) {
+                return { msg: `successfully ${edit ? 'edited' : 'created'} pass!` }
+            } else {
+                return fail(400, { msg: `Could not create pass : ${res.error}` })
             }
         }
         catch (e) {

@@ -1,10 +1,30 @@
 import { verifyAndGetUser } from '$lib/server/Backend';
 import { getUserId, getUserInfo, registerUser, updateUserInfo } from '$lib/server/BackendAgentUser';
+import { generateChecksum } from '$lib/server/CacheMaster';
 import { getUserObjectFromJWT } from '$lib/server/GAuth';
 import { error, fail, json, redirect } from '@sveltejs/kit';
 
 export async function load({ cookies }) {
-    const usr = await verifyAndGetUser(cookies.get('authToken'));
+    const userJson = cookies.get('userInfo');
+    const checksum = cookies.get('userChecksum');
+    const usr = await verifyAndGetUser(cookies.get('authToken'), userJson, checksum);
+    if (userJson == null || checksum == null) {
+        const user = await verifyAndGetUser(cookies.get('authToken'), userJson, checksum);
+        if (user.result != null) {
+            cookies.set('userInfo', JSON.stringify(user.result), {
+                httpOnly: false, // Accessible by frontend
+                secure: true,
+                sameSite: "strict",
+                path: "/"
+            });
+            cookies.set('userChecksum', generateChecksum(user.result), {
+                httpOnly: false, // Accessible by frontend
+                secure: true,
+                sameSite: "strict",
+                path: "/"
+            });
+        }
+    }
     if (usr.success) {
         console.log(`User is registered! ${usr.result?.email_address}`);
         return { user: usr.result, authToken: cookies.get('authToken') }
@@ -54,15 +74,35 @@ export const actions = {
             if (jwt == null) {
                 redirect(302, '/profile');
             }
-            const user = getUserObjectFromJWT(jwt);
+            const userJson = cookies.get('userInfo');
+            const checksum = cookies.get('userChecksum');
+            const user = await verifyAndGetUser(jwt, userJson, checksum);
+            if(user.success == false){return fail(403,{ error: 'User with this email does not exist!' })}
+            if (userJson == null || checksum == null) {
+                const user = await verifyAndGetUser(cookies.get('authToken'), userJson, checksum);
+                if (user.result != null) {
+                    cookies.set('userInfo', JSON.stringify(user.result), {
+                        httpOnly: false, // Accessible by frontend
+                        secure: true,
+                        sameSite: "strict",
+                        path: "/"
+                    });
+                    cookies.set('userChecksum', generateChecksum(user.result), {
+                        httpOnly: false, // Accessible by frontend
+                        secure: true,
+                        sameSite: "strict",
+                        path: "/"
+                    });
+                }
+            }
             const form = await request.formData();
             const phone = form.get('ph-num') as string;
-            const uid = await getUserId(user.email);
+            const uid = user.result?.id
             if (uid == null) { return fail(400, { error: 'User with this email does not exist!' }); }
             const og = await getUserInfo(uid);
             if (og == null) { return fail(400, { error: 'User does not exist in records!' }) }
             const userObject = {
-                email_address: user.email,
+                email_address: user.result?.email_address as string,
                 first_name: og.first_name,
                 last_name: og.last_name,
                 phone_number: phone,
@@ -75,6 +115,18 @@ export const actions = {
                 if (!success) {
                     return { success: false, error: 'Failed to update user information' };
                 }
+                cookies.set('userInfo', JSON.stringify(userObject), {
+                    httpOnly: false, // Accessible by frontend
+                    secure: true,
+                    sameSite: "strict",
+                    path: "/"
+                });
+                cookies.set('userChecksum', generateChecksum(userObject), {
+                    httpOnly: false, // Accessible by frontend
+                    secure: true,
+                    sameSite: "strict",
+                    path: "/"
+                });
                 return { success: true };
             } catch (error) {
                 console.error('Error updating user:', error);

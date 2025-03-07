@@ -5,12 +5,34 @@ import type { DateTime } from "@auth/core/providers/kakao";
 import type { EventType, SolsticeEventInfo, SolsticePassInfo, UpdateEvent } from "$lib/server/BackendTypes";
 import { getUserId } from "$lib/server/BackendAgentUser.ts";
 import { getAllPasses } from "$lib/server/BackendAgentPass.ts";
-import { get, post } from "$lib/server/Backend";
+import { get, post, verifyAndGetUser } from "$lib/server/Backend";
+import { generateChecksum } from "$lib/server/CacheMaster";
 
 export async function load({ cookies, params }) {
     const jwt = cookies.get('authToken');
-    const canAccess = await check_EventRW_Access(jwt, params.slug);
-    const isAdmin = await checkAdminAccess(jwt);
+    const userJson = cookies.get('userInfo');
+    const checksum = cookies.get('userChecksum');
+    const canAccess = await check_EventRW_Access(jwt, userJson, checksum, params.slug);
+    const isAdmin = await checkAdminAccess(jwt, userJson, checksum);
+    if (userJson == null || checksum == null) {
+        const user = await verifyAndGetUser(cookies.get('authToken'), userJson, checksum);
+        if (user.result != null) {
+            cookies.set('userInfo', JSON.stringify(user.result), {
+                httpOnly: false, // Accessible by frontend
+                secure: true,
+                sameSite: "strict",
+                path: "/",
+                maxAge:3600
+            });
+            cookies.set('userChecksum', generateChecksum(user.result), {
+                httpOnly: false, // Accessible by frontend
+                secure: true,
+                sameSite: "strict",
+                path: "/",
+                maxAge:3600
+            });
+        }
+    }
     if (canAccess == false) { redirect(308, '/profile'); }
     const event = await getEventInfo(params.slug);
     const passes = await getAllPasses() ?? [];
@@ -38,9 +60,29 @@ export async function load({ cookies, params }) {
 
 export const actions = {
     updateEvent: async ({ cookies, request, params }) => {
-        const check = await check_EventRW_Access(cookies.get('authToken'), params.slug);
+        const userJson = cookies.get('userInfo');
+        const checksum = cookies.get('userChecksum');
+        const check = await check_EventRW_Access(cookies.get('authToken'), userJson, checksum, params.slug);
         if (check == false) { return fail(403, { success: false, error: 'Unauthorized edit' }); }
-
+        if (userJson == null || checksum == null) {
+            const user = await verifyAndGetUser(cookies.get('authToken'), userJson, checksum);
+            if (user.result != null) {
+                cookies.set('userInfo', JSON.stringify(user.result), {
+                    httpOnly: false, // Accessible by frontend
+                    secure: true,
+                    sameSite: "strict",
+                    path: "/",
+                    maxAge:3600
+                });
+                cookies.set('userChecksum', generateChecksum(user.result), {
+                    httpOnly: false, // Accessible by frontend
+                    secure: true,
+                    sameSite: "strict",
+                    path: "/",
+                    maxAge:3600
+                });
+            }
+        }
         const eventInfo = await getEventInfo(params.slug);
         if (eventInfo == null) {
             return fail(403, { success: false, error: 'Non existant event!' });
@@ -65,7 +107,7 @@ export const actions = {
         if (start_str == undefined || start_str == null) { return fail(400, { success: false, error: 'event start time field undefined/null!' }) }
 
         let orgID = eventInfo.organizer_id;
-        const isAdmin = await checkAdminAccess(cookies.get('authToken'));
+        const isAdmin = await checkAdminAccess(cookies.get('authToken'), userJson, checksum);
 
         if (isAdmin == true) {
             if (org != null) {
