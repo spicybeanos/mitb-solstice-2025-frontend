@@ -5,7 +5,7 @@ const DEFAULT_PASS_NAME = "default-pass";
 
 export async function getAllPasses(): Promise<SolsticePassInfo[] | null> {
     const res = await get("pass");
-
+    console.log(`all passes : ${res.result} : ${res.error}`);
     if (res.success) {
         return (await res.result) as SolsticePassInfo[];
     }

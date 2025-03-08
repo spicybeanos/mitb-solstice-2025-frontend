@@ -52,7 +52,10 @@ async function request<T>(method: string, url: string, body?: any): Promise<Resu
     try {
         const options: RequestInit = {
             method,
-            headers: headers(),
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${BEARER_TOKEN}`
+            },
             body: body ? JSON.stringify(body) : undefined,
         };
 

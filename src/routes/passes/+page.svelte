@@ -19,8 +19,7 @@
     ];
     // last element for demo purposes
 
-
-    const passURL = 'https://payment.manipal.edu/Tech-solstice-nexus-Login';
+    const passURL = "https://payment.manipal.edu/Tech-solstice-nexus-Login";
 
     let loading = $state(true);
     let SolsticeAllPassInfo: SolsticePassInfo[] | null = $state([]);
@@ -97,7 +96,10 @@
                                                     <div
                                                         class="desc text-sm mb-1"
                                                     >
-                                                        {pass.description}
+                                                        {pass.description ==
+                                                        null
+                                                            ? ""
+                                                            : pass.description}
                                                     </div>
 
                                                     <div
@@ -124,9 +126,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="button mt-2">
-                                                    <BuyPass
-                                                        href={passURL}
-                                                    >
+                                                    <BuyPass href={passURL}>
                                                         <div class="text">
                                                             Buy Pass!
                                                         </div>
