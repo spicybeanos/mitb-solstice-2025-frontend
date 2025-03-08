@@ -4,8 +4,8 @@ import type { CategoryType, ProblemTicket, ProblemTicketNEW } from "./BackendTyp
 
 export async function createTicket(ticket: ProblemTicketNEW) {
     const res = await post('support-ticket/', ticket);
-    if (res.success == false) { return {suc:false,ex:res.error}; }
-    return {suc:true};
+    if (res.success == false) { return { suc: false, ex: res.error }; }
+    return { suc: true };
 }
 
 export async function getTicketsFromEmail(email: string) {
@@ -64,6 +64,21 @@ export async function getTicketsByCategory(category: CategoryType) {
         return ticks;
     }
 }
-export async function setTicketStatus(ticketID: string, solved: boolean, comment: string) {
-    
+export async function setTicketStatus(id: string, solved: boolean, comment: string, solvedBy: string) {
+    let tick = await getTicketByTicketID(id);
+    if (tick == null) { return { suc: false, err: 'ticket with that id does not exist!' }; }
+    tick.solved = solved;
+    tick.comment = comment;
+    tick.solved_email_address = solvedBy;
+    const res = await patch(`support-ticket/${id}`, tick as ProblemTicketNEW);
+    if (res.success == true && res.result != null) {
+        return { suc: true }
+    }
+    else {
+        return { suc: false, err: res.error }
+    }
+}
+
+export async function deleteTicket(id:string) {
+    return await del(`support-ticket/${id}`);
 }

@@ -21,7 +21,7 @@
     });
 </script>
 
-<div class="flex justify-center">
+<div class="flex justify-center flex-wrap">
     <div class="p-[30px]">
         <h1>Enter pass ID to edit pass</h1>
         <BasicInput
