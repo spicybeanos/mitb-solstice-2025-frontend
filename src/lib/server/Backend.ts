@@ -38,7 +38,6 @@ export async function verifyAndGetUser(jwt: string | null | undefined, userInfoC
         if (res_cache.result?.email_address.trim() == ver.object.email.trim()) {
             return res_cache;
         }
-
     }
 
     const userID = await getUserId(ver.object?.email);
