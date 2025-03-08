@@ -31,6 +31,7 @@
                             <BasicInput
                                 name="desc"
                                 placeholder="Pass description"
+                                multiline={true}
                                 required
                                 value={data.pass?.description}
                             />
