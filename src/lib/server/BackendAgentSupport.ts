@@ -1,11 +1,11 @@
 import { tick } from "svelte";
 import { get, post, patch, del } from "./Backend.ts";
 import type { CategoryType, ProblemTicket } from "./BackendTypes.ts";
-import { addTicketToDB, getTicketBy_ID, getTicketsBy_Category, getTicketsFrom_Email, getUnsolved_Tickets, setTicket_Solved } from "./database.ts";
 
 export async function createTicket(ticket: ProblemTicket) {
     const res = await post('support-ticket/', ticket);
     if (res.success == false) { return false; }
+    return true;
 }
 
 export async function getTicketsFromEmail(email: string) {
