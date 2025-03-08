@@ -1,6 +1,9 @@
 import type { DateTime } from "@auth/core/providers/kakao";
 
-export type EventType = 'cultural' | 'e_sports' | 'experiences' | 'finance' | 'hackathon' | 'other' | 'robotics' | 'sports' | 'technical';
+export type EventType =
+    'cultural' | 'e_sports' | 'experiences'
+    | 'finance' | 'hackathon' | 'other' | 'robotics'
+    | 'sports' | 'technical';
 export function isValidEvent(type: string): boolean {
     switch (type) {
         case 'cultural':
@@ -32,7 +35,7 @@ export interface SolsticeEventInfo {
 }
 export interface UpdateEvent {
     name: string,
-    description:string,
+    description: string,
     type: EventType,
     team_members: number | null,
     start: DateTime,
@@ -67,13 +70,13 @@ export interface SolsticeUser {
     id: UserID;
 }
 
-export interface SolsticeEventRegRow{
-    team_name:string,
-    player_name:string,
-    player_email:string,
-    player_phno:string,
-    player_reg:string,
-    is_captain:boolean
+export interface SolsticeEventRegRow {
+    team_name: string,
+    player_name: string,
+    player_email: string,
+    player_phno: string,
+    player_reg: string,
+    is_captain: boolean
 }
 
 export type CategoryType = 'Special request' |
@@ -84,17 +87,49 @@ export type CategoryType = 'Special request' |
     "Organisation" |
     "Contests/ Contest results" |
     'Event';
+export type CategoryTypeServer =
+    'contest' | 'event' | 'organization' | 'other' |
+    'passes' | 'payment' | 'special_request' | 'website';
+
 export interface ProblemTicket {
     name: string;
     description: string;
-    college: string;
+    college_name: string;
     problem: string;
-    category: CategoryType;
-    phone: string;
-    ticketID: string;
-    email: string;
+    category: string;
+    phone_number: string;
+    id: string;
+    email_address: string;
     timestamp: string;
     solved: boolean;
-    solved_by_email: string | null,
-    comment:string | null
+    solved_email_address: string | null,
+    comment: string | null
 }
+export interface ProblemTicketNEW {
+    name: string;
+    description: string;
+    college_name: string;
+    problem: string;
+    category: CategoryTypeServer;
+    phone_number: string;
+    email_address: string;
+    timestamp: string;
+    solved: boolean;
+    solved_email_address: string | null,
+    comment: string | null
+}
+
+/*
+{
+  "name": "string",
+  "description": "string",
+  "category": "contest",
+  "timestamp": "2025-03-08T17:01:49.596Z",
+  "solved": true,
+  "college_name": "string",
+  "email_address": "string",
+  "phone_number": "string",
+  "solved_email_address": "string",
+  "comment": "string"
+}
+*/

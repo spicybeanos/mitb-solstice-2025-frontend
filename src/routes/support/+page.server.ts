@@ -1,5 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit';
-import type { CategoryType, ProblemTicket } from '$lib/server/BackendTypes.ts';
+import type { CategoryType, CategoryTypeServer, ProblemTicket, ProblemTicketNEW } from '$lib/server/BackendTypes.ts';
 import { v4 as uuidv4 } from 'uuid';
 import { getUserObjectFromJWT, verifyGJWT } from '$lib/server/GAuth';
 import { verifyAndGetUser } from '$lib/server/Backend';
@@ -30,14 +30,14 @@ export const actions = {
                         secure: true,
                         sameSite: "strict",
                         path: "/",
-                        maxAge:3600
+                        maxAge: 3600
                     });
                     cookies.set('userChecksum', generateChecksum(user.result), {
                         httpOnly: false, // Accessible by frontend
                         secure: true,
                         sameSite: "strict",
                         path: "/",
-                        maxAge:3600
+                        maxAge: 3600
                     });
                 }
             }
@@ -50,7 +50,7 @@ export const actions = {
             const college = formData.get('college');
             const problem = formData.get('problem');
             const desc = formData.get('description');
-            const cat = formData.get('category') as CategoryType;
+            const cat = formData.get('category') as CategoryTypeServer;
 
             if (name == null) {
                 return fail(400, { success: false, error: 'name is null!' })
@@ -74,23 +74,22 @@ export const actions = {
             const time = new Date().toISOString();
             const solved = false;
 
-            const ticket: ProblemTicket = {
+            const ticket: ProblemTicketNEW = {
                 name: name as string,
-                phone: phone as string,
-                college: college as string,
+                phone_number: phone as string,
+                college_name: college as string,
                 problem: problem == null ? '' : problem as string,
                 description: desc as string,
                 category: cat,
-                ticketID: ticketID,
-                email: email,
+                email_address: email,
                 timestamp: time,
                 solved: solved,
-                solved_by_email: null,
+                solved_email_address: null,
                 comment: ''
             };
-            createTicket(ticket);
-            console.log(ticket);
-            return { success: true }
+            const res = await createTicket(ticket);
+
+            return { success: res.suc, error: JSON.stringify(res.ex) }
         } catch (err) {
             return { success: false, error: JSON.stringify(err) }
         }

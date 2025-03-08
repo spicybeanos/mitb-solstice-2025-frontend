@@ -21,16 +21,16 @@
             class="border border-gray-600 rounded-lg p-5 flex flex-col m-[5px]"
         >
             <BasicHeader>Ticket Information</BasicHeader>
-            <code>{data.ticket?.ticketID}</code>
+            <code>{data.ticket?.id}</code>
             {#if data.ticket?.solved}
                 <div class="text-green-400">Status: Solved</div>
             {:else}
                 <div class="text-red-400">Status: Un solved</div>
             {/if}
             <div>Name : {data.ticket?.name}</div>
-            <div>Phone number : {data.ticket?.phone}</div>
-            <div>E-mail : {data.ticket?.email}</div>
-            <div>College : {data.ticket?.college}</div>
+            <div>Phone number : {data.ticket?.phone_number}</div>
+            <div>E-mail : {data.ticket?.email_address}</div>
+            <div>College : {data.ticket?.college_name}</div>
             <div>Category : {data.ticket?.category}</div>
             {#if data.ticket?.category == "Other"}
                 <div>Problem : {data.ticket?.problem}</div>
