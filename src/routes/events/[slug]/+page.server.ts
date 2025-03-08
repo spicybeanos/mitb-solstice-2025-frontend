@@ -3,6 +3,7 @@ import { getEventID, getEventInfo, getEvents, getHost_sTeamInfo, getTeams, getUs
 import { checkEventAccessibleByPass } from '$lib/server/BackendAgentPass';
 import { addUserToTeam, createTeamAndAttach, disbandTeam, getAllTeams, getTeamDetails, getUsersInTeam, removeUserFromTeam } from '$lib/server/BackendAgentTeam';
 import type { SolsticeUser } from '$lib/server/BackendTypes.js';
+import { generateChecksum } from '$lib/server/CacheMaster.js';
 import { error, fail, json, redirect } from '@sveltejs/kit';
 
 export const load = async ({ params, cookies }) => {
@@ -14,8 +15,25 @@ export const load = async ({ params, cookies }) => {
             error(404, 'Event not found');
         }
         const token = cookies.get('authToken');
-
-        const user = await verifyAndGetUser(token);
+        const userJson = cookies.get('userInfo');
+        const checksum = cookies.get('userChecksum');
+        const user = await verifyAndGetUser(token, userJson, checksum);
+        if (user.success == true && user.error != null && user.result != null) {
+            cookies.set('userInfo', JSON.stringify(user.result), {
+                httpOnly: false, // Accessible by frontend
+                secure: true,
+                sameSite: "strict",
+                path: "/",
+                maxAge:3600
+            });
+            cookies.set('userChecksum', generateChecksum(user.result), {
+                httpOnly: false, // Accessible by frontend
+                secure: true,
+                sameSite: "strict",
+                path: "/",
+                maxAge:3600
+            })
+        }
 
         const events = await getEvents();
         if (events == null) { redirect(300, '/') }
@@ -91,8 +109,31 @@ export const actions = {
             if (g_jwt == null) return fail(401, { msg: 'google auth failed! log in again!' });
             const jwt = g_jwt as string;
 
-            const ver = await verifyAndGetUser(jwt);
+            const userJson = cookies.get('userInfo');
+            const checksum = cookies.get('userChecksum');
+            const ver = await verifyAndGetUser(jwt, userJson, checksum);
+            
+
             if (ver.success == false) return fail(401, { msg: ver.error });
+            if (ver.result == null) { return fail(401, { msg: 'null user' }); }
+
+            if (userJson == null || checksum == null) {
+                cookies.set('userInfo', JSON.stringify(ver.result), {
+                    httpOnly: false, // Accessible by frontend
+                    secure: true,
+                    sameSite: "strict",
+                    path: "/",
+                    maxAge:3600
+                });
+                cookies.set('userChecksum', generateChecksum(ver.result), {
+                    httpOnly: false, // Accessible by frontend
+                    secure: true,
+                    sameSite: "strict",
+                    path: "/",
+                    maxAge:3600
+                })
+            }
+
             const eventId = params.slug;
             const hostID = ver.result?.id;
 
@@ -105,13 +146,13 @@ export const actions = {
                 for (const t of teams) {
                     if (t.host_id == hostID) { return fail(409, { msg: "You're already in a team!" }); }
                 }
-               
+
             }
 
-            if(allteams.success == false){return fail(503,{msg:'Teams service is unavailaible! Submit a ticket or contact the admins! error:' + allteams.error})}
-            if(allteams.result != null){
+            if (allteams.success == false) { return fail(503, { msg: 'Teams service is unavailaible! Submit a ticket or contact the admins! error:' + allteams.error }) }
+            if (allteams.result != null) {
                 for (const team of allteams.result) {
-                    if(team.name == teamName){return fail(409, { msg: "A team with that name already exists!" });}
+                    if (team.name == teamName) { return fail(409, { msg: "A team with that name already exists!" }); }
                 }
             }
 
@@ -144,10 +185,48 @@ export const actions = {
             if (teamID == undefined) return fail(400, { msg: 'team name not provided' });
             if (teamID == null) return fail(400, { msg: 'team name not provided' });
 
-            const ver = await verifyAndGetUser(g_jwt);
+            const userJson = cookies.get('userInfo');
+            const checksum = cookies.get('userChecksum');
+            const ver = await verifyAndGetUser(g_jwt, userJson, checksum);
+            if (userJson == null || checksum == null) {
+                const user = await verifyAndGetUser(cookies.get('authToken'), userJson, checksum);
+                if (user.result != null) {
+                    cookies.set('userInfo', JSON.stringify(user.result), {
+                        httpOnly: false, // Accessible by frontend
+                        secure: true,
+                        sameSite: "strict",
+                        path: "/",
+                        maxAge:3600
+                    });
+                    cookies.set('userChecksum', generateChecksum(user.result), {
+                        httpOnly: false, // Accessible by frontend
+                        secure: true,
+                        sameSite: "strict",
+                        path: "/",
+                        maxAge:3600
+                    });
+                }
+            }
             if (ver.success == false) return fail(401, { msg: ver.error });
+            if (ver.result == null) return fail(401, { msg: 'null user' });
 
             const userID = ver.result?.id;
+
+            if (userJson == null || checksum == null) {
+                cookies.set('userInfo', JSON.stringify(ver.result), {
+                    httpOnly: false, // Accessible by frontend
+                    secure: true,
+                    sameSite: "strict",
+                    path: "/"
+                });
+                cookies.set('userChecksum', generateChecksum(ver.result), {
+                    httpOnly: false, // Accessible by frontend
+                    secure: true,
+                    sameSite: "strict",
+                    path: "/",
+                    maxAge:3600
+                })
+            }
 
             const eventId = params.slug;
             if (eventId == null) return fail(400, { msg: 'event id is null!' });
@@ -195,9 +274,48 @@ export const actions = {
     disbandTeam: async ({ cookies, params }) => {
         try {
             const g_jwt = cookies.get('authToken');
-            const ver = await verifyAndGetUser(g_jwt);
+            const userJson = cookies.get('userInfo');
+            const checksum = cookies.get('userChecksum');
+            const ver = await verifyAndGetUser(g_jwt, userJson, checksum);
+            if (userJson == null || checksum == null) {
+                const user = await verifyAndGetUser(cookies.get('authToken'), userJson, checksum);
+                if (user.result != null) {
+                    cookies.set('userInfo', JSON.stringify(user.result), {
+                        httpOnly: false, // Accessible by frontend
+                        secure: true,
+                        sameSite: "strict",
+                        path: "/",
+                        maxAge:3600
+                    });
+                    cookies.set('userChecksum', generateChecksum(user.result), {
+                        httpOnly: false, // Accessible by frontend
+                        secure: true,
+                        sameSite: "strict",
+                        path: "/",
+                        maxAge:3600
+                    });
+                }
+            }
             if (ver.success == false) return fail(403, { msg: ver.error });
+            if (ver.result == null) return fail(403, { msg: 'user is null' });
             const userID = ver.result?.id;
+
+            if (userJson == null || checksum == null) {
+                cookies.set('userInfo', JSON.stringify(ver.result), {
+                    httpOnly: false, // Accessible by frontend
+                    secure: true,
+                    sameSite: "strict",
+                    path: "/",
+                    maxAge:3600
+                });
+                cookies.set('userChecksum', generateChecksum(ver.result), {
+                    httpOnly: false, // Accessible by frontend
+                    secure: true,
+                    sameSite: "strict",
+                    path: "/",
+                    maxAge:3600
+                })
+            }
 
             const eventId = params.slug;
             if (eventId == null) return fail(400, { msg: 'event id is null!' });
@@ -214,8 +332,28 @@ export const actions = {
     leaveTeam: async ({ cookies, params }) => {
         try {
             const g_jwt = cookies.get('authToken');
-            const ver = await verifyAndGetUser(g_jwt);
+            const userJson = cookies.get('userInfo');
+            const checksum = cookies.get('userChecksum');
+            const ver = await verifyAndGetUser(g_jwt, userJson, checksum);
             if (ver.success == false) return fail(403, { msg: ver.error });
+            if (ver.result == null) return fail(403, { msg: 'null user' });
+
+            if (userJson == null || checksum == null) {
+                cookies.set('userInfo', JSON.stringify(ver.result), {
+                    httpOnly: false, // Accessible by frontend
+                    secure: true,
+                    sameSite: "strict",
+                    path: "/",
+                    maxAge:3600
+                });
+                cookies.set('userChecksum', generateChecksum(ver.result), {
+                    httpOnly: false, // Accessible by frontend
+                    secure: true,
+                    sameSite: "strict",
+                    path: "/",
+                    maxAge:3600
+                })
+            }
             const userID = ver.result?.id;
             if (userID == null) { return fail(400, { msg: 'user does not exist!' }); }
             const eventId = params.slug;

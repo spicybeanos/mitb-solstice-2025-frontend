@@ -1,6 +1,7 @@
 import { get, post, patch, del } from "./Backend.ts";
 import { getUsersInTeam } from "./BackendAgentTeam.ts";
-import type { SolsticeEventInfo, SolsticeEventRegRow, SolsticePassInfo, SolsticeTeamInfo, SolsticeUser, UpdateEvent, UserID } from "./BackendTypes.ts";
+import type { EventImages, SolsticeEventInfo, SolsticeEventRegRow, SolsticePassInfo, SolsticeTeamInfo, SolsticeUser, UpdateEvent, UserID } from "./BackendTypes.ts";
+import { supabase } from "./supabseClient.ts";
 
 let serverEvents: SolsticeEventInfo[] = [];
 
@@ -34,12 +35,16 @@ export async function getEventRegisTable(eventID: string): Promise<SolsticeEvent
 }
 
 export async function getEvents(): Promise<SolsticeEventInfo[] | null> {
-    const res = await get<SolsticeEventInfo[]>("event");
-    if (res.success) {
-        serverEvents = res.result as SolsticeEventInfo[];
+    if (serverEvents.length == 0) {
+        const res = await get<SolsticeEventInfo[]>("event");
+        if (res.success) {
+            serverEvents = res.result as SolsticeEventInfo[];
+            return serverEvents;
+        }
+        return null;
+    } else {
         return serverEvents;
     }
-    return null;
 }
 
 export async function getEventID(eventName: string): Promise<string | null> {
@@ -82,16 +87,23 @@ export async function getUserInfosInEvent(eventId: string): Promise<SolsticeUser
 
 export async function updateEventDetails(eventID: string, info: UpdateEvent) {
     const res = await patch(`event/${eventID}`, info);
-
+    for (let i = 0; i < serverEvents.length; i++) {
+        if (serverEvents[i].id == eventID) {
+            serverEvents[i] = { ...info, id: eventID };
+        }
+    }
     if (res.success) return { success: true };
     const body = await res.error
     return { success: false, error: body, code: 500 };
 }
 
 export async function createEvent(info: UpdateEvent) {
-    const res = await post(`event/`, info);
+    const res = await post<SolsticeEventInfo>(`event/`, info);
 
-    if (res.success) return { success: true };
+    if (res.success) {
+        if (res.result != null) { serverEvents.push(res.result); }
+        return { success: true };
+    }
     const body = await res.error
     return { success: false, error: body, code: 500 };
 }
@@ -109,7 +121,7 @@ export async function getUser_s_TeamIDInEvent(userID: string, eventID: string): 
 
     return null;
 }
-export async function getEventPasses(eventID:string) {
+export async function getEventPasses(eventID: string) {
     return await get<SolsticePassInfo[]>(`event/${eventID}/passes`);
 }
 export async function getHost_sTeamInfo(hostID: string, eventID: string): Promise<SolsticeTeamInfo | null> {
@@ -128,6 +140,27 @@ export async function getHost_sTeamInfo(hostID: string, eventID: string): Promis
 export async function getEventInfo(eventId: string): Promise<SolsticeEventInfo | null> {
     const res = await get(`event/${eventId}`);
     return res.success ? (await res.result) as SolsticeEventInfo : null;
+}
+
+export async function getEventImages(eventID: string): Promise<EventImages> {
+    if (!eventID) throw new Error('eventID is required');
+
+    const { data, error } = await supabase
+        .from('EventImages')
+        .select('thumbnail, background')
+        .eq('eventID', eventID)
+        .single(); // Expecting only one row
+
+    if (error) {
+        console.error('Error fetching event images:', error);
+        throw new Error(error.message);
+    }
+
+    if (!data) {
+        throw new Error('Event not found');
+    }
+
+    return data;
 }
 
 export async function getTeams(eventId: string): Promise<SolsticeTeamInfo[] | null> {

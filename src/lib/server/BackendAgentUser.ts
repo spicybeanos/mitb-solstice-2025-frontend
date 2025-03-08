@@ -2,9 +2,7 @@ import { get, post, patch } from "./Backend.ts";
 import type { SolsticeUser, SolsticePassInfo } from "./BackendTypes.ts";
 
 export async function registerUser(user: SolsticeUser): Promise<SolsticeUser | null> {
-    const defaultPassID = await getDefaultPass();
     user.pass_id = null;
-    
     const res = await post<SolsticeUser>("user", user);
     return res.success ? res.result : null;
 }

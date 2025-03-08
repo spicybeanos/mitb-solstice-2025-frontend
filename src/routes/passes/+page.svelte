@@ -10,6 +10,8 @@
     import { cubicOut, quintOut } from "svelte/easing";
 
     let { data } = $props();
+    let nonmahe_pass_list=["Robotics", "Technical", "Finance", "All Access", "non-mahe"];
+    // last element for demo purposes
 
     let loading = $state(true);
     let SolsticeAllPassInfo: SolsticePassInfo[] | null = $state([]);
@@ -55,42 +57,52 @@
                                         opacity: 0,
                                     }}
                                 >
-
-                                    <div class="card-wrapper"
+                                    <div
+                                        class="card-wrapper"
                                         in:scale|global={{
                                             delay: i * 200,
                                             duration: 800,
                                             start: 0.95,
-                                            opacity:0
-                                        }}>
+                                            opacity: 0,
+                                        }}
+                                    >
                                         <PassCard>
                                             <div class="detailContainer">
                                                 <div class="content-wrapper">
                                                     <h1 class="text-6xl font-bold mb-1">{pass.name}</h1>
+                                                    <h4 class="text-lg font-bold">{ pass.name != "E-SPORTS" ? nonmahe_pass_list.includes(pass.name) ? "For non-MAHE participants" : "For MAHE students only" : "" }</h4>
                                                     <div class="desc text-sm mb-1">
+
                                                         {pass.description}
                                                     </div>
-        
-                                                    <div class="eventsIncludedOuter">
-                                                        {#if EventsInAllPasses!==null}
+
+                                                    <div
+                                                        class="eventsIncludedOuter"
+                                                    >
+                                                        {#if EventsInAllPasses !== null}
                                                             {#each EventsInAllPasses as event}
                                                                 {#if event.passId===pass.id}
                                                                     <div class="eventsIncluded">
                                                                         <a href={`/events/${event.id}`}>{event.name}</a>
+
                                                                     </div>
                                                                 {/if}
                                                             {/each}
                                                         {/if}
                                                     </div>
-                                                    
+
                                                     <div class="price">
                                                         {pass.cost}
                                                     </div>
                                                 </div>
                                                 <div class="button mt-2">
-                                                    <BuyPass href={`https://payment.manipal.edu/bangalore-campus`} >
-                                                        <div class="text">Buy Pass!</div>
-                                                    </BuyPass>  
+                                                    <BuyPass
+                                                        href={`https://payment.manipal.edu/bangalore-campus`}
+                                                    >
+                                                        <div class="text">
+                                                            Buy Pass!
+                                                        </div>
+                                                    </BuyPass>
                                                 </div>
                                             </div>
                                         </PassCard>
@@ -106,18 +118,26 @@
                         </div>
                     </div>
                 {/if}
-
-                {:else}
-                <div class="container single-container" in:fade={{duration: 300}}>
+            {:else}
+                <div
+                    class="container single-container"
+                    in:fade={{ duration: 300 }}
+                >
                     <PassCard>
                         <div class="detailContainer single-pass-container">
                             <div class="content-wrapper">
-                                <h1 class="text-4xl font-bold mb-4">Your Pass</h1>
+                                <h1 class="text-4xl font-bold mb-4">
+                                    Your Pass
+                                </h1>
                                 <div class="info-box">
                                     <div class="pass-info">
-                                        <h2 class="pass-name">{userPassInfo.name}</h2>
+                                        <h2 class="pass-name">
+                                            {userPassInfo.name}
+                                        </h2>
                                         <div class="uniqueString">
-                                            Unique Id: <span class="id-text">{userPassInfo.id}</span>
+                                            Unique Id: <span class="id-text"
+                                                >{userPassInfo.id}</span
+                                            >
                                         </div>
                                     </div>
                                     <div class="qr-wrapper">
@@ -143,8 +163,27 @@
 {/if}
 
 <style>
-
     .outer {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        align-items: center;
+        width: 100%;
+        padding: 48px;
+        /* background-color: #1e1e1e; */
+    }
+
+    .inner {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-start;
+        max-width: 1600px;
+        gap: 24px;
+        perspective: 1000px;
+        transform-style: preserve-3d;
+        backface-visibility: hidden;
+    }
 
     display: flex;
     justify-content: center;
@@ -245,8 +284,19 @@
 
 @media screen and (max-width: 1024px) {
     .container {
-        flex: 0 1 calc(50% - 20px);
-        max-width: 48%;
+        flex: 0 1 calc(33.333% - 20px);
+        max-width: 33%;
+        min-width: 300px;
+        box-sizing: border-box;
+        max-height: fit-content;
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        transform-origin: center;
+        will-change: transform, opacity;
     }
 
     .desc {
@@ -271,6 +321,7 @@
         width: 100%;
         display: flex;
         justify-content: center;
+        margin-top: auto;
     }
 
     .text {
@@ -285,8 +336,6 @@
         padding-bottom: 16px;
     }
 
-   
-
     .detailContainer {
         display: flex;
         flex-direction: column;
@@ -300,9 +349,68 @@
         text-align: center;
         flex-grow: 1;
         height: 100%;
+        min-height: 100%;
+        padding-bottom: 1rem;
     }
-}
-@media screen and (max-width: 768px) {
+
+    @media screen and (max-width: 1024px) {
+        .container {
+            flex: 0 1 calc(50% - 20px);
+            max-width: 48%;
+        }
+
+        .desc {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 1rem;
+            margin-bottom: 32px;
+            margin-top: 20px;
+        }
+        .uniqueString {
+            color: #ab83fe;
+            flex-grow: 1;
+            text-align: center;
+            font-size: 1rem;
+            margin-bottom: 32px;
+            margin-top: 20px;
+            word-break: break-word;
+            white-space: normal;
+        }
+
+        .button {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .text {
+            color: #000000;
+        }
+
+        .detailContainer h1 {
+            font-size: 2.5rem;
+            margin-top: -10px;
+            font-weight: 800;
+            line-height: 1.1;
+            padding-bottom: 16px;
+        }
+
+        .detailContainer {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            font-size: 1.5rem;
+            margin-top: 2%;
+            transition: opacity 1s ease;
+            color: #c7ae93;
+            text-align: center;
+            flex-grow: 1;
+            height: 100%;
+        }
+    }
+    @media screen and (max-width: 768px) {
         .container {
             flex: 1 1 100%;
             max-width: 100%;
@@ -318,32 +426,33 @@
             line-height: 1.3;
         }
         .single-container {
-        max-width: 320px;
-    }
+            max-width: 320px;
+        }
 
-    .single-pass-container{
-        padding: 0.75rem;
-    }
+        .single-pass-container {
+            padding: 0.75rem;
+        }
 
-    .pass-info {
-        padding: 0.25rem;
-        width: 80%;
-    }
+        .pass-info {
+            padding: 0.25rem;
+            width: 80%;
+        }
 
-    .pass-name {
-        font-size: 1rem;
-    }
+        .pass-name {
+            font-size: 1rem;
+        }
 
-    .qr-wrapper {
-        width: 80%;
-        padding: 0.75rem;
-        max-width: 180px;
-    }
-    .info-box {
-        padding: 0.25rem;
-    }
-    .eventsIncludedOuter{
-        min-height: 100px;
+        .qr-wrapper {
+            width: 80%;
+            padding: 0.75rem;
+            max-width: 180px;
+        }
+        .info-box {
+            padding: 0.25rem;
+        }
+        .eventsIncludedOuter {
+            min-height: 100px;
+        }
     }
     .detailContainer {
         padding: 1rem; 
@@ -367,7 +476,8 @@
     }
 }
 
-@media screen and (max-width: 480px) {
+
+    @media screen and (max-width: 480px) {
         .inner {
             max-width: 300px;
             margin-left: 0px;
@@ -394,54 +504,53 @@
         backdrop-filter: blur(4px);
     }
 
-    
-    .emptyPassInner {
+
+        .emptyPassInner {
             font-size: 1rem;
             padding: 1.5rem;
         }
-    
 
-    .card-wrapper {
-        height: 100%;
-        width: 100%;
-    }
-
-
-    .single-container {
-        max-width: 400px;
-    }
-
-    .single-pass-container {
-        padding: 1rem;
-    }
-
-    .pass-info {
-        padding: 0.5rem;
-    }
-
-    .qr-wrapper {
-        width: 60%;
-        padding: clamp(0.5rem, 2vw, 1rem);
-        margin: 1rem auto;
-        max-width: 160px;
-    }
-
-    .uniqueString {
-        font-size: 0.8rem;
-    }
-
-    .id-text {
-        font-size: 0.75rem;
-    }
-
-    @keyframes slideUp {
-        from {
-            transform: translateY(600px);
-            opacity: 0;
+        .card-wrapper {
+            height: 100%;
+            width: 100%;
         }
-        to {
-            transform: translateY(0);
-            opacity: 1;
+
+        .single-container {
+            max-width: 400px;
+        }
+
+        .single-pass-container {
+            padding: 1rem;
+        }
+
+        .pass-info {
+            padding: 0.5rem;
+        }
+
+        .qr-wrapper {
+            width: 60%;
+            padding: clamp(0.5rem, 2vw, 1rem);
+            margin: 1rem auto;
+            max-width: 160px;
+        }
+
+        .uniqueString {
+            font-size: 0.8rem;
+        }
+
+        .id-text {
+            font-size: 0.75rem;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(600px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
     }
     .detailContainer {
@@ -465,22 +574,23 @@
     
 }
 
-.loading-container {
+
+    .loading-container {
         display: flex;
         justify-content: center;
         align-items: center;
         min-height: 60vh;
     }
 
-.loading-spinner {
+    .loading-spinner {
         width: 50px;
         height: 50px;
         border: 3px solid #ab83fe;
         border-top: 3px solid transparent;
         border-radius: 50%;
         animation: spin 1s linear infinite;
-}
-@keyframes spin {
+    }
+    @keyframes spin {
         0% {
             transform: rotate(0deg);
         }
@@ -835,4 +945,5 @@
         margin-top: 12px;
     }
 }
+
 </style>
