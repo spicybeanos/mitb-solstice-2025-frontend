@@ -11,6 +11,7 @@
 
     import { WavyBackground } from "$lib/components/ui/Waves/index.ts";
     import { Hamburger } from "svelte-hamburgers";
+    import { MobileWaves } from "$lib/components/ui/MobileWaves/index.ts";
 
     let hamOpen = $state(false);
 
@@ -186,15 +187,20 @@
         </div>
 </div> -->
 
-<div class="bg-[#1E1E1E] z-20" style="min-height: 70vh; height:fit-content ">
-    <img
-        src={retro}
-        alt="retrogrid"
-        class="w-screen h-screen fixed top-0 left-0 object-cover sm:hidden"
-    />
-    <WavyBackground>
+<div class="bg-[#1E1E1E] z-20 sm:hidden" style="min-height: 70vh; height:fit-content ">
+    <MobileWaves>
+    <!-- <WavyBackground > -->
+        {@render children()}
+    <!-- </WavyBackground> -->
+    </MobileWaves>
+</div>
+
+<div class="bg-[#1E1E1E] z-20  max-sm:hidden" style="min-height: 70vh; height:fit-content">
+    <!-- <MobileWaves> -->
+    <WavyBackground >
         {@render children()}
     </WavyBackground>
+    <!-- </MobileWaves> -->
 </div>
 
 <footer
