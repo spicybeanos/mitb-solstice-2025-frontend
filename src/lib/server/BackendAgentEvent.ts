@@ -33,16 +33,13 @@ export async function getEventRegisTable(eventID: string): Promise<SolsticeEvent
 }
 
 export async function getEvents(): Promise<SolsticeEventInfo[] | null> {
-    if (serverEvents.length == 0) {
-        const res = await get<SolsticeEventInfo[]>("event/");
-        if (res.success) {
-            serverEvents = res.result as SolsticeEventInfo[];
-            return serverEvents;
-        }
-        return null;
-    } else {
+    const res = await get<SolsticeEventInfo[]>("event/");
+    if (res.success) {
+        serverEvents = res.result as SolsticeEventInfo[];
         return serverEvents;
     }
+    return null;
+
 }
 
 export async function getEventID(eventName: string): Promise<string | null> {
