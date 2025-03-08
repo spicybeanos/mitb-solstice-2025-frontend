@@ -96,7 +96,7 @@ export interface ProblemTicket {
     description: string;
     college_name: string;
     problem: string;
-    category: string;
+    category: CategoryTypeServer;
     phone_number: string;
     id: string;
     email_address: string;

@@ -4,11 +4,15 @@ import { checkEventAccessibleByPass } from '$lib/server/BackendAgentPass';
 import { addUserToTeam, createTeamAndAttach, disbandTeam, getAllTeams, getTeamDetails, getUsersInTeam, removeUserFromTeam } from '$lib/server/BackendAgentTeam';
 import type { SolsticeUser } from '$lib/server/BackendTypes.js';
 import { generateChecksum } from '$lib/server/CacheMaster.js';
+import { getEventMedia } from '$lib/server/WebsiteMaster.js';
 import { error, fail, json, redirect } from '@sveltejs/kit';
 
 export const load = async ({ params, cookies }) => {
     try {
         const eventID = params.slug;
+
+        const media = await getEventMedia(eventID);
+
         if (eventID == null) redirect(300, '/events');
         const eventInfo = await getEventInfo(eventID);
         if (eventInfo == null) {
