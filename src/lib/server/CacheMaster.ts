@@ -21,7 +21,6 @@ export function verifyUserInfoCookie(userJson:string|null|undefined,checksum:str
             return {success:false,error:'tampered',result:null};
         }
 
-        console.log('Got data from cookie! saved an http request!')
         return {success:true,result:userInfo,error:null}
     } 
     catch 

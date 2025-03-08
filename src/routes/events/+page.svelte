@@ -80,173 +80,203 @@
                         {/if}
                     {/if}
                 {:else}
-                <a href={`/events/${event.id}/`}>
-                    <div
-                        class="e-margin"
-                        in:slide={{
-                            delay: i * 200,
-                            duration: 1000,
-                            easing: quintOut,
-                            axis: "y",
-                        }}
-                        out:fade|global={{
-                            duration: 300,
-                        }}
-                    >
+                    <a href={`/events/${event.id}/`}>
                         <div
-                            in:scale|global={{
+                            class="e-margin"
+                            in:slide={{
                                 delay: i * 200,
-                                duration: 800,
-                                start: 0.95,
-                                opacity: 0,
+                                duration: 1000,
+                                easing: quintOut,
+                                axis: "y",
+                            }}
+                            out:fade|global={{
+                                duration: 300,
                             }}
                         >
-                            <div class=" relative hidden md:block ">
-                                <CardContainer
-                                    bind:isMouseEntered
-                                    className="inter-var"
-                                >
-                                <CardBody
-                                className="bg-black/80 flex flex-col justify-between relative group/card h-[26rem] dark:hover:shadow-2xl dark:hover:shadow-[#AB83FE]/90 dark:border-white/[0.2] border-[#AB83FE]/20 w-auto sm:w-[24rem] rounded-xl border-2 m-6 hover:translate-z-8 card-glow transition-all duration-500 ease-out"
+                            <div
+                                in:scale|global={{
+                                    delay: i * 200,
+                                    duration: 800,
+                                    start: 0.95,
+                                    opacity: 0,
+                                }}
                             >
-                                <CardItem
-                                    {isMouseEntered}
-                                    translateZ="100"
-                                    className="w-full h-full hover:translate-z-6 relative group transition-transform duration-500 ease-out"
-                                >
-                                    <img
-                                        src={event.pictureURL}
-                                        height="1600"
-                                        width="1000"
-                                        class="h-full w-full rounded-xl object-cover transition-all duration-300 group-hover:scale-105"
-                                        alt="thumbnail"
-                                    />
-        
-                                    <div
-                                        class="absolute bottom-0 w-full h-[22%] bg-black/80 backdrop-blur-sm rounded-b-xl p-4 transition-all duration-200 ease-out group-hover:-translate-y-full group-hover:opacity-0 border-t border-[#AB83FE]/20"
+                                <div class=" relative hidden md:block">
+                                    <CardContainer
+                                        bind:isMouseEntered
+                                        className="inter-var"
                                     >
-                                        <h3
-                                            class="text-[#C7AE93] font-bold text-xl md:text-2xl"
+                                        <CardBody
+                                            className="bg-black/80 flex flex-col justify-between relative group/card h-[26rem] dark:hover:shadow-2xl dark:hover:shadow-[#AB83FE]/90 dark:border-white/[0.2] border-[#AB83FE]/20 w-auto sm:w-[24rem] rounded-xl border-2 m-6 hover:translate-z-8 card-glow transition-all duration-500 ease-out"
                                         >
-                                            {event.name}
-                                        </h3>
-                                    </div>
-        
-                                    <div
-                                        class="absolute w-full hover:translate-z-13 inset-0 bg-black/60 dark:border-white/[0.2] border-black/[0.1] opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out rounded-xl backdrop-blur-md flex flex-col"
+                                            <CardItem
+                                                {isMouseEntered}
+                                                translateZ="100"
+                                                className="w-full h-full hover:translate-z-6 relative group transition-transform duration-500 ease-out"
+                                            >
+                                                <img
+                                                    src={event.pictureURL}
+                                                    height="1600"
+                                                    width="1000"
+                                                    class="h-full w-full rounded-xl object-cover transition-all duration-300 group-hover:scale-105"
+                                                    alt="thumbnail"
+                                                />
+
+                                                <div
+                                                    class="absolute bottom-0 w-full h-[22%] bg-black/80 backdrop-blur-sm rounded-b-xl p-4 transition-all duration-200 ease-out group-hover:-translate-y-full group-hover:opacity-0 border-t border-[#AB83FE]/20"
+                                                >
+                                                    <h3
+                                                        class="text-[#C7AE93] font-bold text-xl md:text-2xl"
+                                                    >
+                                                        {event.name}
+                                                    </h3>
+                                                </div>
+
+                                                <div
+                                                    class="absolute w-full hover:translate-z-13 inset-0 bg-black/60 dark:border-white/[0.2] border-black/[0.1] opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out rounded-xl backdrop-blur-md flex flex-col"
+                                                >
+                                                    <div
+                                                        class="absolute inset-0 p-6 flex flex-col justify-evenly"
+                                                    >
+                                                        <div class="space-y-6">
+                                                            <h3
+                                                                class="text-[#C7AE93] font-bold text-xl md:text-2xl transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300 ease-out"
+                                                            >
+                                                                {event.name}
+                                                            </h3>
+
+                                                            <div
+                                                                class="hidden md:block overflow-hidden"
+                                                            >
+                                                                <p
+                                                                    class="text-[#C7AE93]/90 text-sm mt-2 line-clamp-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300 delay-75 ease-out"
+                                                                >
+                                                                    {#if event.description && event.description.length > 250}
+                                                                        {event.description.slice(
+                                                                            0,
+                                                                            250,
+                                                                        )}...
+                                                                    {:else}
+                                                                        {event.description}
+                                                                    {/if}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div
+                                                            class="overflow-hidden"
+                                                        >
+                                                            <div
+                                                                class="flex items-center gap-2 text-[#AB83FE] text-sm transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300 delay-100"
+                                                            >
+                                                                <svg
+                                                                    class="w-5 h-5"
+                                                                    fill="currentColor"
+                                                                    viewBox="0 0 20 20"
+                                                                >
+                                                                    <path
+                                                                        d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"
+                                                                    ></path>
+                                                                </svg>
+                                                                {#if event.teamSize != null}
+                                                                    Team size: {event.teamSize}
+                                                                    {event.teamSize ===
+                                                                    1
+                                                                        ? "person"
+                                                                        : "people"}
+                                                                {:else}
+                                                                    No teams for
+                                                                    this event
+                                                                {/if}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </CardItem>
+                                        </CardBody>
+                                    </CardContainer>
+                                </div>
+                                <!-- Replace the mobile card section -->
+                                <div class="block md:hidden">
+                                    <CardContainer
+                                        bind:isMouseEntered
+                                        className="inter-var"
                                     >
-                                        <div
-                                            class="absolute inset-0 p-6 flex flex-col justify-evenly"
+                                        <CardBody
+                                            className="bg-black/80 flex flex-col justify-between relative group/card dark:shadow-xl dark:shadow-[#AB83FE]/70 border-[#AB83FE]/20 w-full sm:w-[24rem] h-auto rounded-xl p-4 border-2 card-glow"
                                         >
-                                            <div class="space-y-6">
-                                                <h3
-                                                    class="text-[#C7AE93] font-bold text-xl md:text-2xl transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300 ease-out"
+                                            <CardItem
+                                                {isMouseEntered}
+                                                translateZ="50"
+                                                className="w-full mb-4"
+                                            >
+                                                <img
+                                                    src={event.pictureURL}
+                                                    height="1000"
+                                                    width="1000"
+                                                    class="h-48 w-full rounded-xl object-cover"
+                                                    alt="thumbnail"
+                                                />
+                                            </CardItem>
+
+                                            <div class="flex flex-col gap-3">
+                                                <CardItem
+                                                    {isMouseEntered}
+                                                    translateZ="40"
+                                                    className="text-xl font-bold text-[#C7AE93]"
                                                 >
                                                     {event.name}
-                                                </h3>
-        
-                                                <div
-                                                    class="hidden md:block overflow-hidden"
+                                                </CardItem>
+
+                                                <CardItem
+                                                    {isMouseEntered}
+                                                    translateZ="30"
+                                                    className="text-[#C7AE93]/80 text-sm line-clamp-3"
                                                 >
-                                                    <p
-                                                        class="text-[#C7AE93]/90 text-sm mt-2 line-clamp-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300 delay-75 ease-out"
+                                                    {#if event.description && event.description.length > 100}
+                                                        {event.description.slice(
+                                                            0,
+                                                            100,
+                                                        )}...
+                                                    {:else}
+                                                        {event.description}
+                                                    {/if}
+                                                </CardItem>
+
+                                                <CardItem
+                                                    {isMouseEntered}
+                                                    translateZ="20"
+                                                    className="flex items-center gap-2 text-[#AB83FE] text-sm pt-2 border-t border-[#AB83FE]/20"
+                                                >
+                                                    <svg
+                                                        class="w-4 h-4"
+                                                        fill="currentColor"
+                                                        viewBox="0 0 20 20"
                                                     >
-                                                        {#if event.description && event.description.length > 250}
-                                                            {event.description.slice(0, 250)}...
-                                                        {:else}
-                                                            {event.description}
-                                                        {/if}
-                                                    </p>
-                                                </div>
-                                            </div>
-        
-                                            <div class="overflow-hidden">
-                                                <div
-                                                    class="flex items-center gap-2 text-[#AB83FE] text-sm transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300 delay-100"
-                                                >
-                                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+                                                        <path
+                                                            d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"
+                                                        ></path>
                                                     </svg>
-                                                    {#if event.teamSize != null}
-                                                        Team size: {event.teamSize} {event.teamSize === 1 ? "person" : "people"}
-                                                    {:else}
-                                                        No teams for this event
-                                                    {/if}
-                                                </div>
+                                                    <span class="truncate">
+                                                        {#if event.teamSize != null}
+                                                            Team size: {event.teamSize}
+                                                            {event.teamSize ===
+                                                            1
+                                                                ? "person"
+                                                                : "people"}
+                                                        {:else}
+                                                            No teams for this
+                                                            event
+                                                        {/if}
+                                                    </span>
+                                                </CardItem>
                                             </div>
-                                        </div>
-                                    </div>
-                                </CardItem>
-                            </CardBody>
-                                </CardContainer>
-                            </div>
-                            <!-- Replace the mobile card section -->
-                            <div class="block md:hidden">
-                                <CardContainer
-                                    bind:isMouseEntered
-                                    className="inter-var"
-                                >
-                                    <CardBody
-                                        className="bg-black/80 flex flex-col justify-between relative group/card dark:shadow-xl dark:shadow-[#AB83FE]/70 border-[#AB83FE]/20 w-full sm:w-[24rem] h-auto rounded-xl p-4 border-2 card-glow"
-                                    >
-                                        <CardItem
-                                            {isMouseEntered}
-                                            translateZ="50"
-                                            className="w-full mb-4"
-                                        >
-                                            <img
-                                                src={event.pictureURL}
-                                                height="1000"
-                                                width="1000"
-                                                class="h-48 w-full rounded-xl object-cover"
-                                                alt="thumbnail"
-                                            />
-                                        </CardItem>
-                        
-                                        <div class="flex flex-col gap-3">
-                                            <CardItem
-                                                {isMouseEntered}
-                                                translateZ="40"
-                                                className="text-xl font-bold text-[#C7AE93]"
-                                            >
-                                                {event.name}
-                                            </CardItem>
-                        
-                                            <CardItem
-                                                {isMouseEntered}
-                                                translateZ="30"
-                                                className="text-[#C7AE93]/80 text-sm line-clamp-3"
-                                            >
-                                                {#if event.description && event.description.length > 100}
-                                                    {event.description.slice(0, 100)}...
-                                                {:else}
-                                                    {event.description}
-                                                {/if}
-                                            </CardItem>
-                        
-                                            <CardItem
-                                                {isMouseEntered}
-                                                translateZ="20"
-                                                className="flex items-center gap-2 text-[#AB83FE] text-sm pt-2 border-t border-[#AB83FE]/20"
-                                            >
-                                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
-                                                </svg>
-                                                <span class="truncate">
-                                                    {#if event.teamSize != null}
-                                                        Team size: {event.teamSize} {event.teamSize === 1 ? "person" : "people"}
-                                                    {:else}
-                                                        No teams for this event
-                                                    {/if}
-                                                </span>
-                                            </CardItem>
-                                        </div>
-                                    </CardBody>
-                                </CardContainer>
+                                        </CardBody>
+                                    </CardContainer>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
                 {/if}
             {/each}
         </div>
@@ -342,9 +372,6 @@
         opacity: 0;
         transition: all 0.5s ease;
     }
-
-
-    
 
     :global(.card-glow) {
         position: relative;
