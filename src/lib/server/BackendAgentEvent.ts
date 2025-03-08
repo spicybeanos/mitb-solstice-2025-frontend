@@ -9,7 +9,6 @@ export async function getEventRegisTable(eventID: string): Promise<SolsticeEvent
     const teams = await getTeams(eventID);
     if (!teams) return null;
 
-    console.log(`number of teams: ${teams.length}`);
 
     let rows: SolsticeEventRegRow[] = [];
 
@@ -30,7 +29,6 @@ export async function getEventRegisTable(eventID: string): Promise<SolsticeEvent
         }
     }
 
-    console.log(`Rows : ${rows.length}; teams : ${teams.length}`);
     return rows;
 }
 
@@ -86,7 +84,7 @@ export async function getUserInfosInEvent(eventId: string): Promise<SolsticeUser
 }
 
 export async function updateEventDetails(eventID: string, info: UpdateEvent) {
-    const res = await patch(`event/${eventID}/`, info);
+    const res = await patch(`event/${eventID}`, info);
     for (let i = 0; i < serverEvents.length; i++) {
         if (serverEvents[i].id == eventID) {
             serverEvents[i] = { ...info, id: eventID };
@@ -122,7 +120,7 @@ export async function getUser_s_TeamIDInEvent(userID: string, eventID: string): 
     return null;
 }
 export async function getEventPasses(eventID: string) {
-    return await get<SolsticePassInfo[]>(`event/${eventID}/passes/`);
+    return await get<SolsticePassInfo[]>(`event/${eventID}/passes`);
 }
 export async function getHost_sTeamInfo(hostID: string, eventID: string): Promise<SolsticeTeamInfo | null> {
     const teams = await getTeams(eventID);
@@ -138,7 +136,7 @@ export async function getHost_sTeamInfo(hostID: string, eventID: string): Promis
 }
 
 export async function getEventInfo(eventId: string): Promise<SolsticeEventInfo | null> {
-    const res = await get(`event/${eventId}/`);
+    const res = await get(`event/${eventId}`);
     return res.success ? (await res.result) as SolsticeEventInfo : null;
 }
 
@@ -164,12 +162,12 @@ export async function getEventImages(eventID: string): Promise<EventImages> {
 }
 
 export async function getTeams(eventId: string): Promise<SolsticeTeamInfo[] | null> {
-    const res = await get(`event/${eventId}/teams/`);
+    const res = await get(`event/${eventId}/teams`);
     return res.success ? (await res.result) as SolsticeTeamInfo[] : null;
 }
 
 export async function addTeamToEvent(eventId: string, teamId: string): Promise<string | null> {
-    const res = await post(`event/${eventId}/teams/${teamId}/`);
+    const res = await post(`event/${eventId}/teams/${teamId}`);
     if (res.success == false) {
         console.log(`Could not attach to event: ${res.error}`)
     }
@@ -177,6 +175,6 @@ export async function addTeamToEvent(eventId: string, teamId: string): Promise<s
 }
 
 export async function removeTeamFromEvent(eventId: string, teamId: string): Promise<string | null> {
-    const res = await del(`event/${eventId}/teams/${teamId}/`);
+    const res = await del(`event/${eventId}/teams/${teamId}/]`);
     return res.success ? (await res.result) as string : null;
 }

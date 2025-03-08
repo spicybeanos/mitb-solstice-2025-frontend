@@ -23,6 +23,6 @@ export async function getUserPassInfo(userId: string): Promise<SolsticePassInfo 
 }
 
 export async function updateUserInfo(userId: string, info: SolsticeUser): Promise<boolean> {
-    const res = await patch<boolean>(`user/${userId}/`, info);
+    const res = await patch<boolean>(`user/${userId}`, info);
     return res.success;
 }

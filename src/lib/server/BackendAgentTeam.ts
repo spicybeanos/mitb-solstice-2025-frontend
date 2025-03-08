@@ -40,7 +40,7 @@ export async function getAllTeams() {
 }
 
 export async function getUsersInTeam(teamId: string): Promise<SolsticeUser[] | null> {
-    const res = await get<SolsticeUser[]>(`team/${teamId}/users/`);
+    const res = await get<SolsticeUser[]>(`team/${teamId}/users`);
     return res.success ? res.result : null;
 }
 
