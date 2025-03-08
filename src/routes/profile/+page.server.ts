@@ -57,7 +57,7 @@ export const actions = {
                 id: '',
                 pass_id: null
             });
-
+            window.location.reload()
             return { success: true };
 
         } catch (err) {
