@@ -3,7 +3,6 @@ import { ID_VALIDITY_KEY } from "$env/static/private";
 import { verifyGJWT } from "./GAuth";
 import { getUserId, getUserInfo } from "./BackendAgentUser";
 import type { SolsticeUser } from "./BackendTypes";
-import type { Cookies } from "@sveltejs/kit";
 import { verifyUserInfoCookie } from "./CacheMaster";
 
 const headers = () => ({
@@ -69,11 +68,12 @@ async function request<T>(method: string, url: string, body?: any): Promise<Resu
             responseBody = await res.text();
         }
 
-        return {
+        const _res_ = {
             success: res.ok, // True for 2xx responses
             result: res.ok ? (responseBody as T) : null,
-            error: res.ok ? null : responseBody?.error || `Err_${res.status}`,
+            error: res.ok ? null : responseBody || `Err_${res.status}`,
         };
+        return _res_;
     } catch (error) {
         return {
             success: false,

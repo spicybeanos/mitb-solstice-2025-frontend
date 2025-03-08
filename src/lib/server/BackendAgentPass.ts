@@ -1,11 +1,11 @@
+import { BACKEND_URL, BEARER_TOKEN } from "$env/static/private";
 import { get } from "./Backend.ts";
 import type { SolsticeEventInfo, SolsticePassInfo } from "./BackendTypes.ts";
 
 const DEFAULT_PASS_NAME = "default-pass";
 
 export async function getAllPasses(): Promise<SolsticePassInfo[] | null> {
-    const res = await get("pass");
-    console.log(`all passes : ${res.result} : ${res.error}`);
+    const res = await get("pass/");
     if (res.success) {
         return (await res.result) as SolsticePassInfo[];
     }
@@ -13,7 +13,7 @@ export async function getAllPasses(): Promise<SolsticePassInfo[] | null> {
 }
 
 export async function getPassInfo(passID: string): Promise<SolsticePassInfo | null> {
-    const res = await get(`pass/${passID}`);
+    const res = await get(`pass/${passID}/`);
 
     if (res.success) {
         return (await res.result) as SolsticePassInfo;
@@ -26,7 +26,7 @@ export async function getPass(passId: string): Promise<SolsticePassInfo | null> 
 }
 
 export async function getEventsAccessibleByPass(passID: string): Promise<SolsticeEventInfo[] | null> {
-    const res = await get(`pass/${passID}/events`);
+    const res = await get(`pass/${passID}/events/`);
 
     if (res.success) {
         return (await res.result) as SolsticeEventInfo[];
@@ -35,7 +35,7 @@ export async function getEventsAccessibleByPass(passID: string): Promise<Solstic
 }
 
 export async function checkEventAccessibleByPass(eventID: string, passID: string | null): Promise<boolean> {
-    const res = await get(`event/${eventID}/passes`);
+    const res = await get(`event/${eventID}/passes/`);
     if (res.success == false) { return false; }
     const passes = res.result as SolsticePassInfo[];
     if (passes.length == 0) { return true; }

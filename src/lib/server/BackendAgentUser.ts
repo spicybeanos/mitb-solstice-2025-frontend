@@ -3,7 +3,7 @@ import type { SolsticeUser, SolsticePassInfo } from "./BackendTypes.ts";
 
 export async function registerUser(user: SolsticeUser): Promise<SolsticeUser | null> {
     user.pass_id = null;
-    const res = await post<SolsticeUser>("user", user);
+    const res = await post<SolsticeUser>("user/", user);
     return res.success ? res.result : null;
 }
 
@@ -23,6 +23,6 @@ export async function getUserPassInfo(userId: string): Promise<SolsticePassInfo 
 }
 
 export async function updateUserInfo(userId: string, info: SolsticeUser): Promise<boolean> {
-    const res = await patch<boolean>(`user/${userId}`, info);
+    const res = await patch<boolean>(`user/${userId}/`, info);
     return res.success;
 }

@@ -4,7 +4,7 @@ import type { SolsticeUser, SolsticeTeamInfo } from "./BackendTypes.ts";
 
 export async function createTeam(teamName: string, hostId: string): Promise<SolsticeTeamInfo | null> {
 
-    const res = await post<SolsticeTeamInfo>(`team`, { name: teamName, host_id: hostId });
+    const res = await post<SolsticeTeamInfo>(`team/`, { name: teamName, host_id: hostId });
 
     if (!res.success || !res.result) { console.log('Create team post failed!' + res.error); return null; }
 
@@ -36,16 +36,16 @@ export async function removeUserFromTeam(teamId: string, userID: string): Promis
 }
 
 export async function getAllTeams() {
-    return await get<SolsticeTeamInfo[]>(`team`)
+    return await get<SolsticeTeamInfo[]>(`team/`)
 }
 
 export async function getUsersInTeam(teamId: string): Promise<SolsticeUser[] | null> {
-    const res = await get<SolsticeUser[]>(`team/${teamId}/users`);
+    const res = await get<SolsticeUser[]>(`team/${teamId}/users/`);
     return res.success ? res.result : null;
 }
 
 export async function updateTeam(teamName: string, hostId: string): Promise<SolsticeTeamInfo | null> {
-    const res = await patch<SolsticeTeamInfo>(`team`, { name: teamName, host_id: hostId });
+    const res = await patch<SolsticeTeamInfo>(`team/`, { name: teamName, host_id: hostId });
     return res.success ? res.result : null;
 }
 

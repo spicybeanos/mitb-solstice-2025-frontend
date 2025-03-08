@@ -47,7 +47,7 @@ export async function getUnsolvedTickets() {
 }
 
 export async function getTicketByTicketID(id: string) {
-    const res = await get(`support-ticket/${id}`);
+    const res = await get(`support-ticket/${id}/`);
     if (res.success) { return res.result as ProblemTicket; } else { return null; }
 }
 export async function getTicketsByCategory(category: CategoryType) {
