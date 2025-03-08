@@ -204,7 +204,7 @@
         <div class="flex flex-col">
             <p>Manipal Institute of technology</p>
             <p>Yelahanka, Bengaluru</p>
-            <p>Karnataka - 650036</p>
+            <p>Karnataka - 560064</p>
         </div>
 
         <div class="flex flex-col text-right">

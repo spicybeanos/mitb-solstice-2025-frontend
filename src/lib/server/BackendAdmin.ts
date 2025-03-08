@@ -5,8 +5,8 @@ import { getUserId } from "./BackendAgentUser";
 const admins: string[] = ['aryan.d.dalal@gmail.com'];
 const IT_OCs: string[] = ['blucraft2104@gmail.com'];
 const OPS_CC_team: string[] = ['sarveshbagla07@gmail.com', 'tyagi.aryan3434@gmail.com'];
-const HR_team: string[] = [];
-const Finance_Team: string[] = [];
+const HR_team: string[] = ['atharvamaik200@gmail.com', 'rohitnandagopal010305@gmail.com', 'suryanshabhijit1@gmail.com', 'aishanisharma3@gmail.com', 'snishtha.381@gmail.com', 'ayushi.khubber@gmail.com', 'kshitij.betwal@gmail.com'];
+const Finance_Team: string[] = ['shashwatshukla120@gmail.com'];
 
 
 export async function checkAdminAccess(jwt: string | null | undefined, userInfoCookieJson: string | null | undefined, userChecksum: string | null | undefined): Promise<boolean> {
@@ -26,6 +26,7 @@ export async function check_manage_Access(jwt: string | null | undefined, userIn
     if (OPS_CC_team.includes(user.result?.email_address)) { return true; }
     if (IT_OCs.includes(user.result?.email_address)) { return true; }
     if (HR_team.includes(user.result?.email_address)) { return true; }
+    if (Finance_Team.includes(user.result?.email_address)) { return true; }
     return false;
 }
 
@@ -45,6 +46,15 @@ export async function check_HR_Access(jwt: string | null | undefined, userInfoCo
     if (admins.includes(user.result?.email_address)) { return true; }
     if (IT_OCs.includes(user.result?.email_address)) { return true; }
     if (HR_team.includes(user.result?.email_address)) { return true; }
+    return false;
+}
+
+export async function check_PassRW_Access(jwt: string | null | undefined, userInfoCookieJson: string | null | undefined, userChecksum: string | null | undefined): Promise<boolean> {
+    const user = await verifyAndGetUser(jwt, userInfoCookieJson, userChecksum);
+    if (user.success == false) { return false; }
+    if (user.result == null) { return false; }
+    if (admins.includes(user.result?.email_address)) { return true; }
+    if (Finance_Team.includes(user.result?.email_address)) { return true; }
     return false;
 }
 

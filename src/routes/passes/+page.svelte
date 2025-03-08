@@ -16,6 +16,7 @@
         "Finance",
         "All Access",
         "non-mahe",
+        'e-Sports'
     ];
     // last element for demo purposes
 
@@ -87,7 +88,7 @@
                                                     >
                                                         {pass.name != "E-SPORTS"
                                                             ? nonmahe_pass_list.includes(
-                                                                  pass.name,
+                                                                  pass.name.trim(),
                                                               )
                                                                 ? "For non-MAHE participants"
                                                                 : "For MAHE students only"

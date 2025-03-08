@@ -1,7 +1,7 @@
 import { get, post, patch, del } from "./Backend.ts";
 import { getUsersInTeam } from "./BackendAgentTeam.ts";
 import type { EventImages, SolsticeEventInfo, SolsticeEventRegRow, SolsticePassInfo, SolsticeTeamInfo, SolsticeUser, UpdateEvent, UserID } from "./BackendTypes.ts";
-import { supabase } from "./supabseClient.ts";
+import { supabase } from "./supabaseClient.ts";
 
 let serverEvents: SolsticeEventInfo[] = [];
 
