@@ -74,7 +74,7 @@
                                                     <div class="eventsIncludedOuter">
                                                         {#if EventsInAllPasses!==null}
                                                             {#each EventsInAllPasses as event}
-                                                                {#if event.pass===pass.name}
+                                                                {#if event.passId===pass.id}
                                                                     <div class="eventsIncluded">
                                                                         <a href={`/events/${event.id}`}>{event.name}</a>
                                                                     </div>
@@ -152,7 +152,6 @@
     align-items: center;
     width: 100%;
     padding: 48px;
-    background-color: #1e1e1e;
 }
 
 .inner {
@@ -182,6 +181,8 @@
     overflow-wrap: break-word;
     transform-origin: center;
     will-change: transform, opacity;
+    background: rgba(0, 0, 0, 0.4); 
+    backdrop-filter: blur(8px);
 }
 
 
@@ -305,13 +306,16 @@
         .container {
             flex: 1 1 100%;
             max-width: 100%;
+            margin-bottom: 16px; 
         }
         .detailContainer h1 {
-            font-size: 2rem;
-            margin-top: -5px;
+            font-size: 1.6rem; 
+            margin: 0 0 8px 0; 
         }
         .desc {
-            font-size: 1rem;
+            font-size: 0.85rem;
+            margin: 8px 0; 
+            line-height: 1.3;
         }
         .single-container {
         max-width: 320px;
@@ -341,6 +345,26 @@
     .eventsIncludedOuter{
         min-height: 100px;
     }
+    .detailContainer {
+        padding: 1rem; 
+        min-height: auto; 
+    }
+    .eventsIncludedOuter {
+        min-height: auto; 
+        padding: 12px;
+        margin: 12px -12px;
+    }
+    .eventsIncluded {
+        padding: 6px 12px;
+        margin-bottom: 4px; 
+    }
+    .price {
+        margin: 12px 0;
+        padding: 6px 12px;
+    }
+    .button {
+        margin-top: 12px;
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -358,7 +382,7 @@
             font-size: 0.7rem;
         }
         .emptyPassInner {
-        background-color: #2a2a2a;
+        background-color: rgba(42, 42, 42, 0.6);
         padding: 2rem;
         border-radius: 10px;
         text-align: center;
@@ -367,6 +391,7 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         max-width: 400px;
         width: 90%;
+        backdrop-filter: blur(4px);
     }
 
     
@@ -418,6 +443,24 @@
             transform: translateY(0);
             opacity: 1;
         }
+    }
+    .detailContainer {
+        padding: 0.75rem; 
+    }
+    .detailContainer h1 {
+        font-size: 1.4rem; 
+    }
+    .desc {
+        font-size: 0.8rem;
+        margin: 6px 0;
+    }
+    .eventsIncludedOuter {
+        padding: 10px;
+        margin: 10px -10px;
+    }
+    .eventsIncluded {
+        padding: 4px 10px;
+        margin-bottom: 3px;
     }
     
 }
@@ -474,9 +517,12 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
-    padding: 10px 20px;
-    margin: 10px 0;
+    padding: 16px 24px;
+    margin: 16px 0;
     min-height: 200px;
+    background: rgba(171, 131, 254, 0.05);
+    border: 1px solid rgba(171, 131, 254, 0.1);
+    border-radius: 8px;
 }
 
 .emptyPassOuter {
@@ -488,7 +534,7 @@
 }
 
 .emptyPassInner {
-    background-color: #2a2a2a;
+    background-color: rgba(42, 42, 42, 0.6);
     padding: 2rem;
     border-radius: 10px;
     text-align: center;
@@ -497,6 +543,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     max-width: 400px;
     width: 90%;
+    backdrop-filter: blur(4px);
 }
 
 
@@ -538,11 +585,12 @@
     text-align: center;
     width: 107%;
     padding: 0.75rem;
-    background: rgba(171, 131, 254, 0.1);
+    background: rgba(171, 131, 254, 0.05);
     border-radius: 0px;
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+    backdrop-filter: blur(4px);
 }
 
 /* Typography */
@@ -612,5 +660,179 @@
     
 }
 
+/* Update the mobile styles in the <style> section */
 
+@media screen and (max-width: 768px) {
+    .outer {
+        padding: 16px;
+    }
+
+    .container {
+        flex: 1 1 100%;
+        max-width: 100%;
+        min-height: auto; 
+        margin-bottom: 16px; 
+    }
+
+    .detailContainer {
+        padding: 1rem; 
+        min-height: auto; 
+    }
+
+    .detailContainer h1 {
+        font-size: 1.6rem; 
+        margin: 0 0 8px 0; 
+    }
+
+    .desc {
+        font-size: 0.85rem;
+        margin: 8px 0; 
+        line-height: 1.3;
+    }
+
+    .eventsIncludedOuter {
+        min-height: auto; 
+        padding: 12px;
+        margin: 12px -12px;
+    }
+
+    .eventsIncluded {
+        padding: 6px 12px;
+        margin-bottom: 4px; 
+    }
+
+    .price {
+        margin: 12px 0;
+        padding: 6px 12px;
+    }
+
+    .button {
+        margin-top: 12px;
+    }
+
+    /* Single Pass Container Improvements */
+    .single-container {
+        max-width: 100%;
+        padding: 16px;
+    }
+
+    .single-pass-container {
+        padding: 1.25rem;
+    }
+
+    .info-box {
+        gap: 1rem;
+        padding: 0.75rem;
+    }
+
+    .pass-info {
+        width: 100%;
+        padding: 1rem;
+        border-radius: 8px;
+        background: rgba(171, 131, 254, 0.08);
+    }
+
+    .pass-name {
+        font-size: 1.4rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .uniqueString {
+        font-size: 0.8rem;
+        padding: 8px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+        margin: 8px 0;
+    }
+
+    .qr-wrapper {
+        width: 80%;
+        max-width: 200px;
+        margin: 1rem auto;
+        padding: 0.5rem;
+        box-shadow: 0 0 16px rgba(171, 131, 254, 0.2);
+    }
+
+    .button-wrapper {
+        width: 100%;
+        padding: 0 16px;
+        margin-top: 1.5rem;
+    }
+
+    /* Loading State Improvements */
+    .loading-container {
+        min-height: 40vh;
+    }
+
+    .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border-width: 2px;
+    }
+
+    /* Empty State Improvements */
+    .emptyPassOuter {
+        min-height: 200px;
+        padding: 16px;
+    }
+
+    .emptyPassInner {
+        padding: 1.5rem;
+        font-size: 1rem;
+        line-height: 1.4;
+        background: rgba(171, 131, 254, 0.05);
+        border: 1px solid rgba(171, 131, 254, 0.1);
+    }
+}
+
+/* Additional improvements for very small screens */
+@media screen and (max-width: 480px) {
+    .outer {
+        padding: 12px;
+    }
+
+    .inner {
+        gap: 16px;
+    }
+
+    .detailContainer h1 {
+        font-size: 1.6rem;
+    }
+
+    .desc {
+        font-size: 0.85rem;
+    }
+
+    .eventsIncludedOuter {
+        min-width: calc(100% + 24px);
+        margin: 16px -12px;
+        padding: 12px;
+    }
+
+    .eventsIncluded {
+        padding: 6px 12px;
+    }
+
+    .price {
+        font-size: 1.1rem;
+        padding: 6px 12px;
+    }
+
+    .qr-wrapper {
+        width: 70%;
+        max-width: 180px;
+    }
+
+    .pass-name {
+        font-size: 1.2rem;
+    }
+
+    .uniqueString {
+        font-size: 0.75rem;
+    }
+
+    .button {
+        margin-top: 12px;
+    }
+}
 </style>

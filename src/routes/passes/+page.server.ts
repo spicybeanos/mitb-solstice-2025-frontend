@@ -7,6 +7,7 @@ import { UserProfileData } from "../GoogleLogin.svelte.ts";
 
 export interface EventInAllPasses {
     pass: string,
+    passId: string,
     name: string,
     description: string | null,
     type: string,
@@ -35,6 +36,7 @@ export async function load() {
                         EventsInPass.forEach((ev) => {
                             EventsInAllPasses.push({
                                 pass: pass.name,
+                                passId: pass.id,
                                 name: ev.name,
                                 description: ev.description as string,
                                 type: ev.type,

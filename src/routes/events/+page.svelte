@@ -75,8 +75,8 @@
                             <EventCard
                                 {event}
                                 i
-                                thumbnail={`/thumbnail/${event.id}.jpg`}
-                            />
+                                thumbnail={event.pictureURL}
+                            /><!--!!!NOTE!!! :- Need to put `/thumbnail/${event.id}.jpg` here, rn for placholder , its there-->
                         {/if}
                     {/if}
                 {:else}
@@ -106,106 +106,141 @@
                                     bind:isMouseEntered
                                     className="inter-var"
                                 >
+                                <CardBody
+                                className="bg-black/80 flex flex-col justify-between relative group/card h-[26rem] dark:hover:shadow-2xl dark:hover:shadow-[#AB83FE]/90 dark:border-white/[0.2] border-[#AB83FE]/20 w-auto sm:w-[24rem] rounded-xl border-2 m-6 hover:translate-z-8 card-glow transition-all duration-500 ease-out"
+                            >
+                                <CardItem
+                                    {isMouseEntered}
+                                    translateZ="100"
+                                    className="w-full h-full hover:translate-z-6 relative group transition-transform duration-500 ease-out"
+                                >
+                                    <img
+                                        src={event.pictureURL}
+                                        height="1600"
+                                        width="1000"
+                                        class="h-full w-full rounded-xl object-cover transition-all duration-300 group-hover:scale-105"
+                                        alt="thumbnail"
+                                    />
+        
+                                    <div
+                                        class="absolute bottom-0 w-full h-[22%] bg-black/80 backdrop-blur-sm rounded-b-xl p-4 transition-all duration-200 ease-out group-hover:-translate-y-full group-hover:opacity-0 border-t border-[#AB83FE]/20"
+                                    >
+                                        <h3
+                                            class="text-[#C7AE93] font-bold text-xl md:text-2xl"
+                                        >
+                                            {event.name}
+                                        </h3>
+                                    </div>
+        
+                                    <div
+                                        class="absolute w-full hover:translate-z-13 inset-0 bg-black/60 dark:border-white/[0.2] border-black/[0.1] opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out rounded-xl backdrop-blur-md flex flex-col"
+                                    >
+                                        <div
+                                            class="absolute inset-0 p-6 flex flex-col justify-evenly"
+                                        >
+                                            <div class="space-y-6">
+                                                <h3
+                                                    class="text-[#C7AE93] font-bold text-xl md:text-2xl transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300 ease-out"
+                                                >
+                                                    {event.name}
+                                                </h3>
+        
+                                                <div
+                                                    class="hidden md:block overflow-hidden"
+                                                >
+                                                    <p
+                                                        class="text-[#C7AE93]/90 text-sm mt-2 line-clamp-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300 delay-75 ease-out"
+                                                    >
+                                                        {#if event.description && event.description.length > 250}
+                                                            {event.description.slice(0, 250)}...
+                                                        {:else}
+                                                            {event.description}
+                                                        {/if}
+                                                    </p>
+                                                </div>
+                                            </div>
+        
+                                            <div class="overflow-hidden">
+                                                <div
+                                                    class="flex items-center gap-2 text-[#AB83FE] text-sm transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300 delay-100"
+                                                >
+                                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+                                                    </svg>
+                                                    {#if event.teamSize != null}
+                                                        Team size: {event.teamSize} {event.teamSize === 1 ? "person" : "people"}
+                                                    {:else}
+                                                        No teams for this event
+                                                    {/if}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </CardItem>
+                            </CardBody>
+                                </CardContainer>
+                            </div>
+                            <!-- Replace the mobile card section -->
+                            <div class="block md:hidden">
+                                <CardContainer
+                                    bind:isMouseEntered
+                                    className="inter-var"
+                                >
                                     <CardBody
-                                        className="bg-gray-50 flex flex-col justify-between relative group/card h-[26rem] dark:hover:shadow-2xl dark:hover:shadow-[#C7AE93]/90 dark:bg-black/80 dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[24rem] rounded-xl border m-6 hover:translate-z-8 card-glow transition-all duration-500 ease-out"
+                                        className="bg-black/80 flex flex-col justify-between relative group/card dark:shadow-xl dark:shadow-[#AB83FE]/70 border-[#AB83FE]/20 w-full sm:w-[24rem] h-auto rounded-xl p-4 border-2 card-glow"
                                     >
                                         <CardItem
                                             {isMouseEntered}
-                                            translateZ="100"
-                                            className="w-full h-full hover:translate-z-6 relative group transition-transform duration-500 ease-out"
+                                            translateZ="50"
+                                            className="w-full mb-4"
                                         >
-                                            <img 
+                                            <img
                                                 src={event.pictureURL}
-                                                height="1600"
+                                                height="1000"
                                                 width="1000"
-                                                class="h-full w-full rounded-xl object-cover transition-all duration-300 group-hover:scale-105"
+                                                class="h-48 w-full rounded-xl object-cover"
                                                 alt="thumbnail"
                                             />
-                                                <div class="absolute bottom-0 w-full h-[22%] bg-black/70 rounded-b-xl p-4 transition-all duration-200 ease-out group-hover:-translate-y-full group-hover:opacity-0">
-                                                    <h3 class="text-[#C7AE93] font-bold text-xl md:text-2xl">
-                                                        {event.name}
-                                                    </h3>
-                                                </div>
-
-                                                <div class="absolute w-full hover:translate-z-13 inset-0 bg-black/20 opacity-0 group-hover:opacity-400 transition-all duration-200 ease-out rounded-xl backdrop-blur-sm backdrop-brightness-75">
-                                                    <div class="absolute inset-0 p-6 flex flex-col justify-center">
-                                                        <div class="overflow-hidden">
-                                                            <h3 class="text-[#C7AE93] font-bold text-xl md:text-2xl transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300 ease-out">
-                                                                {event.name}
-                                                            </h3>
-                                                        </div>
-                                                        
-                                                        <!-- Hide description on mobile/tablet -->
-                                                        <div class="hidden md:block overflow-hidden">
-                                                            <p class="text-[#C7AE93]/90 text-sm mt-4 line-clamp-3 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300 delay-75 ease-out">
-                                                                {event.description}
-                                                            </p>
-                                                        </div>
-                                                        
-                                                        <div class="overflow-hidden">
-                                                            <p class="text-[#C7AE93]/80 text-xs mt-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300 delay-100">
-                                                                {#if event.teamSize != null}
-                                                                    Team size: {event.teamSize} {event.teamSize === 1 ? "person" : "people"}
-                                                                {:else}
-                                                                    No teams for this event
-                                                                {/if}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                         </CardItem>
-                                    </CardBody>
-                                </CardContainer>
-                            </div>
-                            <div class="block md:hidden">
-                                <CardContainer
-                                            bind:isMouseEntered
-                                            className="inter-var "
-                                        >
-                                            <CardBody
-                                                className="bg-gray-50 flex flex-col justify-between relative group/card  dark:shadow-2xl dark:shadow-[#C7AE93]/30  dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto  sm:w-[24rem] h-[35rem] sm:[37rem] rounded-xl p-6 border"
+                        
+                                        <div class="flex flex-col gap-3">
+                                            <CardItem
+                                                {isMouseEntered}
+                                                translateZ="40"
+                                                className="text-xl font-bold text-[#C7AE93]"
                                             >
-                                                <CardItem
-                                                    {isMouseEntered}
-                                                    translateZ="100"
-                                                    className="w-full mb-4 hover:translate-z-8"
-                                                >
-                                                    <img
-                                                        src={event.pictureURL}
-                                                        height="1000"
-                                                        width="1000"
-                                                        class="h-60 w-full rounded-xl object-cover group-hover/card:shadow-xl"
-                                                        alt="thumbnail"
-                                                    />
-                                                </CardItem>
-                                                <CardItem
-                                                    {isMouseEntered}
-                                                    translateZ="50"
-                                                    className="text-xl w-full text-[#C7AE93] flex mt-8 justify-between"
-                                                >
-                                                    <div class="text font-bold">
-                                                        {event.name}
-                                                    </div>
-                                                </CardItem>
-                                                <CardItem
-                                                    {isMouseEntered}
-                                                    translateZ="60"
-                                                    className="text-[#C7AE93] text-sm max-w-sm mt-2 "
-                                                >
+                                                {event.name}
+                                            </CardItem>
+                        
+                                            <CardItem
+                                                {isMouseEntered}
+                                                translateZ="30"
+                                                className="text-[#C7AE93]/80 text-sm line-clamp-3"
+                                            >
+                                                {#if event.description && event.description.length > 100}
+                                                    {event.description.slice(0, 100)}...
+                                                {:else}
                                                     {event.description}
-                                                </CardItem>
-                                                <CardItem
-                                                    {isMouseEntered}
-                                                    translateZ="60"
-                                                    className="text-[#C7AE93] text-sm max-w-sm mt-2 mb-4"
-                                                >
+                                                {/if}
+                                            </CardItem>
+                        
+                                            <CardItem
+                                                {isMouseEntered}
+                                                translateZ="20"
+                                                className="flex items-center gap-2 text-[#AB83FE] text-sm pt-2 border-t border-[#AB83FE]/20"
+                                            >
+                                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+                                                </svg>
+                                                <span class="truncate">
                                                     {#if event.teamSize != null}
-                                                        <pre>Team size: {` ${event.teamSize} ${event.teamSize === 1 ? " person" : " people"}`}</pre>
+                                                        Team size: {event.teamSize} {event.teamSize === 1 ? "person" : "people"}
                                                     {:else}
-                                                        <pre>No teams for this event.</pre>
+                                                        No teams for this event
                                                     {/if}
-                                                </CardItem>
-                                                
+                                                </span>
+                                            </CardItem>
+                                        </div>
                                     </CardBody>
                                 </CardContainer>
                             </div>
@@ -274,22 +309,17 @@
             transform: none !important;
         }
     }
-    :global(.card-glow) {
-        position: relative;
-        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
 
     :global(.card-glow::before) {
         content: "";
         position: absolute;
         inset: -2px;
         background: linear-gradient(
-            45deg,
-            transparent,
-            rgba(199, 174, 147, 0.1) 40%,
-            rgba(199, 174, 147, 0.2) 60%,
-            transparent
+            180deg,
+            rgba(171, 131, 254, 0.1),
+            rgba(171, 131, 254, 0.5)
         );
+        background-size: 200% 200%;
         border-radius: 0.75rem;
         z-index: -1;
         transition: all 0.5s ease;
@@ -302,15 +332,23 @@
         position: absolute;
         inset: -1px;
         background: linear-gradient(
-            45deg,
-            transparent,
-            rgba(199, 174, 147, 0.15),
-            transparent
+            180deg,
+            rgba(171, 131, 254, 0.05),
+            rgba(171, 131, 254, 0.4)
         );
+        background-size: 200% 200%;
         border-radius: 0.75rem;
         z-index: -1;
         opacity: 0;
         transition: all 0.5s ease;
+    }
+
+
+    
+
+    :global(.card-glow) {
+        position: relative;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     :global(.card-glow:hover::before),
@@ -367,5 +405,28 @@
 
     :global(.group > *) {
         backface-visibility: hidden;
+    }
+
+    @media (max-width: 768px) {
+        .eventCont {
+            padding: 20px;
+        }
+
+        :global(.line-clamp-3) {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        :global(.card-glow) {
+            margin-bottom: 1rem;
+        }
+
+        :global(.truncate) {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
 </style>
