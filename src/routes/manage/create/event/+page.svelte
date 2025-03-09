@@ -36,6 +36,7 @@
                     required
                     name="desc"
                     placeholder="Event description"
+                    multiline={true}
                 />
                 <div>
                     <label class="text-white" for="venue">Venue:</label>

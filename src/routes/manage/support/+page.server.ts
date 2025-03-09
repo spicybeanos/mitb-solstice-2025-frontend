@@ -19,18 +19,18 @@ export async function load({ cookies }) {
                     secure: true,
                     sameSite: "strict",
                     path: "/",
-                    maxAge:3600
+                    maxAge: 3600
                 });
                 cookies.set('userChecksum', generateChecksum(user.result), {
                     httpOnly: false, // Accessible by frontend
                     secure: true,
                     sameSite: "strict",
                     path: "/",
-                    maxAge:3600
+                    maxAge: 3600
                 });
             }
         }
-        if (access == true) { return { tickets: tickets as ProblemTicket[] } }
+        if (access == true) { return { tickets: tickets as ProblemTicket[], err: null } }
         else { return fail(403, { tickets: [] as ProblemTicket[], err: 'You do not have permission to view tickets!' }); }
     } catch (err) {
         return fail(503, { tickets: [] as ProblemTicket[], err: 'Service is temporerily offline!' })

@@ -2,50 +2,46 @@
     import BasicInput from "$lib/components/ui/Basic/BasicInput.svelte";
     import { onMount } from "svelte";
 
-    let eventID = $state("");
+    let passID = $state("");
     let { data } = $props();
 
-    let events: { name: string; eventID: string }[] = $state([]);
+    let passes: { name: string; passID: string }[] = $state([]);
 
     onMount(() => {
-        events = [];
-        if (data.events != undefined) {
-            for (const event of data.events) {
-                events.push({
-                    name: event.name,
-                    eventID: event.id,
+        passes = [];
+        if (data.passes != undefined && data.passes != null) {
+            for (const pass of data.passes) {
+                passes.push({
+                    name: pass.name,
+                    passID: pass.id,
                 });
             }
-            eventID = events[0].eventID;
+            passID = passes[0].passID;
         }
     });
 </script>
 
-<div class="flex justify-center">
+<div class="flex justify-center flex-wrap">
     <div class="p-[30px]">
-        <h1>Enter event ID to view or edit event</h1>
-        <div>Make sure you are the event head of that event!</div>
-
+        <h1>Enter pass ID to edit pass</h1>
         <BasicInput
             required
-            name="eventID"
-            bind:value={eventID}
+            name="passID"
+            bind:value={passID}
             placeholder="Enter event ID"
         />
         <select
-            bind:value={eventID}
+            bind:value={passID}
             class="border p-[8px] rounded-md bg-black text-white"
         >
-            {#each events as event}
-                <option value={event.eventID}>
+            {#each passes as event}
+                <option value={event.passID}>
                     {event.name}
                 </option>
             {/each}
         </select>
 
-        <a href={`/manage/events/${eventID.trim()}/edit`}>Edit event</a>
-        <a href={`/manage/events/${eventID.trim()}/media`}>Edit media</a>
-        <a href={`/manage/events/${eventID.trim()}/teams`}>View teams</a>
+        <a href={`/manage/pass/${passID.trim()}/`}>Edit</a>
     </div>
 </div>
 

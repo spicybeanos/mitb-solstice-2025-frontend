@@ -1,6 +1,6 @@
 <script lang="ts">
     import Button from "$lib/components/Button.svelte";
-    import { fly,fade } from "svelte/transition";
+    import { fly, fade } from "svelte/transition";
     import TextInput from "$lib/components/TextInput.svelte";
     import QR from "$lib/components/QR.svelte";
     import GoogleLogin from "../GoogleLogin.svelte";
@@ -12,12 +12,12 @@
     //import SimpleCard from "$lib/components/SimpleCard.svelte";
     //import InfoCard from "$lib/components/InfoCard.svelte";
 
-    import { backOut } from 'svelte/easing';
+    import { backOut } from "svelte/easing";
 
     const cardAnimation = {
         y: 50,
         duration: 1000,
-        easing: backOut
+        easing: backOut,
     };
 
     let { data } = $props();
@@ -48,6 +48,7 @@
             console.log("done logging out!");
             window.location.reload()
             await tick()
+
         });
     }
 </script>
@@ -56,11 +57,16 @@
 <div class="min-h-screen flex flex-col justify-between">
     <!-- Main content -->
     <main class="flex-grow flex justify-center items-center py-0 px-4 sm:py-16">
-        <div class="w-full max-w-4xl space-y-4 sm:space-y-6" in:fade={{ duration: 1000 }}>
+        <div
+            class="w-full max-w-4xl space-y-4 sm:space-y-6"
+            in:fade={{ duration: 1000 }}
+        >
             {#if !UserProfileData.loggedIn}
                 <!-- Login Card - Center content -->
-                <div class="flex flex-col items-center justify-center min-h-[30vh] sm:min-h-[50vh]">
-                    <div 
+                <div
+                    class="flex flex-col items-center justify-center min-h-[30vh] sm:min-h-[50vh]"
+                >
+                    <div
                         class="card-glow w-full max-w-md shadow-[#AB83FE]/40 sm:shadow-0 bg-[#AB83FE]/30 sm:bg-black/40 backdrop-blur-sm rounded-xl p-6 sm:p-8 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500 flex justify-center shadow-lg hover:shadow-[#AB83FE]/40"
                         in:fly={cardAnimation}
                     >
@@ -70,9 +76,16 @@
             {:else}
                 <!-- Profile Header - Stack on mobile -->
                 <div class="space-y-3 sm:space-y-6">
-                    <div class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-[#AB83FE]/40 sm:bg-black/80 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500" in:fly={{ ...cardAnimation, delay: 600 }}>
-                        <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left w-full sm:w-auto">
+                    <div
+                        class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-[#AB83FE]/40 sm:bg-black/80 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500"
+                        in:fly={{ ...cardAnimation, delay: 600 }}
+                    >
+                        <div
+                            class="flex flex-col sm:flex-row justify-between items-center gap-4"
+                        >
+                            <div
+                                class="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left w-full sm:w-auto"
+                            >
                                 <div class="relative">
                                     <img
                                         src={UserProfileData.picture}
@@ -81,12 +94,21 @@
                                     />
                                 </div>
                                 <div>
-                                    <div class="text-[#C7AE93] text-xl">{UserProfileData.name}</div>
-                                    <div class="text-[#C7AE93] text-sm">{UserProfileData.email}</div>
+                                    <div class="text-[#C7AE93] text-xl">
+                                        {UserProfileData.name}
+                                    </div>
+                                    <div class="text-[#C7AE93] text-sm">
+                                        {UserProfileData.email}
+                                    </div>
                                 </div>
                             </div>
-                            <Button OnClicked={() => LogOut()} class="w-full sm:w-auto">
-                                <div class="border border-[#AB83FE] hover:border-red-400 hover:bg-red-500 p-3 rounded-lg text-[#C7AE93] text-center">
+                            <Button
+                                OnClicked={() => LogOut()}
+                                class="w-full sm:w-auto"
+                            >
+                                <div
+                                    class="border border-[#AB83FE] hover:border-red-400 hover:bg-red-500 p-3 rounded-lg text-[#C7AE93] text-center"
+                                >
                                     Logout
                                 </div>
                             </Button>
@@ -94,29 +116,49 @@
                     </div>
 
                     <!-- Info Card - Improve mobile layout -->
-                    <div class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-black/30 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500" in:fly={{ ...cardAnimation, delay: 600 }}>
-                        <div class="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
-                            <img src='/icons/info.svg' alt='info icon' class="w-6 h-6"/>
+                    <div
+                        class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-black/30 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500"
+                        in:fly={{ ...cardAnimation, delay: 600 }}
+                    >
+                        <div
+                            class="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left"
+                        >
+                            <img
+                                src="/icons/info.svg"
+                                alt="info icon"
+                                class="w-6 h-6"
+                            />
                             <div class="text-[#C7AE93]">
-                                Make sure you bring your ID card when attending any event!
+                                Make sure you bring your ID card when attending
+                                any event!
                             </div>
                         </div>
                     </div>
 
                     {#if data.user == null}
                         <!-- Registration Form  -->
-                        <div class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-[#AB83FE]/40 sm:bg-black/80 backdrop-blur-sm rounded-xl p-4 sm:p-8 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500" in:fly={{ ...cardAnimation, delay: 700 }}>
+                        <div
+                            class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-[#AB83FE]/40 sm:bg-black/80 backdrop-blur-sm rounded-xl p-4 sm:p-8 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500"
+                            in:fly={{ ...cardAnimation, delay: 700 }}
+                        >
                             <div class="flex flex-col justify-center w-full">
-                                <h1 class="text-[#C7AE93] text-2xl font-semibold text-center mb-4 sm:mb-6">Register</h1>
+                                <h1
+                                    class="text-[#C7AE93] text-2xl font-semibold text-center mb-4 sm:mb-6"
+                                >
+                                    Register
+                                </h1>
                                 <div class="text-[#C7AE93] text-center mb-4">
-                                    If you have already registered, please refresh the page.
+                                    If you have already registered, please
+                                    refresh the page.
                                 </div>
                                 <form
                                     action="?/register"
                                     method="post"
                                     class="w-full space-y-4 sm:space-y-6"
                                 >
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div
+                                        class="grid grid-cols-1 sm:grid-cols-2 gap-4"
+                                    >
                                         <TextInput
                                             placeholder="First Name"
                                             name="first_name"
@@ -162,21 +204,46 @@
                                     >
                                 </form>
                                 <span class="text-[#C7AE93]"
-                                    >*Event organizers and volunteers may use your
-                                    mobile number and email to contact you for event and
-                                    fest related matters</span
+                                    >*Event organizers and volunteers may use
+                                    your mobile number and email to contact you
+                                    for event and fest related matters</span
+                                >
+                                <span class="text-[#C7AE93]"
+                                    >By registering to our site, you agree to
+                                    out <a href="/tos" class="text-white"
+                                        >terms of service</a
+                                    >
+                                    and
+                                    <a href="/privacy" class="text-white">
+                                        our privacy policy</a
+                                    >
+                                    If you disagree, do not register yourself.
+                                    For more information
+                                    <a href="/contactus" class="text-white"
+                                        >contact us.</a
+                                    ></span
                                 >
                             </div>
                         </div>
                     {:else}
                         <!-- Update Form and QR Section -->
                         <div class="flex justify-center">
-                            <div class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-[#AB83FE]/40 sm:bg-black/60 backdrop-blur-sm rounded-xl p-4 sm:p-8 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500 w-1/3" in:fly={{ ...cardAnimation, delay: 700 }}>
+                            <div
+                                class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-[#AB83FE]/40 sm:bg-black/60 backdrop-blur-sm rounded-xl p-4 sm:p-8 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500 w-1/3"
+                                in:fly={{ ...cardAnimation, delay: 700 }}
+                            >
                                 <div class="flex justify-center gap-8">
                                     <!-- QR Code - Show first on mobile -->
-                                    <div class="flex flex-col items-center justify-center order-1 lg:order-2" in:fly={{ ...cardAnimation, delay: 700 }}>
-                                        
-                                        <div class="bg-white border-1 sm:border-4 border-[#AB83FE]/50 p-1.5 shadow-lg shadow-[#AB83FE]/60 rounded-xl">
+                                    <div
+                                        class="flex flex-col items-center justify-center order-1 lg:order-2"
+                                        in:fly={{
+                                            ...cardAnimation,
+                                            delay: 700,
+                                        }}
+                                    >
+                                        <div
+                                            class="bg-white border-1 sm:border-4 border-[#AB83FE]/50 p-1.5 shadow-lg shadow-[#AB83FE]/60 rounded-xl"
+                                        >
                                             <QR text={data.user.id} />
                                         </div>
                                     </div>
@@ -188,7 +255,8 @@
                 </div>
             {/if}
         </div>
-    </div>
+    </main>
+</div>
 
 <style>
     img {
@@ -202,22 +270,19 @@
     }
 
     :global(.card-glow::before) {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    background: linear-gradient(
-        0deg,
-        rgba(171, 131, 254, 0.3),
-        rgba(171, 131, 254, 0.1)
-    );
-    border-radius: 0.75rem;
-    z-index: -1;
-    opacity: 0;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-
-
+        content: "";
+        position: absolute;
+        inset: -1px;
+        background: linear-gradient(
+            0deg,
+            rgba(171, 131, 254, 0.3),
+            rgba(171, 131, 254, 0.1)
+        );
+        border-radius: 0.75rem;
+        z-index: -1;
+        opacity: 0;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
     :global(.card-glow:hover::before) {
         opacity: 1;
@@ -242,7 +307,7 @@
 
     :global(.form-input:focus),
     :global(.form-checkbox:focus) {
-        border-color: #AB83FE;
+        border-color: #ab83fe;
         box-shadow: 0 0 0 2px rgba(171, 131, 254, 0.2);
     }
 
@@ -252,7 +317,7 @@
     :global(input[type="email"]),
     :global(.form-input) {
         background-color: rgba(31, 41, 55, 0.5);
-        border: 1px solid #AB83FE;
+        border: 1px solid #ab83fe;
         color: #f3f4f6;
         border-radius: 0.5rem;
         padding: 0.5rem 1rem;
@@ -263,7 +328,7 @@
     :global(input[type="number"]:focus),
     :global(input[type="email"]:focus),
     :global(.form-input:focus) {
-        border-color: #AB83FE;
+        border-color: #ab83fe;
         box-shadow: 0 0 0 2px rgba(171, 131, 254, 0.2);
         outline: none;
     }
@@ -277,18 +342,18 @@
 
     /* Checkbox styling */
     :global(input[type="checkbox"]) {
-        accent-color: #AB83FE;
+        accent-color: #ab83fe;
         width: 1.2rem;
         height: 1.2rem;
         border-radius: 0.25rem;
-        border: 1px solid #AB83FE;
+        border: 1px solid #ab83fe;
         background-color: transparent;
         cursor: pointer;
     }
 
     :global(input[type="checkbox"]:checked) {
-        background-color: #AB83FE;
-        border-color: #AB83FE;
+        background-color: #ab83fe;
+        border-color: #ab83fe;
     }
 
     /* Remove number input spinners */
@@ -304,7 +369,7 @@
 
     /* Label styling */
     :global(label) {
-        color: #C7AE93;
+        color: #c7ae93;
         font-size: 0.875rem;
         margin-bottom: 0.5rem;
     }

@@ -20,17 +20,17 @@
         phoneNumber = $state("");
 
     let { data, form } = $props();
-    let selected = $state("Website");
+    let selected = $state("website");
 
     let categories = [
-        "Special request",
-        "Website",
-        "Passes",
-        "Payment",
-        "Other",
-        "Organisation",
-        "Contests/ Contest results",
-        "Event",
+        "contest",
+        "event",
+        "organization",
+        "other",
+        "passes",
+        "payment",
+        "special_request",
+        "website",
     ];
 </script>
 
@@ -63,7 +63,7 @@
                         {/each}
                     </select>
                 </div>
-                {#if selected === "Other"}
+                {#if selected === "other"}
                     <TextInput
                         bind:text={problemType}
                         placeholder="Problem category if other (NA other wise)"

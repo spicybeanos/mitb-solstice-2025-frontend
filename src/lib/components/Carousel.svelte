@@ -5,6 +5,7 @@
     
     interface CarouselProps {
         feature: Array<any>; // Replace 'any' with your actual event type
+        medias: Array<any>;
     }
 
     let { data } = $props<{ data: CarouselProps }>();
@@ -294,6 +295,7 @@
                         aria-label={`Go to slide ${i + 1}`}
                         aria-current={i === getCurrentCenterIndex() ? 'true' : 'false'}
                     ></button>
+
                 {/each}
             </div>
         </div>

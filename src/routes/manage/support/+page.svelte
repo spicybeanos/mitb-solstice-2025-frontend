@@ -1,7 +1,8 @@
 <script lang="ts">
+    import SimpleCard from "$lib/components/SimpleCard.svelte";
     import BasicHeader from "$lib/components/ui/Basic/BasicHeader.svelte";
 
-    let { data } = $props(); 
+    let { data } = $props();
 </script>
 
 <div class="flex justify-center">
@@ -11,18 +12,25 @@
             {#if data?.err}
                 <div class="text-red-400">{data?.err}</div>
             {/if}
-            {#each data.tickets as tick} 
-                <div
-                    class="border border-gray-300 rounded-lg p-2.5 flex flex-col m-[5px]"
-                >
-                    <b style:color={tick.solved ? 'lightgreen' : 'red'}>Category : {tick.category}</b>
-                    {#if tick.category == 'Other'}
-                    <div>Problem: {tick.problem}</div>
-                    {/if}
-                    <div>{tick.name} {tick.phone} {tick.email}</div>
-                    <div>{tick.description}</div>
-                    <a class="text-blue-400 " href={`/manage/support/${tick.ticketID}`}>Visit</a>
-                </div>
+            {#each data?.tickets as tick}
+                <SimpleCard>
+                    <div
+                        class="border border-gray-300 rounded-lg p-2.5 flex flex-col m-[5px]"
+                    >
+                        <b style:color={tick.solved ? "lightgreen" : "red"}
+                            >Category : {tick.category}</b
+                        >
+                        {#if tick.category == "Other"}
+                            <div>Problem: {tick.problem}</div>
+                        {/if}
+                        <div>{tick.name} {tick.phone} {tick.email}</div>
+                        <div>{tick.description}</div>
+                        <a
+                            class="text-blue-400"
+                            href={`/manage/support/${tick.id}`}>Visit</a
+                        >
+                    </div>
+                </SimpleCard>
             {/each}
         </div>
     </div>

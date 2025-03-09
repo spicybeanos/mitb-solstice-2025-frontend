@@ -1,7 +1,8 @@
 <script lang="ts">
-    let {placeholder='',name='',type='',required=false,value=$bindable()} = $props();
+    let {placeholder='',name='',type='',required=false,value=$bindable(),multiline=false} = $props();
 </script>
 
+{#if multiline == false}
 <input
     class="border-none outline-none focus:ring-0 focus:border-transparent"
     {required}
@@ -10,9 +11,18 @@
     {placeholder}
     bind:value={value}
 />
+{:else}
+<textarea
+    class="border-none outline-none focus:ring-0 focus:border-transparent"
+    {required}
+    {name}
+    {placeholder}
+    bind:value={value}
+></textarea>
+{/if}
 
 <style>
-    input {
+    input,textarea {
         margin: 5px 5px 5px 5px;
         border: none;
         border-style: solid;

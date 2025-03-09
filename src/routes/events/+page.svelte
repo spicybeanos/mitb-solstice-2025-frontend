@@ -23,24 +23,24 @@
     // TO BE REMOVED, ONLY HERE TO POPULATE WITH CONTENT TILL BACKEND IS CONNECTED
 
     let { data } = $props();
-    $inspect(data.events);
+    // $inspect(data.events);
 
     let search = $state("");
     let loading = $state(true);
 
     function searchEvent(e: SolsticeEvent) {
-        if (e.description.toUpperCase().includes(search.toUpperCase())) {
-            return true;
-        }
+        // if (e.description.toUpperCase().includes(search.toUpperCase())) {
+        //     return true;
+        // }
         if (e.name.toUpperCase().includes(search.toUpperCase())) {
             return true;
         }
-        if (e.id.toUpperCase().includes(search.toUpperCase())) {
-            return true;
-        }
-        if (e.title.toUpperCase().includes(search.toUpperCase())) {
-            return true;
-        }
+        // if (e.id.toUpperCase().includes(search.toUpperCase())) {
+        //     return true;
+        // }
+        // if (e.title.toUpperCase().includes(search.toUpperCase())) {
+        //     return true;
+        // }
 
         return false;
     }
@@ -75,7 +75,7 @@
                             <EventCard
                                 {event}
                                 i
-                                thumbnail={event.pictureURL}
+                                thumbnail={data.medias?.result != null ? data.medias?.result[i].thumbnail : event.pictureURL}
                             /><!--!!!NOTE!!! :- Need to put `/thumbnail/${event.id}.jpg` here, rn for placholder , its there-->
                         {/if}
                     {/if}
@@ -115,7 +115,7 @@
                                                 className="w-full h-full hover:translate-z-6 relative group transition-transform duration-500 ease-out"
                                             >
                                                 <img
-                                                    src={event.pictureURL}
+                                                    src={data.medias?.result != null ? data.medias?.result[i].thumbnail : event.pictureURL}
                                                     height="1600"
                                                     width="1000"
                                                     class="h-full w-full rounded-xl object-cover transition-all duration-300 group-hover:scale-105"
@@ -211,7 +211,7 @@
                                                 className="w-full mb-4"
                                             >
                                                 <img
-                                                    src={event.pictureURL}
+                                                    src={data.medias?.result != null ? data.medias?.result[i].thumbnail : event.pictureURL}
                                                     height="1000"
                                                     width="1000"
                                                     class="h-48 w-full rounded-xl object-cover"
