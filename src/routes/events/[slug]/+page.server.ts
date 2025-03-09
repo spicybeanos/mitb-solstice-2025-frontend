@@ -4,13 +4,15 @@ import { checkEventAccessibleByPass } from '$lib/server/BackendAgentPass';
 import { addUserToTeam, createTeamAndAttach, disbandTeam, getAllTeams, getTeamDetails, getUsersInTeam, removeUserFromTeam } from '$lib/server/BackendAgentTeam';
 import type { SolsticeUser } from '$lib/server/BackendTypes.js';
 import { generateChecksum } from '$lib/server/CacheMaster.js';
+import { getEventMedia } from '$lib/server/WebsiteMaster';
 import { error, fail, json, redirect } from '@sveltejs/kit';
 
 export const load = async ({ params, cookies }) => {
     try {
         const eventID = params.slug;
 
-        //const media = await getEventMedia(eventID);
+        const media = await getEventMedia(eventID);
+        
 
         if (eventID == null) redirect(300, '/events');
         const eventInfo = await getEventInfo(eventID);
@@ -38,13 +40,14 @@ export const load = async ({ params, cookies }) => {
             })
         }
 
-        const events = await getEvents();
-        if (events == null) { redirect(300, '/') }
+        const event = await getEventInfo(params.slug);
+        if (event == null) { redirect(300, '/') }
         if (user.success == false) {
             return {
                 slug: eventID,
                 in_team: false,
-                events: events,
+                event: event,
+                media:media,
                 team: null,
                 canAccess: false,
                 isRegistered: false,
@@ -58,7 +61,8 @@ export const load = async ({ params, cookies }) => {
             return {
                 slug: eventID,
                 in_team: false,
-                events: events,
+                event: event,
+                media:media,
                 team: null,
                 canAccess: false,
                 isRegistered: false,
@@ -85,7 +89,8 @@ export const load = async ({ params, cookies }) => {
             slug: eventID,
             in_team: is_in_team,
             team: team,
-            events: events,
+            event: event,
+            media:media,
             canAccess: canAccess,
             isRegistered: true,
             isLeader: team?.host_id == user.result.id,

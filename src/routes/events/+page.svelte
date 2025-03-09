@@ -23,7 +23,7 @@
     // TO BE REMOVED, ONLY HERE TO POPULATE WITH CONTENT TILL BACKEND IS CONNECTED
 
     let { data } = $props();
-    $inspect(data.events);
+    // $inspect(data.events);
 
     let search = $state("");
     let loading = $state(true);
@@ -75,7 +75,7 @@
                             <EventCard
                                 {event}
                                 i
-                                thumbnail={event.pictureURL}
+                                thumbnail={data.medias?.result != null ? data.medias?.result[i].thumbnail : event.pictureURL}
                             /><!--!!!NOTE!!! :- Need to put `/thumbnail/${event.id}.jpg` here, rn for placholder , its there-->
                         {/if}
                     {/if}

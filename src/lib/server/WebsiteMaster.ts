@@ -43,7 +43,30 @@ export async function getEventMedia(eventID: string): Promise<Result<EventMedia>
 
     return { success: true, result: data, error: null };
 }
+/**
+ * Fetch event media details for multiple eventIDs.
+ */
+export async function getMultipleEventMedia(eventIDs: string[]): Promise<Result<EventMedia[]>> {
+    if (!Array.isArray(eventIDs) || eventIDs.length === 0) {
+        return { success: false, result: null, error: "Invalid eventIDs array" };
+    }
 
+    const { data, error } = await supabaseAdmin
+        .from('EventMedia')
+        .select('eventID, thumbnail, background, rulebook')
+        .in('eventID', eventIDs.map(id => id.trim())); // Use .in() for multiple IDs
+
+    if (error) {
+        console.warn(`Error fetching event media for multiple eventIDs: ${error.message}`);
+        return { success: false, result: [], error: error.message };
+    }
+
+    // Fill missing eventIDs with default data
+    const eventDataMap = new Map(data.map((event) => [event.eventID, event]));
+    const completeData = eventIDs.map(id => eventDataMap.get(id) || { eventID: id, ...defaultEvent });
+
+    return { success: true, result: completeData, error: null };
+}
 /**
  * Update event media details for a given eventID.
  */
