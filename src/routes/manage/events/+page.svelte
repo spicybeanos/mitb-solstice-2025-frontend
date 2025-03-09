@@ -44,7 +44,7 @@
         </select>
 
         <a href={`/manage/events/${eventID.trim()}/edit`}>Edit event</a>
-
+        <a href={`/manage/events/${eventID.trim()}/media`}>Edit media</a>
         <a href={`/manage/events/${eventID.trim()}/teams`}>View teams</a>
     </div>
 </div>

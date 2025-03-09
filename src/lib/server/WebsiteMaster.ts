@@ -16,7 +16,7 @@ export interface EventMedia {
 }
 
 /** Default event media values */
-const defaultEvent: Omit<EventMedia, 'eventID'> = {
+export const defaultEvent: Omit<EventMedia, 'eventID'> = {
     thumbnail: 'https://i.imgur.com/fLZJH60.jpg',
     background: 'https://i.imgur.com/fLZJH60.jpg',
     rulebook: 'https://drive.google.com/file/d/12D-FxdrX6WiWRpa1zu22EJRzwxJLNd3J/view?usp=drive_link'
