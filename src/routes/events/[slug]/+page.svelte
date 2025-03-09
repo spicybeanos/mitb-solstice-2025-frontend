@@ -17,7 +17,6 @@
     import CopyToClipboard from "$lib/components/CopyToClipboard.svelte";
     import { Link } from "lucide-svelte";
     import ShareButton from "$lib/components/ShareButton.svelte";
-    import Rulebook from "../../../lib/Rulebook.pdf";
     import BasicButtonFilled from "$lib/components/ui/Basic/BasicButtonFilled.svelte";
 
     let isLoaded = $state(false);
@@ -91,7 +90,7 @@
     let successMessage = $state("");
 
     function openPDF() {
-        let url = Rulebook;
+        let url = data.media.result?.rulebook;
         window.open(url, "_blank");
     }
 </script>
