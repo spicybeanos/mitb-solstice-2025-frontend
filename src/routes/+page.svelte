@@ -27,8 +27,10 @@
     import retro from "$lib/retro.svg";
     import matrix from "$lib/matrix2.svg";
     import EventCard from '$lib/components/EventCard.svelte';
+    import Carousel from '$lib/components/Carousel.svelte';
     const content = ["A", "B", "C", "D"];
     let { data } = $props();
+
 </script>
 
 <main class="flex flex-col items-center justify-center min-h-screen">
@@ -57,17 +59,8 @@
         </div>
     </div>
     <div class="h-[100vh] w-full flex flex-col my-12 sm:my-20 z-20">
-        <div
-            class="flex gap-4 px-2 sm:px-6 sm:gap-12 overflow-x-auto whitespace-nowrap p-4 w-full scrollbar-hide"
-        >
-            {#each data.feature as item,i}
-                <div
-                    class='w-[360px] aspect-[5/7] shadow-lg rounded-lg flex items-center justify-center'
-                >
-                    <EventCard event={item} i thumbnail={`/thumbnail/${item.id}.jpg`} />
-                </div>
-            {/each}
-        </div>
+        <Carousel {data}></Carousel>
+
         <div class="text-[#d9d9d9] flex flex-col gap-4 z-20 m-[30px]">
             <h1
                 class="font-akira text-2xl sm:text-6xl text-center gradient-text
@@ -119,4 +112,5 @@
             background-position: 200% center;
         }
     }
+
 </style>

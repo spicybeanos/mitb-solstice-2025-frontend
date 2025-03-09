@@ -14,7 +14,7 @@
     import { MobileWaves } from "$lib/components/ui/MobileWaves/index.ts";
 
     let hamOpen = $state(false);
-
+ 
     let { children, data } = $props();
     let manageAccess = data.manageAccess;
 
@@ -64,53 +64,6 @@
         {/if}
     </a>
 </div>
-
-<!-- <div class="mobile">
-    <div class="relative w-full">
-        <a href="/" class="grow max-w-[33%] absolute top-[1.25rem] left-0">
-            <img class="logo w-[26vw] md:w-[15vw]" src={logo} alt="logo" />
-        </a>
-        
-        <div class="absolute top-4 right-4 z-50">
-            <Hamburger 
-                bind:open={hamOpen} 
-                --color="white"
-                type="spin"
-            />
-        </div>
-
-        <div class="sheet-overlay" class:active={hamOpen} onclick={() => hamOpen = false}></div>
-        <div class="sheet" class:active={hamOpen}>
-            <div class="sheet-content">
-                <a href="/profile" class="profile-link" onclick={() => hamOpen = false}>
-                    {#if !UserProfileData.loggedIn}
-                        <div class="flex items-center justify-center gap-4">
-                            <img class="icon" src={profile_circle} alt="profile" />
-                            <span class="text-lg font-semibold">Log in</span>
-                        </div>
-                    {:else}
-                        <div class="flex items-center justify-center gap-4">
-                            <img class="icon" src={UserProfileData.picture} alt="profile" />
-                            <span class="text-lg font-semibold">{UserProfileData.name}</span>
-                        </div>
-                    {/if}
-                </a>
-
-                <div class="nav-links">
-                    {#each navItems as navItem}
-                        <a 
-                            href={navItem.link} 
-                            class="nav-item"
-                            onclick={() => hamOpen = false}
-                        >
-                            {navItem.name}
-                        </a>
-                    {/each}
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
 
 <div class="mobile">
     <div class="relative w-full h-[6.5rem]">
@@ -173,19 +126,6 @@
     </div>
 </div>
 
-<!-- <div class="mobile">
-        <div
-            class="relative w-full"
-        >
-            <a href="/" class="grow max-w-[33%] absolute top-[1.25rem] left-0"
-                ><img
-                    class="logo w-[26vw] md:w-[15vw]"
-                    src={logo}
-                    alt="logo"
-                /></a
-            >
-        </div>
-</div> -->
 
 <div class="bg-[#1E1E1E] z-20 " style="min-height: 70vh; height:fit-content">
     <WavyBackground >
@@ -201,7 +141,7 @@
         <div class="flex flex-col">
             <p>Manipal Institute of technology</p>
             <p>Yelahanka, Bengaluru</p>
-            <p>Karnataka - 650036</p>
+            <p>Karnataka - 560064</p>
         </div>
 
         <div class="flex flex-col text-right">

@@ -17,7 +17,6 @@
     import CopyToClipboard from "$lib/components/CopyToClipboard.svelte";
     import { Link } from "lucide-svelte";
     import ShareButton from "$lib/components/ShareButton.svelte";
-    import Rulebook from '../../../lib/Rulebook.pdf'
     import BasicButtonFilled from "$lib/components/ui/Basic/BasicButtonFilled.svelte";
 
     let isLoaded = $state(false);
@@ -29,11 +28,7 @@
 
     let teamSize: number;
     let teamMembers: string[] = $state([]);
-    let teamLeader = $state("");
-    let teamMember2 = $state("");
-    let teamMember3 = $state("");
     let existing_team_ID = $state("");
-    let new_member = $state("");
     let team_selection = $state("existing");
     let isMouseEntered = $state(false);
     let { data, form } = $props();
@@ -67,7 +62,6 @@
         team_selection = "new";
     }
 
-    function addMember() {}
     function delTeam() {}
 
     onMount(() => {
@@ -77,14 +71,13 @@
         if (isInTeam) {
             myTeam = data.team;
         }
+        event = toSolsticeEvent(data.event);
+        teamSize = event.teamSize;
+        teamMembers = Array(teamSize - 1).fill("");
+        if (data.media.success) {
+            event.pictureURL = data.media.result?.background as string;
+        }
 
-        data.events.forEach((element) => {
-            if (element.id === eventID) {
-                event = toSolsticeEvent(element);
-                teamSize = event.teamSize;
-                teamMembers = Array(teamSize - 1).fill("");
-            }
-        });
         setTimeout(() => {
             isLoaded = true;
         }, 5000);
@@ -97,8 +90,8 @@
     let successMessage = $state("");
 
     function openPDF() {
-        let url = Rulebook;
-        window.open(url, "_blank"); 
+        let url = data.media.result?.rulebook;
+        window.open(url, "_blank");
     }
 </script>
 
@@ -119,7 +112,7 @@
                     class={`image-container w-full h-80 overflow-hidden rounded-xl ${isLoaded ? "loaded" : ""}`}
                 >
                     <img
-                        src={event.pictureURL}
+                        src={data.media.result?.background}
                         height="1000"
                         width="1000"
                         loading="lazy"
@@ -386,7 +379,10 @@
                         {/if}
                     {:else if data.isLeader}
                         <div class="text-white">
-                            You're the leader of team <b>{data.team?.name} with id <code>{data.team?.id}, host </code></b>
+                            You're the leader of team <b
+                                >{data.team?.name} with id
+                                <code>{data.team?.id}, host </code></b
+                            >
                         </div>
                         <div class="text-white">Players:</div>
                         <ol class="white">
@@ -403,7 +399,9 @@
                             >
                         </form>
                     {:else}
-                        <div class="text-white">You're already in team <b>{data.team?.name}</b></div>
+                        <div class="text-white">
+                            You're already in team <b>{data.team?.name}</b>
+                        </div>
                         {#if form?.msg}
                             <div class="text-white">{form?.msg}</div>
                         {/if}
@@ -424,11 +422,11 @@
             {/if}
             <div class="flex justify-between text-sm md:text-base pt-2">
                 <div class="flex-col">
-                    <div class="flex justify-evenly underline text-blue-500 space-x-2">
+                    <div
+                        class="flex justify-evenly underline text-blue-500 space-x-2"
+                    >
                         <div class="hidden md:block"><Link></Link></div>
-                        <a href="#" onclick={openPDF}>
-                            RuleBook
-                        </a>
+                        <a href="#" onclick={openPDF}> RuleBook </a>
                     </div>
                 </div>
                 <div class="text-white">

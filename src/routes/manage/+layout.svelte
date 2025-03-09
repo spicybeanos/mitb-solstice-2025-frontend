@@ -2,11 +2,12 @@
     let { data, children } = $props();
 </script>
 
-<aside class="m-[30px]">
-    <a href="/manage/verify">Verify user pass</a>
-    <a href="/manage/ids">Get Details</a>
-    <a href="/manage/events">Events</a>
-    <a href="/manage/support">Support</a>
+<aside class="m-[10px] flex flex-wrap">
+    <a href="/manage/verify/">Verify user pass</a>
+    <a href="/manage/ids/">Get Details</a>
+    <a href="/manage/events/">Events</a>
+    <a href="/manage/pass/">Passes</a>
+    <a href="/manage/support/">Support</a>
     <a href="/manage/create/">Create (Admin)</a>
 
 </aside>
@@ -21,7 +22,5 @@
         border-color: lightcoral;
         padding: 10px 10px 10px 10px;
         color: lightcoral;
-        margin: 15px 15px 15px 15px;
-        margin-top: 30px;
     }
 </style>

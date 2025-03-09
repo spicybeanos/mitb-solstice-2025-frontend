@@ -3,8 +3,8 @@
         title="montage"
         src="https://www.youtube.com/embed/IYjSzDsYhgA?si=1Shh4M9aT8o9eA_q?controls=0">
     </iframe>
-    <div class="text-center sm:text-left text-white w-full sm:w-1/2">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    <div class="text-center text-lg sm:text-left text-white w-full sm:w-1/2">
+        Tech Solstice is the annual technical fest of Manipal Institute of Technology, Bangalore, uniting innovation, creativity, and cutting-edge technology. Featuring an exciting lineup of hackathons, competitions, robotics challenges, workshops, and speaker sessions, it provides a dynamic platform for students to showcase their skills, collaborate, and explore emerging tech trends. Get ready for an immersive experience of learning, competing, and networking at Tech Solstice!
     </div>
 </div>    
 

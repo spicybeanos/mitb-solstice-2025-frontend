@@ -60,12 +60,12 @@
                             {ticket.solved ? "Solved" : "Un Solved"}
                         </div>
                         <div class="medium text-white">
-                            Phone: {ticket.phone}
+                            Phone: {ticket.phone_number}
                         </div>
                         <div class="medium text-white">
-                            e-mail : {ticket.email}
+                            e-mail : {ticket.email_address}
                         </div>
-                        <div class="tiny gray">{ticket.ticketID}</div>
+                        <div class="tiny gray">{ticket.id}</div>
                         <div
                             class="medium text-white border border-gray-500 p-1.5 rounded-sm"
                         >

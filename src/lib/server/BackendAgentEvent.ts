@@ -1,6 +1,7 @@
 import { get, post, patch, del } from "./Backend.ts";
 import { getUsersInTeam } from "./BackendAgentTeam.ts";
-import type { SolsticeEventInfo, SolsticeEventRegRow, SolsticePassInfo, SolsticeTeamInfo, SolsticeUser, UpdateEvent, UserID } from "./BackendTypes.ts";
+import type { EventImages, SolsticeEventInfo, SolsticeEventRegRow, SolsticePassInfo, SolsticeTeamInfo, SolsticeUser, UpdateEvent, UserID } from "./BackendTypes.ts";
+import { supabaseAdmin } from "./supabaseServer.ts";
 
 let serverEvents: SolsticeEventInfo[] = [];
 
@@ -8,7 +9,6 @@ export async function getEventRegisTable(eventID: string): Promise<SolsticeEvent
     const teams = await getTeams(eventID);
     if (!teams) return null;
 
-    console.log(`number of teams: ${teams.length}`);
 
     let rows: SolsticeEventRegRow[] = [];
 
@@ -29,17 +29,17 @@ export async function getEventRegisTable(eventID: string): Promise<SolsticeEvent
         }
     }
 
-    console.log(`Rows : ${rows.length}; teams : ${teams.length}`);
     return rows;
 }
 
 export async function getEvents(): Promise<SolsticeEventInfo[] | null> {
-    const res = await get<SolsticeEventInfo[]>("event");
+    const res = await get<SolsticeEventInfo[]>("event/");
     if (res.success) {
         serverEvents = res.result as SolsticeEventInfo[];
         return serverEvents;
     }
     return null;
+
 }
 
 export async function getEventID(eventName: string): Promise<string | null> {
@@ -82,16 +82,23 @@ export async function getUserInfosInEvent(eventId: string): Promise<SolsticeUser
 
 export async function updateEventDetails(eventID: string, info: UpdateEvent) {
     const res = await patch(`event/${eventID}`, info);
-
+    for (let i = 0; i < serverEvents.length; i++) {
+        if (serverEvents[i].id == eventID) {
+            serverEvents[i] = { ...info, id: eventID };
+        }
+    }
     if (res.success) return { success: true };
     const body = await res.error
     return { success: false, error: body, code: 500 };
 }
 
 export async function createEvent(info: UpdateEvent) {
-    const res = await post(`event/`, info);
+    const res = await post<SolsticeEventInfo>(`event/`, info);
 
-    if (res.success) return { success: true };
+    if (res.success) {
+        if (res.result != null) { serverEvents.push(res.result); }
+        return { success: true };
+    }
     const body = await res.error
     return { success: false, error: body, code: 500 };
 }
@@ -109,7 +116,7 @@ export async function getUser_s_TeamIDInEvent(userID: string, eventID: string): 
 
     return null;
 }
-export async function getEventPasses(eventID:string) {
+export async function getEventPasses(eventID: string) {
     return await get<SolsticePassInfo[]>(`event/${eventID}/passes`);
 }
 export async function getHost_sTeamInfo(hostID: string, eventID: string): Promise<SolsticeTeamInfo | null> {
@@ -130,6 +137,27 @@ export async function getEventInfo(eventId: string): Promise<SolsticeEventInfo |
     return res.success ? (await res.result) as SolsticeEventInfo : null;
 }
 
+export async function getEventImages(eventID: string): Promise<EventImages> {
+    if (!eventID) throw new Error('eventID is required');
+
+    const { data, error } = await supabaseAdmin
+        .from('EventImages')
+        .select('thumbnail, background')
+        .eq('eventID', eventID)
+        .single(); // Expecting only one row
+
+    if (error) {
+        console.error('Error fetching event images:', error);
+        throw new Error(error.message);
+    }
+
+    if (!data) {
+        throw new Error('Event not found');
+    }
+
+    return data;
+}
+
 export async function getTeams(eventId: string): Promise<SolsticeTeamInfo[] | null> {
     const res = await get(`event/${eventId}/teams`);
     return res.success ? (await res.result) as SolsticeTeamInfo[] : null;
@@ -144,6 +172,6 @@ export async function addTeamToEvent(eventId: string, teamId: string): Promise<s
 }
 
 export async function removeTeamFromEvent(eventId: string, teamId: string): Promise<string | null> {
-    const res = await del(`event/${eventId}/teams/${teamId}`);
+    const res = await del(`event/${eventId}/teams/${teamId}/]`);
     return res.success ? (await res.result) as string : null;
 }

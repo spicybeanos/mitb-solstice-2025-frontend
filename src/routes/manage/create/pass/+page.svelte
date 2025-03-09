@@ -30,6 +30,7 @@
                             name="desc"
                             placeholder="Pass description"
                             required
+                            multiline={true}
                         />
                     </label>
                     <label>

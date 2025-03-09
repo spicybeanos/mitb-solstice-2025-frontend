@@ -33,7 +33,7 @@ export function toSolsticeEvent(event:SolsticeEventInfo) : SolsticeEvent {
         date:event.start,
         time:event.start,
         teamSize:event.team_members,
-        pictureURL:'',
+        pictureURL:'https://res.cloudinary.com/dnzxcafqa/image/upload/v1740864687/openart-image_O-3iVyuU_1740863599025_raw_kjh3yn.jpg',     // !!!NOTE!!! :- Need to be removed, just a placeholder
         venue:event.venue,
         category:event.type
     } as SolsticeEvent;
