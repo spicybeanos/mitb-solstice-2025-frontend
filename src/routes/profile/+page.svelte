@@ -168,43 +168,17 @@
                         </div>
                     {:else}
                         <!-- Update Form and QR Section -->
-                        <div class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-[#AB83FE]/40 sm:bg-black/60 backdrop-blur-sm rounded-xl p-4 sm:p-8 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500" in:fly={{ ...cardAnimation, delay: 700 }}>
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                                <!-- QR Code - Show first on mobile -->
-                                <div class="flex flex-col items-center justify-center order-1 lg:order-2" in:fly={{ ...cardAnimation, delay: 700 }}>
-                                    <h2 class="text-[#AB83FE] text-2xl font-bold mb-4 sm:mb-6">Your Pass QR</h2>
-                                    <div class="bg-white border-1 sm:border-4 border-[#AB83FE]/50 p-1.5 shadow-lg shadow-[#AB83FE]/60 rounded-xl">
-                                        <QR text={data.user.id} />
+                        <div class="flex justify-center">
+                            <div class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-[#AB83FE]/40 sm:bg-black/60 backdrop-blur-sm rounded-xl p-4 sm:p-8 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500 w-1/3" in:fly={{ ...cardAnimation, delay: 700 }}>
+                                <div class="flex justify-center gap-8">
+                                    <!-- QR Code - Show first on mobile -->
+                                    <div class="flex flex-col items-center justify-center order-1 lg:order-2" in:fly={{ ...cardAnimation, delay: 700 }}>
+                                        
+                                        <div class="bg-white border-1 sm:border-4 border-[#AB83FE]/50 p-1.5 shadow-lg shadow-[#AB83FE]/60 rounded-xl">
+                                            <QR text={data.user.id} />
+                                        </div>
                                     </div>
-                                </div>
-
-                                
-
-                                <!-- Update Form -->
-                                <div class="order-2 lg:order-1">
-                                    <h1 class="text-[#C7AE93] text-2xl font-semibold text-center lg:text-left mb-4 sm:mb-6">Update Contact</h1>
-                                    <form
-                                        action="?/update"
-                                        method="post"
-                                        class="space-y-4 sm:space-y-6"
-                                    >
-                                        <label class="block">
-                                            <span class="text-[#C7AE93] mb-2 block">Mobile Number:</span>
-                                            <TextInput
-                                                placeholder="Phone Number"
-                                                name="ph-num"
-                                                type="number"
-                                                required
-                                                text={data?.user?.phone_number}
-                                            />
-                                        </label>
-
-                                        <Button OnClicked={() => {}} class="w-full">
-                                            <div class="border border-[#AB83FE]/80 hover:border-[#AB83FE]/10 hover:bg-[#AB83FE]/40 p-3 rounded-lg text-[#C7AE93] text-center">
-                                                Update
-                                            </div>
-                                        </Button>
-                                    </form>
+                                    <!-- Update Form -->
                                 </div>
                             </div>
                         </div>
