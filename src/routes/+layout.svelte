@@ -139,7 +139,7 @@
 >
     <div class="flex flex-row justify-between z-30">
         <div class="flex flex-col">
-            <p>Manipal Institute of technology</p>
+            <p>Manipal Institute of Technology</p>
             <p>Yelahanka, Bengaluru</p>
             <p>Karnataka - 560064</p>
 
@@ -151,6 +151,8 @@
             <p>Contact @</p>
             <p>+91 79069 52055</p>
             <p>( Atharva Maikhuri - HR Head )</p>
+            <p>+91 72045 87438</p>
+            <p>( Rohit Nandagopal - HR Head )</p>
         </div>
     </div>
 </footer>
