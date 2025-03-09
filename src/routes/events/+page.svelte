@@ -29,18 +29,18 @@
     let loading = $state(true);
 
     function searchEvent(e: SolsticeEvent) {
-        // if (e.description.toUpperCase().includes(search.toUpperCase())) {
-        //     return true;
-        // }
+        if (e.description.toUpperCase().includes(search.toUpperCase())) {
+            return true;
+        }
         if (e.name.toUpperCase().includes(search.toUpperCase())) {
             return true;
         }
-        // if (e.id.toUpperCase().includes(search.toUpperCase())) {
-        //     return true;
-        // }
-        // if (e.title.toUpperCase().includes(search.toUpperCase())) {
-        //     return true;
-        // }
+        if (e.id.toUpperCase().includes(search.toUpperCase())) {
+            return true;
+        }
+        if (e.title.toUpperCase().includes(search.toUpperCase())) {
+            return true;
+        }
 
         return false;
     }

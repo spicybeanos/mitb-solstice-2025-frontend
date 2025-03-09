@@ -35,7 +35,7 @@
 
 <main class="flex flex-col items-center justify-center min-h-screen">
     <div
-        class="h-screen flex flex-col justify-center items-center w-full overflow-hidden pb-[16rem]"
+        class="h-screen flex flex-col justify-center items-center w-full overflow-hidden sm:pb-[16rem]"
     >
         <div
             class="relative h-[70%] w-[90%] flex flex-col justify-center items-center text-white gap-5 md:gap-3"

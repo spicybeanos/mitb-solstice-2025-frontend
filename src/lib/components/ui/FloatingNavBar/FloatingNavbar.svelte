@@ -16,8 +16,10 @@
 	$: $scrollYProgress, updateDirection();
 
 	function updateDirection() {
+		console.log($scrollYProgress);
 
 		let direction = $scrollYProgress - scrollYProgress.getPrevious();
+		console.log(direction);
 
 		if (scrollYProgress.get() < 0.05) {
 			// visible = false;
