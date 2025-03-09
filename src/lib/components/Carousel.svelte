@@ -48,8 +48,14 @@
     }
 
     function handleDotClick(index: number) {
-        // Calculate position based on index
+        const singleSetWidth = features.length * 100;
         currentTranslate = -(index * 100);
+        
+        // Ensure we're within the first set
+        if (Math.abs(currentTranslate) >= singleSetWidth) {
+            currentTranslate = currentTranslate % singleSetWidth;
+        }
+        
         handleMouseEnter();
         setTimeout(() => handleDelayedResume(), 3000);
     }
@@ -68,22 +74,22 @@
         }, 4000); // Change slide every 3 seconds
     }
 
-    const ANIMATION_SPEED = 0.4; // Controls the speed of animation (higher = faster)
+    const ANIMATION_SPEED = 0.3; // Controls the speed of animation (higher = faster)
     let currentTranslate = $state(0);
 
     function updateScroll() {
         if (!isPaused && browser && !isManualScrolling) {
-            currentTranslate -= (ANIMATION_SPEED * direction);
+            currentTranslate -= ANIMATION_SPEED;
             
-            // Reverse direction at the ends
-            const maxTranslate = -(features.length * 100);
-            if (currentTranslate <= maxTranslate) {
-                currentTranslate = 0; // Reset to start
-            } else if (currentTranslate > 0) {
-                currentTranslate = maxTranslate; // Reset to end
+            // Reset position when reaching the end for smooth wrap
+            const totalWidth = features.length * 100;
+            if (Math.abs(currentTranslate) >= totalWidth) {
+                currentTranslate = 0;
             }
         }
-        animationFrame = requestAnimationFrame(updateScroll);
+        if (!isPaused) {
+            animationFrame = requestAnimationFrame(updateScroll);
+        }
     }
 
     // function updateDesktopScroll() {
@@ -117,12 +123,14 @@
         if (browser) {
             setTimeout(() => {
                 isRendered = true;
+                animationFrame = requestAnimationFrame(updateScroll);
             }, 100);
             startAutoplay();
             animationFrame = requestAnimationFrame(updateScroll);
             return () => {
-                clearInterval(autoplayInterval);
+                clearTimeout(manualScrollTimeout);
                 cancelAnimationFrame(animationFrame);
+                clearInterval(autoplayInterval);
             };
         }
     });
@@ -135,17 +143,19 @@
 
     function handleMouseEnter() {
         isPaused = true;
-        // Clear any existing timeouts to prevent resume
+        // Immediately clear any pending timeouts
         clearTimeout(manualScrollTimeout);
+        // Cancel any ongoing animation frame
+        cancelAnimationFrame(animationFrame);
     }
 
     function handleDelayedResume() {
-        // Clear any existing timeouts
         clearTimeout(manualScrollTimeout);
-        // Set new timeout for resuming
         manualScrollTimeout = setTimeout(() => {
             isPaused = false;
-        }, 1000); // 1 second delay before resuming
+            // Restart animation only when resuming
+            animationFrame = requestAnimationFrame(updateScroll);
+        }, 1000);
     }
 
     // // Add manual scroll handling
@@ -181,10 +191,9 @@
     // Add this function to calculate which card is in center
     function getCurrentCenterIndex() {
         if (!containerRef) return 0;
-        // Normalize the translate value to handle wrapped cards
         const totalWidth = features.length * 100;
         const normalizedPosition = Math.abs(currentTranslate) % totalWidth;
-        return Math.round(normalizedPosition / 100);
+        return Math.round(normalizedPosition / 100) % features.length;
     }
 
     // Add to your script section
@@ -199,17 +208,20 @@
                 <div class="flex relative">
                     {#each features as item, i}
                         <div 
-                            class="absolute w-full transition-all duration-500 ease-in-out"
+                            class="absolute w-full transition-all duration-500 ease-in-out rounded-lg overflow-hidden"
                             style="
                                 transform: translateX({((i - currentIndex + features.length) % features.length - 1) * 100}%);
-                                opacity: {Math.abs(((i - currentIndex + features.length) % features.length) - 1) < 2 ? 1 : 0}
+                                opacity: {Math.abs(((i - currentIndex + features.length) % features.length) - 1) < 2 ? 1 : 0};
+                                filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
                             "
                         >
-                            <EventCard 
-                                event={item} 
-                                i={i} 
-                                thumbnail={`/thumbnail/${item.id}.jpg`}
-                            />
+                            <div class="w-full h-full">
+                                <EventCard 
+                                    event={item} 
+                                    i={i} 
+                                    thumbnail={`/thumbnail/${item.id}.jpg`}
+                                />
+                            </div>
                         </div>
                     {/each}
                 </div>
@@ -244,12 +256,12 @@
                 bind:this={containerRef}
             >
                 <div 
-                    class="flex transition-transform duration-800 ease-linear will-change-transform"
+                    class="flex transition-transform duration-1000 ease-linear will-change-transform"
                     style="transform: translateX({currentTranslate}%)"
                     onmouseenter={handleMouseEnter}
                     onmouseleave={handleDelayedResume}
                 >
-                    {#each [...features, ...features, ...features] as item, i}
+                    {#each [...features, ...features, ...features, ...features] as item, i}
                         <div 
                             class="w-[360px] flex-shrink-0 mx-12 aspect-[5/7] shadow-lg rounded-lg hover:scale-105 transition-transform duration-300"
                             onmouseenter={handleMouseEnter}
