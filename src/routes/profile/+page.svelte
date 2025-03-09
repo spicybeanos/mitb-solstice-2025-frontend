@@ -5,6 +5,7 @@
     import QR from "$lib/components/QR.svelte";
     import GoogleLogin from "../GoogleLogin.svelte";
     import { isSigningOut } from "../GoogleLogin.svelte.ts";
+    import { tick } from "svelte";
 
     import { UserProfileData } from "../GoogleLogin.svelte.ts";
     //import { json } from "@sveltejs/kit";
@@ -42,10 +43,12 @@
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ action: "logout" }),
-        }).finally(() => {
+        }).finally(async () => {
             isSigningOut.status = false;
             console.log("done logging out!");
-            window.location.reload();
+            window.location.reload()
+            await tick()
+
         });
     }
 </script>

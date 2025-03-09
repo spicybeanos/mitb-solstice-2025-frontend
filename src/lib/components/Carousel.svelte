@@ -49,7 +49,16 @@
     }
 
     function handleDotClick(index: number) {
-        currentIndex = index;
+        const singleSetWidth = features.length * 100;
+        currentTranslate = -(index * 100);
+        
+        // Ensure we're within the first set
+        if (Math.abs(currentTranslate) >= singleSetWidth) {
+            currentTranslate = currentTranslate % singleSetWidth;
+        }
+        
+        handleMouseEnter();
+        setTimeout(() => handleDelayedResume(), 3000);
     }
 
     // Auto-rotation function
@@ -66,24 +75,22 @@
         }, 4000); // Change slide every 3 seconds
     }
 
-    const ANIMATION_SPEED = 0.25; // Controls the speed of animation (smaller = slower)
+    const ANIMATION_SPEED = 0.3; // Controls the speed of animation (higher = faster)
     let currentTranslate = $state(0);
 
     function updateScroll() {
         if (!isPaused && browser && !isManualScrolling) {
-            currentTranslate -= (ANIMATION_SPEED * direction);
+            currentTranslate -= ANIMATION_SPEED;
             
-            // Reverse direction at the ends
-            const maxTranslate = -(features.length * 100);
-            if (currentTranslate <= maxTranslate) {
-                direction = -1; // reverse direction
-                currentTranslate = maxTranslate;
-            } else if (currentTranslate >= 0) {
-                direction = 1; // forward direction
+            // Reset position when reaching the end for smooth wrap
+            const totalWidth = features.length * 100;
+            if (Math.abs(currentTranslate) >= totalWidth) {
                 currentTranslate = 0;
             }
         }
-        animationFrame = requestAnimationFrame(updateScroll);
+        if (!isPaused) {
+            animationFrame = requestAnimationFrame(updateScroll);
+        }
     }
 
     // function updateDesktopScroll() {
@@ -115,11 +122,16 @@
     // Start autoplay when component mounts
     onMount(() => {
         if (browser) {
+            setTimeout(() => {
+                isRendered = true;
+                animationFrame = requestAnimationFrame(updateScroll);
+            }, 100);
             startAutoplay();
             animationFrame = requestAnimationFrame(updateScroll);
             return () => {
-                clearInterval(autoplayInterval);
+                clearTimeout(manualScrollTimeout);
                 cancelAnimationFrame(animationFrame);
+                clearInterval(autoplayInterval);
             };
         }
     });
@@ -132,17 +144,19 @@
 
     function handleMouseEnter() {
         isPaused = true;
-        // Clear any existing timeouts to prevent resume
+        // Immediately clear any pending timeouts
         clearTimeout(manualScrollTimeout);
+        // Cancel any ongoing animation frame
+        cancelAnimationFrame(animationFrame);
     }
 
     function handleDelayedResume() {
-        // Clear any existing timeouts
         clearTimeout(manualScrollTimeout);
-        // Set new timeout for resuming
         manualScrollTimeout = setTimeout(() => {
             isPaused = false;
-        }, 1000); // 1 second delay before resuming
+            // Restart animation only when resuming
+            animationFrame = requestAnimationFrame(updateScroll);
+        }, 1000);
     }
 
     // // Add manual scroll handling
@@ -174,109 +188,116 @@
             isPaused = false;
         }, 4000);
     }
+
+    // Add this function to calculate which card is in center
+    function getCurrentCenterIndex() {
+        if (!containerRef) return 0;
+        const totalWidth = features.length * 100;
+        const normalizedPosition = Math.abs(currentTranslate) % totalWidth;
+        return Math.round(normalizedPosition / 100) % features.length;
+    }
+
+    // Add to your script section
+    let isRendered = $state(false);
 </script>
 
 <div class="relative w-full my-12 sm:my-20 z-20">
     <!-- Mobile Carousel - Remove hover handlers -->
     <div class="sm:hidden w-full px-4">
-        <div class="relative w-full">
+        <div class="relative w-full {isRendered ? 'animate-fadeIn' : 'opacity-0'}">
             <div class="w-full aspect-[4/5] overflow-hidden">
                 <div class="flex relative">
                     {#each features as item, i}
                         <div 
-                            class="absolute w-full transition-all duration-500 ease-in-out"
+                            class="absolute w-full transition-all duration-500 ease-in-out rounded-lg overflow-hidden"
                             style="
                                 transform: translateX({((i - currentIndex + features.length) % features.length - 1) * 100}%);
-                                opacity: {Math.abs(((i - currentIndex + features.length) % features.length) - 1) < 2 ? 1 : 0}
+                                opacity: {Math.abs(((i - currentIndex + features.length) % features.length) - 1) < 2 ? 1 : 0};
+                                filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
                             "
                         >
-                            <EventCard 
-                                event={item} 
-                                i={i} 
-                                thumbnail={`/thumbnail/${item.id}.jpg`}
-                            />
+                            <div class="w-full h-full">
+                                <EventCard 
+                                    event={item} 
+                                    i={i} 
+                                    thumbnail={`/thumbnail/${item.id}.jpg`}
+                                />
+                            </div>
                         </div>
                     {/each}
                 </div>
             </div>
 
             <!-- Update navigation buttons - remove disabled state -->
-            <button 
-                class="absolute left-2 top-1/2 p-2 rounded-full bg-black/30 backdrop-blur-sm border border-[#AB83FE]/30 text-[#AB83FE] z-10 transform -translate-y-1/2 transition-opacity duration-300"
-                onclick={() => handleClick('prev')}
-                aria-label="Previous slide"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                </svg>
-            </button>
-
-            <button 
-                class="absolute right-2 top-1/2 p-2 rounded-full bg-black/30 backdrop-blur-sm border border-[#AB83FE]/30 text-[#AB83FE] z-10 transform -translate-y-1/2 transition-opacity duration-300"
-                onclick={() => handleClick('next')}
-                aria-label="Next slide"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-            </button>
+            
 
             <!-- Dots Indicator -->
-            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 p-2">
                 {#each features as _, i}
                     <button 
-                        class={`w-2 h-2 rounded-full transition-colors duration-200 ${i === currentIndex ? 'bg-[#AB83FE]' : 'bg-[#AB83FE]/30'}`}
+                        class="w-2.5 h-2.5 rounded-full transition-all duration-300 ease-in-out transform hover:scale-125 {
+                            i === currentIndex 
+                                ? 'bg-[#AB83FE] shadow-lg shadow-[#AB83FE]/50' 
+                                : 'bg-[#AB83FE]/20 hover:bg-[#AB83FE]/40'
+                        }"
                         onclick={() => handleDotClick(i)}
-                        aria-label={`Go to slide ${i + 1}`}></button>
+                        aria-label={`Go to slide ${i + 1}`}
+                        aria-current={i === currentIndex ? 'true' : 'false'}
+                    ></button>
                 {/each}
             </div>
         </div>
     </div>
 
     <!-- Update the desktop carousel section -->
-    <div class="hidden sm:block relative overflow-hidden">
-        <div 
-            class="desktop-carousel w-full relative py-8"
-            bind:this={containerRef}
-        >
+    <div class="hidden sm:block relative">
+        <div class="desktop-carousel-container relative overflow-x-hidden {isRendered ? 'animate-fadeInSlide' : 'opacity-0'}">
             <div 
-                class="flex transition-transform duration-1000 ease-linear will-change-transform"
-                style="transform: translateX({currentTranslate}%)"
+                class="desktop-carousel w-full relative py-14"
+                bind:this={containerRef}
+            >
+                <div 
+                    class="flex transition-transform duration-1000 ease-linear will-change-transform"
+                    style="transform: translateX({currentTranslate}%)"
+                    onmouseenter={handleMouseEnter}
+                    onmouseleave={handleDelayedResume}
+                >
+                    {#each [...features, ...features, ...features, ...features] as item, i}
+                        <div 
+                            class="w-[360px] flex-shrink-0 mx-12 aspect-[5/7] shadow-lg rounded-lg hover:scale-105 transition-transform duration-300"
+                            onmouseenter={handleMouseEnter}
+                            onmouseleave={handleDelayedResume}
+                        >
+                            <EventCard 
+                                event={item} 
+                                i={i % features.length} 
+                                thumbnail={`/thumbnail/${item.id}.jpg`}
+                            />
+                        </div>
+                    {/each}
+                </div>
+            </div>
+            
+            <!-- Updated dots container -->
+            <div 
+                class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 p-2 bg-black/10 backdrop-blur-sm rounded-full z-30"
                 onmouseenter={handleMouseEnter}
                 onmouseleave={handleDelayedResume}
             >
-                {#each [...features, ...features, ...features] as item, i}
-                    <div 
-                        class="w-[360px] flex-shrink-0 mx-12 aspect-[5/7] shadow-lg rounded-lg hover:scale-105 transition-transform duration-300"
-                        onmouseenter={handleMouseEnter}
-                        onmouseleave={handleDelayedResume}
-                    >
-                        <EventCard 
-                            event={item} 
-                            i={i % features.length} 
-                            thumbnail={data.medias.result[i].thumbnail}
-                        />
-                    </div>
+                {#each features as _, i}
+                    <button 
+                        class="w-2.5 h-2.5 min-w-[0.625rem] rounded-full transition-all duration-300 ease-in-out transform hover:scale-125 {
+                            i === getCurrentCenterIndex() 
+                                ? 'bg-[#AB83FE] shadow-lg shadow-[#AB83FE]/50' 
+                                : 'bg-[#AB83FE]/20 hover:bg-[#AB83FE]/40'
+                        }"
+                        onclick={() => handleDotClick(i)}
+                        aria-label={`Go to slide ${i + 1}`}
+                        aria-current={i === getCurrentCenterIndex() ? 'true' : 'false'}
+                    ></button>
+
                 {/each}
             </div>
-        </div>
-
-        <!-- Update the slider container -->
-        <div 
-            class="absolute bottom-0 left-0 w-full px-8 py-4"
-            onmouseenter={handleMouseEnter}
-            onmouseleave={handleDelayedResume}
-        >
-            <input 
-                type="range"
-                min="0"
-                max="100"
-                step="0.1"
-                value={Math.abs(currentTranslate)}
-                onchange={handleSliderChange}
-                oninput={handleSliderChange}
-                class="slider w-full"
-            />
         </div>
     </div>
 </div>
@@ -307,7 +328,7 @@
 
     /* Smooth transitions */
     .transition-transform {
-        transition: transform 1500ms linear;
+        transition: transform 800ms cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     /* Improve button transitions */
@@ -415,5 +436,83 @@
     .transition-all {
         transition-property: all;
         transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Add these styles to your style section */
+    button.rounded-full {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        flex-shrink: 0;
+        display: block;
+        width: 0.625rem;  /* 10px */
+        height: 0.625rem; /* 10px */
+        min-width: 0.625rem;
+        min-height: 0.625rem;
+        border-radius: 9999px;
+        aspect-ratio: 1;
+    }
+
+    button.rounded-full:hover {
+        transform: scale(1.2);
+        aspect-ratio: 1;
+    }
+
+    button.rounded-full[aria-current="true"] {
+        transform: scale(1.2);
+        aspect-ratio: 1;
+    }
+
+    .absolute.bottom-4 {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        padding: 0.5rem 1rem;
+    }
+
+    /* Add these animations to your style section */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInSlide {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    /* Add these utility classes */
+    .animate-fadeIn {
+        animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    .animate-fadeInSlide {
+        animation: fadeInSlide 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    /* Update existing transitions for smoother animations */
+    .transition-transform {
+        transition: transform 800ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .transition-all {
+        transition: all 800ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Add smooth transition for card hover */
+    .hover\:scale-105 {
+        transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
     }
 </style>
