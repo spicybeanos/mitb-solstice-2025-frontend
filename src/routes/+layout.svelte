@@ -142,6 +142,9 @@
             <p>Manipal Institute of technology</p>
             <p>Yelahanka, Bengaluru</p>
             <p>Karnataka - 560064</p>
+
+            <a href="/privacy" class="text-white">Our Privacy policy</a>
+            <a href="/tos" class="text-white">Our terms of service</a>
         </div>
 
         <div class="flex flex-col text-right">
