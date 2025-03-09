@@ -153,6 +153,7 @@
             <p>( Atharva Maikhuri - HR Head )</p>
             <p>+91 72045 87438</p>
             <p>( Rohit Nandagopal - HR Head )</p>
+            <a href="/contactus">Contact us</a>
         </div>
     </div>
 </footer>
