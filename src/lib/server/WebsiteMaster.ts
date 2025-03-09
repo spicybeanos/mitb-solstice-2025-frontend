@@ -1,4 +1,4 @@
-import { supabase } from "./supabaseClient";
+import { supabaseAdmin } from "./supabaseServer"; // Ensure correct import
 
 /** Generic Result Type for API Responses */
 export interface Result<T> {
@@ -30,7 +30,7 @@ export async function getEventMedia(eventID: string): Promise<Result<EventMedia>
         return { success: false, result: null, error: "Invalid eventID" };
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
         .from('EventMedia')
         .select('eventID, thumbnail, background, rulebook')
         .eq('eventID', eventID.trim())
@@ -52,7 +52,7 @@ export async function changeEventMedia(eventID: string, media: Partial<EventMedi
         return { success: false, result: null, error: 'eventID is required' };
     }
 
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
         .from('EventMedia')
         .update({
             thumbnail: media.thumbnail ?? defaultEvent.thumbnail,
@@ -76,7 +76,7 @@ export async function addEventMedia(eventID: string, media: Partial<EventMedia>)
         return { success: false, result: null, error: 'eventID is required' };
     }
 
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
         .from('EventMedia')
         .insert([{
             eventID: eventID.trim(),
@@ -84,6 +84,26 @@ export async function addEventMedia(eventID: string, media: Partial<EventMedia>)
             background: media.background || defaultEvent.background,
             rulebook: media.rulebook || defaultEvent.rulebook
         }]);
+
+    if (error) {
+        return { success: false, result: null, error: error.message };
+    }
+
+    return { success: true, result: null, error: null };
+}
+
+/**
+ * Delete an event media entry.
+ */
+export async function deleteEventMedia(eventID: string): Promise<Result<null>> {
+    if (!eventID.trim()) {
+        return { success: false, result: null, error: 'eventID is required' };
+    }
+
+    const { error } = await supabaseAdmin
+        .from('EventMedia')
+        .delete()
+        .eq('eventID', eventID.trim());
 
     if (error) {
         return { success: false, result: null, error: error.message };

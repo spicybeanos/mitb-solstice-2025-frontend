@@ -1,7 +1,7 @@
 import { get, post, patch, del } from "./Backend.ts";
 import { getUsersInTeam } from "./BackendAgentTeam.ts";
 import type { EventImages, SolsticeEventInfo, SolsticeEventRegRow, SolsticePassInfo, SolsticeTeamInfo, SolsticeUser, UpdateEvent, UserID } from "./BackendTypes.ts";
-import { supabase } from "./supabaseClient.ts";
+import { supabaseAdmin } from "./supabaseServer.ts";
 
 let serverEvents: SolsticeEventInfo[] = [];
 
@@ -140,7 +140,7 @@ export async function getEventInfo(eventId: string): Promise<SolsticeEventInfo |
 export async function getEventImages(eventID: string): Promise<EventImages> {
     if (!eventID) throw new Error('eventID is required');
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
         .from('EventImages')
         .select('thumbnail, background')
         .eq('eventID', eventID)
