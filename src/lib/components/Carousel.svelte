@@ -5,6 +5,7 @@
     
     interface CarouselProps {
         feature: Array<any>; // Replace 'any' with your actual event type
+        medias: Array<any>;
     }
 
     let { data } = $props<{ data: CarouselProps }>();
@@ -253,7 +254,7 @@
                         <EventCard 
                             event={item} 
                             i={i % features.length} 
-                            thumbnail={`/thumbnail/${item.id}.jpg`}
+                            thumbnail={data.medias.result[i].thumbnail}
                         />
                     </div>
                 {/each}

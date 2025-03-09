@@ -115,7 +115,7 @@
                                                 className="w-full h-full hover:translate-z-6 relative group transition-transform duration-500 ease-out"
                                             >
                                                 <img
-                                                    src={event.pictureURL}
+                                                    src={data.medias?.result != null ? data.medias?.result[i].thumbnail : event.pictureURL}
                                                     height="1600"
                                                     width="1000"
                                                     class="h-full w-full rounded-xl object-cover transition-all duration-300 group-hover:scale-105"
@@ -211,7 +211,7 @@
                                                 className="w-full mb-4"
                                             >
                                                 <img
-                                                    src={event.pictureURL}
+                                                    src={data.medias?.result != null ? data.medias?.result[i].thumbnail : event.pictureURL}
                                                     height="1000"
                                                     width="1000"
                                                     class="h-48 w-full rounded-xl object-cover"
