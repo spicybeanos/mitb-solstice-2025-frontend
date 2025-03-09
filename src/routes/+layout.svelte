@@ -8,7 +8,7 @@
     import { FloatingNavbar } from "../lib/components/ui/FloatingNavBar/index.ts";
     import { onMount } from "svelte";
     import { checkLoggedIn } from "./GoogleLogin.svelte.ts";
-
+ import bg from "$lib/icons/gif2.gif"
     import { WavyBackground } from "$lib/components/ui/Waves/index.ts";
     import { Hamburger } from "svelte-hamburgers";
     import { MobileWaves } from "$lib/components/ui/MobileWaves/index.ts";
@@ -127,20 +127,11 @@
 </div>
 
 
-<div class="bg-[#1E1E1E] z-20 sm:hidden" style="min-height: 70vh; height:fit-content ">
-    <MobileWaves>
-    <!-- <WavyBackground > -->
-        {@render children()}
-    <!-- </WavyBackground> -->
-    </MobileWaves>
-</div>
-
-<div class="bg-[#1E1E1E] z-20  max-sm:hidden" style="min-height: 70vh; height:fit-content">
-    <!-- <MobileWaves> -->
+<div class="bg-[#1E1E1E] z-20 " style="min-height: 70vh; height:fit-content">
     <WavyBackground >
+        <img src={bg} alt="bg" class="fixed inset-0 object-cover w-full h-screen z-0 sm:hidden" />
         {@render children()}
     </WavyBackground>
-    <!-- </MobileWaves> -->
 </div>
 
 <footer
