@@ -8,9 +8,10 @@
     import { FloatingNavbar } from "../lib/components/ui/FloatingNavBar/index.ts";
     import { onMount } from "svelte";
     import { checkLoggedIn } from "./GoogleLogin.svelte.ts";
-
+ import bg from "$lib/icons/gif2.gif"
     import { WavyBackground } from "$lib/components/ui/Waves/index.ts";
     import { Hamburger } from "svelte-hamburgers";
+    import { MobileWaves } from "$lib/components/ui/MobileWaves/index.ts";
 
     let hamOpen = $state(false);
 
@@ -186,13 +187,9 @@
         </div>
 </div> -->
 
-<div class="bg-[#1E1E1E] z-20" style="min-height: 70vh; height:fit-content ">
-    <img
-        src={retro}
-        alt="retrogrid"
-        class="w-screen h-screen fixed top-0 left-0 object-cover sm:hidden"
-    />
-    <WavyBackground>
+<div class="bg-[#1E1E1E] z-20 " style="min-height: 70vh; height:fit-content">
+    <WavyBackground >
+        <img src={bg} alt="bg" class="fixed inset-0 object-cover w-full h-screen z-0 sm:hidden" />
         {@render children()}
     </WavyBackground>
 </div>
