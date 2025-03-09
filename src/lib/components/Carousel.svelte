@@ -193,7 +193,7 @@
                             <EventCard 
                                 event={item} 
                                 i={i} 
-                                thumbnail={`/thumbnail/${item.id}.jpg`}
+                                thumbnail={data.medias.success?data.medias.result[i].thumbnail:`/thumbnail/${item.id}.jpg`}
                             />
                         </div>
                     {/each}
