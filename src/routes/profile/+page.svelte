@@ -151,6 +151,9 @@
                                     If you have already registered, please
                                     refresh the page.
                                 </div>
+                                <div class="text-[#C7AE93] text-center mb-4">
+                                    Make sure that all your details match your ID's details as you will not be able to change them later!
+                                </div>
                                 <form
                                     action="?/register"
                                     method="post"

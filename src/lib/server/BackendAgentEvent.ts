@@ -136,6 +136,10 @@ export async function getEventInfo(eventId: string): Promise<SolsticeEventInfo |
     const res = await get(`event/${eventId}`);
     return res.success ? (await res.result) as SolsticeEventInfo : null;
 }
+export async function delteEvent(eventId: string): Promise<SolsticeEventInfo | null> {
+    const res = await del(`event/${eventId}`);
+    return res.success ? (await res.result) as SolsticeEventInfo : null;
+}
 
 export async function getEventImages(eventID: string): Promise<EventImages> {
     if (!eventID) throw new Error('eventID is required');

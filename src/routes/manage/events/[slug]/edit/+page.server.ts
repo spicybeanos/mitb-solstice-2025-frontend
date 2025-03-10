@@ -1,5 +1,5 @@
 import { check_EventRW_Access, checkAdminAccess } from "$lib/server/BackendAdmin";
-import { getEventInfo, getEventPasses, updateEventDetails } from "$lib/server/BackendAgentEvent";
+import { delteEvent, getEventInfo, getEventPasses, updateEventDetails } from "$lib/server/BackendAgentEvent";
 import { error, fail, redirect } from "@sveltejs/kit";
 import type { DateTime } from "@auth/core/providers/kakao";
 import type { EventType, SolsticeEventInfo, SolsticePassInfo, UpdateEvent } from "$lib/server/BackendTypes";
@@ -24,14 +24,14 @@ export async function load({ cookies, params }) {
                 secure: true,
                 sameSite: "strict",
                 path: "/",
-                maxAge:3600
+                maxAge: 3600
             });
             cookies.set('userChecksum', generateChecksum(user.result), {
                 httpOnly: false, // Accessible by frontend
                 secure: true,
                 sameSite: "strict",
                 path: "/",
-                maxAge:3600
+                maxAge: 3600
             });
         }
     }
@@ -61,6 +61,38 @@ export async function load({ cookies, params }) {
 }
 
 export const actions = {
+    deleteEvent: async ({ cookies, request, params }) => {
+        const userJson = cookies.get('userInfo');
+        const checksum = cookies.get('userChecksum');
+        const check = await check_EventRW_Access(cookies.get('authToken'), userJson, checksum, params.slug);
+        if (check == false) { return fail(403, { success: false, error: 'Unauthorized edit' }); }
+        if (userJson == null || checksum == null) {
+            const user = await verifyAndGetUser(cookies.get('authToken'), userJson, checksum);
+            if (user.result != null) {
+                cookies.set('userInfo', JSON.stringify(user.result), {
+                    httpOnly: false, // Accessible by frontend
+                    secure: true,
+                    sameSite: "strict",
+                    path: "/",
+                    maxAge: 3600
+                });
+                cookies.set('userChecksum', generateChecksum(user.result), {
+                    httpOnly: false, // Accessible by frontend
+                    secure: true,
+                    sameSite: "strict",
+                    path: "/",
+                    maxAge: 3600
+                });
+            }
+        }
+        const guser = getUserObjectFromJWT(cookies.get('authToken') as string);
+        const res = await delteEvent(params.slug);
+        if (res != null) {
+            await logAuditChange({ action: "DELETE", table_name: 'event', user_email: guser.email, record_id: params.slug });
+            return { success: true }; 
+        }
+        return { success: false }; 
+    },
     updateEvent: async ({ cookies, request, params }) => {
         const userJson = cookies.get('userInfo');
         const checksum = cookies.get('userChecksum');
@@ -74,14 +106,14 @@ export const actions = {
                     secure: true,
                     sameSite: "strict",
                     path: "/",
-                    maxAge:3600
+                    maxAge: 3600
                 });
                 cookies.set('userChecksum', generateChecksum(user.result), {
                     httpOnly: false, // Accessible by frontend
                     secure: true,
                     sameSite: "strict",
                     path: "/",
-                    maxAge:3600
+                    maxAge: 3600
                 });
             }
         }
@@ -136,7 +168,7 @@ export const actions = {
             organizer_id: orgID
         }
 
-        await logAuditChange({action:"UPDATE",table_name:'event',user_email:guser.email,record_id:params.slug,old_data:eventInfo,new_data:new_event});
+        await logAuditChange({ action: "UPDATE", table_name: 'event', user_email: guser.email, record_id: params.slug, old_data: eventInfo, new_data: new_event });
 
 
         const result = await updateEventDetails(params.slug, new_event);

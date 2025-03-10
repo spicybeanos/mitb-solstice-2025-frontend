@@ -113,7 +113,10 @@
                     {/if}
                 </div>
 
-                <BasicButtonFilled>Submit</BasicButtonFilled>
+                <BasicButtonFilled>SUBMIT</BasicButtonFilled>
+            </form>
+            <form action="?/deleteEvent" method="POST" class="flex flex-col">
+                <BasicButtonFilled color='red'>DELETE</BasicButtonFilled>
             </form>
         </div>
     </SimpleCard>
