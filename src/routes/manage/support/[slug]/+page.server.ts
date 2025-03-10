@@ -1,3 +1,4 @@
+import { logAuditChange } from '$lib/server/AuditLogger';
 import { del, verifyAndGetUser } from '$lib/server/Backend';
 import { check_TicketsRW_Access } from '$lib/server/BackendAdmin';
 import { deleteTicket, getTicketByTicketID, setTicketStatus } from '$lib/server/BackendAgentSupport.js';
@@ -69,6 +70,9 @@ export const actions = {
             const solved = form.get('solved');
             if (comment == null) { return fail(400, { err: 'No comment!' }); }
             const subRes = await setTicketStatus(ticketID, solved == 'on', comment as string, user.email);
+
+            await logAuditChange({ action: "UPDATE", table_name: 'ticket', user_email: user.email, record_id: params.slug, new_data: {solveld:solved == 'on',comment:comment} });
+
             return { msg: subRes.suc ? "Submitted successfully" : subRes.err }
         }
         catch (ex) {
@@ -99,7 +103,10 @@ export const actions = {
                     });
                 }
             }
+            const guser = getUserObjectFromJWT(cookies.get('authToken') as string);
             const res = await deleteTicket(params.slug);
+            await logAuditChange({ action: "DELETE", table_name: 'ticket', user_email: guser.email, record_id: params.slug });
+
             return { msg: res.success ? "Deleted successfully" : res.error }
 
         } catch (ex) {

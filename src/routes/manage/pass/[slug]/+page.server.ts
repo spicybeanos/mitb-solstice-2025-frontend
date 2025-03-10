@@ -1,7 +1,9 @@
+import { logAuditChange } from "$lib/server/AuditLogger";
 import { patch, post, verifyAndGetUser } from "$lib/server/Backend.js";
 import { check_PassRW_Access, checkAdminAccess } from "$lib/server/BackendAdmin.js";
 import { getAllPasses, getPassInfo } from "$lib/server/BackendAgentPass.js";
 import { generateChecksum } from "$lib/server/CacheMaster";
+import { getUserObjectFromJWT } from "$lib/server/GAuth";
 import { fail } from "@sveltejs/kit"
 
 export async function load({ cookies, params }) {
@@ -67,6 +69,8 @@ export const actions = {
                     });
                 }
             }
+            const guser = getUserObjectFromJWT(cookies.get('authToken') as string);
+
             if (access == false) {
                 return fail(403, { msg: 'You shall not pass!' });
             }
@@ -96,8 +100,9 @@ export const actions = {
             };
 
             let res = await patch(`pass/${params.slug}`, body);
-
             if (res.success == true) {
+                await logAuditChange({ action: "UPDATE", table_name: 'pass', user_email: guser.email, record_id: params.slug, new_data: body });
+
                 return { msg: `successfully edited pass!` }
             } else {
                 return fail(400, { msg: `Could not create pass : ${res.error}` })

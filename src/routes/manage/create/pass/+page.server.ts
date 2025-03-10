@@ -1,9 +1,11 @@
+import { logAuditChange } from "$lib/server/AuditLogger";
 import { patch, post, verifyAndGetUser } from "$lib/server/Backend.js";
 import { check_PassRW_Access, checkAdminAccess } from "$lib/server/BackendAdmin.js";
 import { getAllPasses } from "$lib/server/BackendAgentPass.js";
 import { generateChecksum } from "$lib/server/CacheMaster";
+import { getUserObjectFromJWT } from "$lib/server/GAuth";
 import { fail } from "@sveltejs/kit"
-
+import type { SolsticePassInfo } from '$lib/server/BackendTypes.ts';
 
 export const actions = {
     createPass: async ({ cookies, request }) => {
@@ -19,17 +21,18 @@ export const actions = {
                         secure: true,
                         sameSite: "strict",
                         path: "/",
-                        maxAge:3600
+                        maxAge: 3600
                     });
                     cookies.set('userChecksum', generateChecksum(user.result), {
                         httpOnly: false, // Accessible by frontend
                         secure: true,
                         sameSite: "strict",
                         path: "/",
-                        maxAge:3600
+                        maxAge: 3600
                     });
                 }
             }
+            const guser = getUserObjectFromJWT(cookies.get('authToken') as string);
             if (access == false) {
                 return fail(403, { msg: 'You shall not pass!' });
             }
@@ -70,9 +73,11 @@ export const actions = {
             };
             let res;
             if (edit == true) {
-                res = await patch(`pass/${ep?.id}`, body);
+                res = await patch<SolsticePassInfo>(`pass/${ep?.id}`, body);
+                await logAuditChange({ action: 'UPDATE', table_name: 'pass', user_email: guser.email, new_data: res.result });
             } else {
-                res = await post('pass/', body);
+                res = await post<SolsticePassInfo>('pass/', body);
+                await logAuditChange({ action: 'INSERT', table_name: 'pass', user_email: guser.email, new_data: res.result });
             }
             if (res.success == true) {
                 return { msg: `successfully ${edit ? 'edited' : 'created'} pass!` }

@@ -1,9 +1,11 @@
+import { logAuditChange } from '$lib/server/AuditLogger.js';
 import { verifyAndGetUser } from '$lib/server/Backend.js';
 import { check_EventCreation_Access, check_EventRW_Access, checkAdminAccess } from '$lib/server/BackendAdmin.js'
 import { createEvent } from '$lib/server/BackendAgentEvent.js';
 import { getUserId } from '$lib/server/BackendAgentUser.js';
 import type { EventType, SolsticeEventInfo, UpdateEvent } from '$lib/server/BackendTypes.js';
 import { generateChecksum } from '$lib/server/CacheMaster';
+import { getUserObjectFromJWT } from '$lib/server/GAuth.js';
 import { addEventMedia, defaultEvent } from '$lib/server/WebsiteMaster.js';
 import type { DateTime } from '@auth/sveltekit/providers/kakao';
 import { fail } from '@sveltejs/kit';
@@ -35,6 +37,7 @@ export const actions = {
                     });
                 }
             }
+            const guser = getUserObjectFromJWT(cookies.get('authToken') as string);
             const form = await request.formData();
             if (form == null) { return fail(400, { success: false, error: 'no form!' }); }
 
@@ -76,6 +79,7 @@ export const actions = {
                     const med = await addEventMedia(res.result?.id, defaultEvent);
 
                     if(med.success == false){
+                        await logAuditChange({action:'INSERT',table_name:'event',user_email:guser.email,new_data:res.result});
                         return {success:true,error:med.error}
                     }
                 }

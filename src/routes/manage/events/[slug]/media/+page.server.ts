@@ -8,6 +8,8 @@ import { getAllPasses } from "$lib/server/BackendAgentPass.ts";
 import { get, post, verifyAndGetUser, type Result } from "$lib/server/Backend";
 import { generateChecksum } from "$lib/server/CacheMaster";
 import { changeEventMedia, defaultEvent, getEventMedia, type EventMedia } from "$lib/server/WebsiteMaster.js";
+import { logAuditChange } from "$lib/server/AuditLogger";
+import { getUserObjectFromJWT } from "$lib/server/GAuth";
 
 export async function load({ cookies, params }) {
     const jwt = cookies.get('authToken');
@@ -80,6 +82,8 @@ export const actions = {
                 });
             }
         }
+        const guser = getUserObjectFromJWT(cookies.get('authToken') as string);
+
         const eventInfo = await getEventInfo(params.slug);
         if (eventInfo == null) {
             return fail(403, { success: false, error: 'Non existant event!' });
@@ -106,6 +110,7 @@ export const actions = {
             rulebook: rule,
             eventID: params.slug
         }
+        await logAuditChange({ action: "UPDATE", table_name: 'media', user_email: guser.email, record_id: params.slug, new_data: new_media });
 
         const result = await changeEventMedia(params.slug, new_media);
         if (result.success == true) { return { success: true }; }

@@ -7,6 +7,8 @@ import { getUserId } from "$lib/server/BackendAgentUser.ts";
 import { getAllPasses } from "$lib/server/BackendAgentPass.ts";
 import { get, post, verifyAndGetUser } from "$lib/server/Backend";
 import { generateChecksum } from "$lib/server/CacheMaster";
+import { logAuditChange } from "$lib/server/AuditLogger.js";
+import { getUserObjectFromJWT } from "$lib/server/GAuth.js";
 
 export async function load({ cookies, params }) {
     const jwt = cookies.get('authToken');
@@ -83,6 +85,8 @@ export const actions = {
                 });
             }
         }
+        const guser = getUserObjectFromJWT(cookies.get('authToken') as string);
+
         const eventInfo = await getEventInfo(params.slug);
         if (eventInfo == null) {
             return fail(403, { success: false, error: 'Non existant event!' });
@@ -131,6 +135,9 @@ export const actions = {
             venue: venue,
             organizer_id: orgID
         }
+
+        await logAuditChange({action:"UPDATE",table_name:'event',user_email:guser.email,record_id:params.slug,old_data:eventInfo,new_data:new_event});
+
 
         const result = await updateEventDetails(params.slug, new_event);
         if (result.success == true) { return { success: true }; }
