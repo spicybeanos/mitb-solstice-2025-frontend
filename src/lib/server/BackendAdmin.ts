@@ -4,7 +4,7 @@ import { getUserId } from "./BackendAgentUser";
 
 const admins: string[] = ['aryan.d.dalal@gmail.com'];
 const IT_OCs: string[] = ['blucraft2104@gmail.com'];
-const OPS_CC_team: string[] = ['sarveshbagla07@gmail.com', 'tyagi.aryan3434@gmail.com','aarushie1204@gmail.com','annanykapoor1304@gmail.com','shashwatshukla120@gmail.com'];
+const OPS_CC_team: string[] = ['sarveshbagla07@gmail.com', 'tyagi.aryan3434@gmail.com','aarushie1204@gmail.com','annanykapoor1304@gmail.com','shashwatshukla120@gmail.com','bagadiaakshat11@gmail.com','anushkamishra0102@gmail.com','sambhav02082004@gmail.com','harshitashahi26@gmail.com'];
 const HR_team: string[] = ['atharvamaik200@gmail.com', 'rohitnandagopal010305@gmail.com', 'suryanshabhijit1@gmail.com', 'aishanisharma3@gmail.com', 'snishtha.381@gmail.com', 'ayushi.khubber@gmail.com', 'kshitij.betwal@gmail.com'];
 const Finance_Team: string[] = ['shashwatshukla120@gmail.com','aarushie1204@gmail.com','annanykapoor1304@gmail.com'];
 
