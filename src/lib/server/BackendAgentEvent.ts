@@ -4,6 +4,7 @@ import type { EventImages, SolsticeEventInfo, SolsticeEventRegRow, SolsticePassI
 import { supabaseAdmin } from "./supabaseServer.ts";
 
 let serverEvents: SolsticeEventInfo[] = [];
+export const eventsRegistrationOn = false;
 
 export async function getEventRegisTable(eventID: string): Promise<SolsticeEventRegRow[] | null> {
     const teams = await getTeams(eventID);

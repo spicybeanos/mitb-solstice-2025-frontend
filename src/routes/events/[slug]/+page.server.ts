@@ -1,5 +1,5 @@
 import { verifyAndGetUser } from '$lib/server/Backend';
-import { getEventID, getEventInfo, getEvents, getHost_sTeamInfo, getTeams, getUserIDsInEvent, getUser_s_TeamIDInEvent } from '$lib/server/BackendAgentEvent';
+import { eventsRegistrationOn, getEventID, getEventInfo, getEvents, getHost_sTeamInfo, getTeams, getUserIDsInEvent, getUser_s_TeamIDInEvent } from '$lib/server/BackendAgentEvent';
 import { checkEventAccessibleByPass } from '$lib/server/BackendAgentPass';
 import { addUserToTeam, createTeamAndAttach, disbandTeam, getAllTeams, getTeamDetails, getUsersInTeam, removeUserFromTeam } from '$lib/server/BackendAgentTeam';
 import type { SolsticeUser } from '$lib/server/BackendTypes.js';
@@ -91,7 +91,7 @@ export const load = async ({ params, cookies }) => {
             team: team,
             event: event,
             media:media,
-            canAccess: canAccess,
+            canAccess: canAccess && eventsRegistrationOn,
             isRegistered: true,
             isLeader: team?.host_id == user.result.id,
             playersInTeam: plr

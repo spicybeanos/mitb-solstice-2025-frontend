@@ -258,7 +258,7 @@
                 </div>
             </CardItem>
 
-            {#if data.canAccess && event.teamSize >= 2}
+            {#if data.canAccess && event.teamSize >= 1}
                 <CardItem className="w-full flex flex-col">
                     {#if !data.in_team}
                         <div
