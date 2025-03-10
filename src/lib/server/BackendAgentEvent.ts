@@ -97,7 +97,7 @@ export async function createEvent(info: UpdateEvent) {
 
     if (res.success) {
         if (res.result != null) { serverEvents.push(res.result); }
-        return { success: true };
+        return { success: true ,result:res.result};
     }
     const body = await res.error
     return { success: false, error: body, code: 500 };

@@ -4,6 +4,7 @@ import { createEvent } from '$lib/server/BackendAgentEvent.js';
 import { getUserId } from '$lib/server/BackendAgentUser.js';
 import type { EventType, SolsticeEventInfo, UpdateEvent } from '$lib/server/BackendTypes.js';
 import { generateChecksum } from '$lib/server/CacheMaster';
+import { addEventMedia, defaultEvent } from '$lib/server/WebsiteMaster.js';
 import type { DateTime } from '@auth/sveltekit/providers/kakao';
 import { fail } from '@sveltejs/kit';
 
@@ -23,14 +24,14 @@ export const actions = {
                         secure: true,
                         sameSite: "strict",
                         path: "/",
-                        maxAge:3600
+                        maxAge: 3600
                     });
                     cookies.set('userChecksum', generateChecksum(user.result), {
                         httpOnly: false, // Accessible by frontend
                         secure: true,
                         sameSite: "strict",
                         path: "/",
-                        maxAge:3600
+                        maxAge: 3600
                     });
                 }
             }
@@ -70,6 +71,12 @@ export const actions = {
                 organizer_id: org
             }
             const res = await createEvent(event);
+            if (res.success) {
+                if (res.result != null) {
+                    addEventMedia(res.result?.id, defaultEvent);
+                }
+            }
+
             if (res.success == true) {
                 return { success: true }
             } else if (res.code != undefined) {
