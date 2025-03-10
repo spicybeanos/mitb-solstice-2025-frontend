@@ -17,7 +17,8 @@ interface AuditLogEntry {
 export async function logAuditChange(entry: AuditLogEntry) {
     const { error } = await supabaseAdmin.from('audit_log').insert([
         {
-            id:uuid(),
+            id: uuid(),
+            timestamp: (new Date()).toLocaleString(),
             user_email: entry.user_email,
             table_name: entry.table_name,
             record_id: entry.record_id ?? null,
