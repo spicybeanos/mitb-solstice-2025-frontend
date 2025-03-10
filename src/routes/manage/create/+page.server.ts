@@ -1,5 +1,5 @@
 import { verifyAndGetUser } from '$lib/server/Backend';
-import { checkAdminAccess } from '$lib/server/BackendAdmin';
+import { check_Creator_Access, checkAdminAccess } from '$lib/server/BackendAdmin';
 import { getEvents } from '$lib/server/BackendAgentEvent';
 import type { SolsticeEventInfo } from '$lib/server/BackendTypes.ts';
 import { generateChecksum } from '$lib/server/CacheMaster';
@@ -8,7 +8,7 @@ import { error, fail, redirect } from '@sveltejs/kit';
 export async function load({ cookies }) {
     const userJson = cookies.get('userInfo');
     const checksum = cookies.get('userChecksum');
-    const isAdmin = await checkAdminAccess(cookies.get('authToken'), userJson, checksum);
+    const isAdmin = await check_Creator_Access(cookies.get('authToken'), userJson, checksum);
     if (userJson == null || checksum == null) {
         const user = await verifyAndGetUser(cookies.get('authToken'), userJson, checksum);
         if (user.result != null) {

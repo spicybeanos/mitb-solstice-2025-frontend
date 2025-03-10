@@ -1,5 +1,5 @@
 import { verifyAndGetUser } from '$lib/server/Backend.js';
-import { checkAdminAccess } from '$lib/server/BackendAdmin.js'
+import { check_EventCreation_Access, check_EventRW_Access, checkAdminAccess } from '$lib/server/BackendAdmin.js'
 import { createEvent } from '$lib/server/BackendAgentEvent.js';
 import { getUserId } from '$lib/server/BackendAgentUser.js';
 import type { EventType, SolsticeEventInfo, UpdateEvent } from '$lib/server/BackendTypes.js';
@@ -14,7 +14,7 @@ export const actions = {
         try {
             const userJson = cookies.get('userInfo');
             const checksum = cookies.get('userChecksum');
-            const access = await checkAdminAccess(cookies.get('authToken'), userJson, checksum);
+            const access = await check_EventCreation_Access(cookies.get('authToken'), userJson, checksum);
             if (access == false) { return fail(403, { success: false, error: 'Unauthorized!' }) }
             if (userJson == null || checksum == null) {
                 const user = await verifyAndGetUser(cookies.get('authToken'), userJson, checksum);
@@ -73,7 +73,11 @@ export const actions = {
             const res = await createEvent(event);
             if (res.success) {
                 if (res.result != null) {
-                    addEventMedia(res.result?.id, defaultEvent);
+                    const med = await addEventMedia(res.result?.id, defaultEvent);
+
+                    if(med.success == false){
+                        return {success:true,error:med.error}
+                    }
                 }
             }
 

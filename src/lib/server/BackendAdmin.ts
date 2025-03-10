@@ -39,6 +39,16 @@ export async function check_ITOC_Access(jwt: string | null | undefined, userInfo
     return false;
 }
 
+export async function check_Creator_Access(jwt: string | null | undefined, userInfoCookieJson: string | null | undefined, userChecksum: string | null | undefined): Promise<boolean> {
+    const user = await verifyAndGetUser(jwt, userInfoCookieJson, userChecksum);
+    if (user.success == false) { return false; }
+    if (user.result == null) { return false; }
+    if (admins.includes(user.result?.email_address)) { return true; }
+    if (OPS_CC_team.includes(user.result?.email_address)) { return true; }
+    if (Finance_Team.includes(user.result?.email_address)) { return true; }
+    return false;
+}
+
 export async function check_HR_Access(jwt: string | null | undefined, userInfoCookieJson: string | null | undefined, userChecksum: string | null | undefined): Promise<boolean> {
     const user = await verifyAndGetUser(jwt, userInfoCookieJson, userChecksum);
     if (user.success == false) { return false; }
@@ -55,6 +65,20 @@ export async function check_PassRW_Access(jwt: string | null | undefined, userIn
     if (user.result == null) { return false; }
     if (admins.includes(user.result?.email_address)) { return true; }
     if (Finance_Team.includes(user.result?.email_address)) { return true; }
+    return false;
+}
+
+export async function check_EventCreation_Access(jwt: string | null | undefined, userInfoCookieJson: string | null | undefined, userChecksum: string | null | undefined): Promise<boolean> {
+    const user = await await verifyAndGetUser(jwt, userInfoCookieJson, userChecksum);
+    if (user.success == false) { return false; }
+    if (user.result == null) { return false; }
+    for (const e of admins) {
+        if (e == user.result?.email_address) { return true; }
+    }
+    for (const e of OPS_CC_team) {
+        if (e == user.result?.email_address) { return true; }
+    }
+
     return false;
 }
 

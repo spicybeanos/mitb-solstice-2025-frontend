@@ -1,5 +1,5 @@
 import { patch, post, verifyAndGetUser } from "$lib/server/Backend.js";
-import { checkAdminAccess } from "$lib/server/BackendAdmin.js";
+import { check_PassRW_Access, checkAdminAccess } from "$lib/server/BackendAdmin.js";
 import { getAllPasses } from "$lib/server/BackendAgentPass.js";
 import { generateChecksum } from "$lib/server/CacheMaster";
 import { fail } from "@sveltejs/kit"
@@ -10,7 +10,7 @@ export const actions = {
         try {
             const userJson = cookies.get('userInfo');
             const checksum = cookies.get('userChecksum');
-            const access = await checkAdminAccess(cookies.get('authToken'), userJson, checksum);
+            const access = await check_PassRW_Access(cookies.get('authToken'), userJson, checksum);
             if (userJson == null || checksum == null) {
                 const user = await verifyAndGetUser(cookies.get('authToken'), userJson, checksum);
                 if (user.result != null) {
