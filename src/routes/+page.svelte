@@ -63,7 +63,7 @@
 
         <div class="text-[#d9d9d9] flex flex-col gap-4 z-20 m-[30px]">
             <h1
-                class="font-akira text-2xl sm:text-6xl text-center gradient-text
+                class="font-akira text-2xl sm:text-6xl text-center gradient-text 
             "
             >
                 Book your tickets now!

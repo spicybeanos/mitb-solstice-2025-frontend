@@ -1,7 +1,7 @@
 import { getEvents } from "$lib/server/BackendAgentEvent";
 import type { SolsticeEventInfo } from "$lib/server/BackendTypes";
 import { getMultipleEventMedia } from "$lib/server/WebsiteMaster";
-const feature: string[] = ['SparkTank (Ideathon)','E-Sports','Robo Wars','Line Follower','Robo Race','Code-a-thon 24']
+const feature: string[] = ['Robo Wars','Line Follower','Robo Race','Code-a-thon','Pitch Tank']
 export async function load() {
     try {
         const events = await getEvents();
