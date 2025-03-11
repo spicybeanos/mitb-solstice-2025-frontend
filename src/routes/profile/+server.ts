@@ -25,7 +25,7 @@ export async function POST({ request, cookies }) {
 							httpOnly: true,  // Prevent access via JavaScript
 							secure: true,    // Only send over HTTPS
 							sameSite: 'strict', // Protect against CSRF
-							maxAge: 3600 * 1000, // 1 hour
+							maxAge: 24 * 3600 * 1000, // 24 hour
 						}
 					);
 
