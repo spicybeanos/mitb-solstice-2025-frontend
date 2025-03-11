@@ -14,7 +14,7 @@
 <button
     disabled={disable}
     onclick={OnClick}
-    style:background-color='#1E1E1E'
+    style:background='transparent'
     style:color={color}
     style:border-color={color}
     >{@render children()}</button

@@ -120,6 +120,13 @@ export async function getUser_s_TeamIDInEvent(userID: string, eventID: string): 
 export async function getEventPasses(eventID: string) {
     return await get<SolsticePassInfo[]>(`event/${eventID}/passes`);
 }
+export async function addEventPass(eventID: string,passID:string) {
+    return await post<string>(`event/${eventID}/passes/${passID}`);
+}
+export async function delEventPass(eventID: string,passID:string) {
+    return await del<string>(`event/${eventID}/passes/${passID}`);
+}
+
 export async function getHost_sTeamInfo(hostID: string, eventID: string): Promise<SolsticeTeamInfo | null> {
     const teams = await getTeams(eventID);
     if (!teams) return null;
