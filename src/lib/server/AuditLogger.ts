@@ -18,7 +18,7 @@ export async function logAuditChange(entry: AuditLogEntry) {
     const { error } = await supabaseAdmin.from('audit_log').insert([
         {
             id: uuid(),
-            timestamp: (new Date()).toLocaleString(),
+            timestamp: (new Date())toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
             user_email: entry.user_email,
             table_name: entry.table_name,
             record_id: entry.record_id ?? null,
