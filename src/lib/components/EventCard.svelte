@@ -113,8 +113,7 @@
                                             </svg>
                                             {#if event.teamSize != null}
                                                 Team size: {event.teamSize} {event.teamSize === 1 ? "person" : "people"}
-                                            {:else}
-                                                No teams for this event
+                                
                                             {/if}
                                         </div>
                                     </div>
