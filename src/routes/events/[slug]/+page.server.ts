@@ -4,7 +4,7 @@ import { checkEventAccessibleByPass } from '$lib/server/BackendAgentPass';
 import { addUserToTeam, createTeamAndAttach, disbandTeam, getAllTeams, getTeamDetails, getUsersInTeam, removeUserFromTeam } from '$lib/server/BackendAgentTeam';
 import type { SolsticeUser } from '$lib/server/BackendTypes.js';
 import { generateChecksum } from '$lib/server/CacheMaster.js';
-import { getEventMedia } from '$lib/server/WebsiteMaster';
+import { getEventMedia, isEventRegistrationEnabled } from '$lib/server/WebsiteMaster';
 import { error, fail, json, redirect } from '@sveltejs/kit';
 
 export const load = async ({ params, cookies }) => {
@@ -12,7 +12,7 @@ export const load = async ({ params, cookies }) => {
         const eventID = params.slug;
 
         const media = await getEventMedia(eventID);
-        
+
 
         if (eventID == null) redirect(300, '/events');
         const eventInfo = await getEventInfo(eventID);
@@ -29,14 +29,14 @@ export const load = async ({ params, cookies }) => {
                 secure: true,
                 sameSite: "strict",
                 path: "/",
-                maxAge:3600
+                maxAge: 3600
             });
             cookies.set('userChecksum', generateChecksum(user.result), {
                 httpOnly: false, // Accessible by frontend
                 secure: true,
                 sameSite: "strict",
                 path: "/",
-                maxAge:3600
+                maxAge: 3600
             })
         }
 
@@ -47,7 +47,7 @@ export const load = async ({ params, cookies }) => {
                 slug: eventID,
                 in_team: false,
                 event: event,
-                media:media,
+                media: media,
                 team: null,
                 canAccess: false,
                 isRegistered: false,
@@ -62,7 +62,7 @@ export const load = async ({ params, cookies }) => {
                 slug: eventID,
                 in_team: false,
                 event: event,
-                media:media,
+                media: media,
                 team: null,
                 canAccess: false,
                 isRegistered: false,
@@ -85,13 +85,16 @@ export const load = async ({ params, cookies }) => {
             }
         }
 
+        const regEnabled = await isEventRegistrationEnabled();
+
         return {
             slug: eventID,
             in_team: is_in_team,
             team: team,
             event: event,
-            media:media,
-            canAccess: canAccess && eventsRegistrationOn,
+            media: media,
+            canAccess: canAccess,
+            regisEnabled: regEnabled.success ? regEnabled.result : false,
             isRegistered: true,
             isLeader: team?.host_id == user.result.id,
             playersInTeam: plr
@@ -120,7 +123,7 @@ export const actions = {
             const userJson = cookies.get('userInfo');
             const checksum = cookies.get('userChecksum');
             const ver = await verifyAndGetUser(jwt, userJson, checksum);
-            
+
 
             if (ver.success == false) return fail(401, { msg: ver.error });
             if (ver.result == null) { return fail(401, { msg: 'null user' }); }
@@ -131,14 +134,14 @@ export const actions = {
                     secure: true,
                     sameSite: "strict",
                     path: "/",
-                    maxAge:3600
+                    maxAge: 3600
                 });
                 cookies.set('userChecksum', generateChecksum(ver.result), {
                     httpOnly: false, // Accessible by frontend
                     secure: true,
                     sameSite: "strict",
                     path: "/",
-                    maxAge:3600
+                    maxAge: 3600
                 })
             }
 
@@ -170,6 +173,11 @@ export const actions = {
                     if (us == hostID) { return fail(409, { msg: "You're already in a team!" }); }
                 }
 
+            }
+
+            const regEnabled = await isEventRegistrationEnabled();
+            if(regEnabled.success ==false || regEnabled.result == false){
+                return fail(400,{msg:'registrations for this event arent open yet!'})
             }
 
             const res_team = await createTeamAndAttach(teamName as string, hostID, eventId);
@@ -204,14 +212,14 @@ export const actions = {
                         secure: true,
                         sameSite: "strict",
                         path: "/",
-                        maxAge:3600
+                        maxAge: 3600
                     });
                     cookies.set('userChecksum', generateChecksum(user.result), {
                         httpOnly: false, // Accessible by frontend
                         secure: true,
                         sameSite: "strict",
                         path: "/",
-                        maxAge:3600
+                        maxAge: 3600
                     });
                 }
             }
@@ -232,7 +240,7 @@ export const actions = {
                     secure: true,
                     sameSite: "strict",
                     path: "/",
-                    maxAge:3600
+                    maxAge: 3600
                 })
             }
 
@@ -270,6 +278,11 @@ export const actions = {
                 }
             }
 
+            const regEnabled = await isEventRegistrationEnabled();
+            if(regEnabled.success ==false || regEnabled.result == false){
+                return fail(400,{msg:'registrations for this event arent open yet!'})
+            }
+
             const added = await addUserToTeam(teamID, userID);
             if (added == null) { return fail(403, { msg: 'Failed to add user to team!' }); }
             return { teamJoined: added };
@@ -293,14 +306,14 @@ export const actions = {
                         secure: true,
                         sameSite: "strict",
                         path: "/",
-                        maxAge:3600
+                        maxAge: 3600
                     });
                     cookies.set('userChecksum', generateChecksum(user.result), {
                         httpOnly: false, // Accessible by frontend
                         secure: true,
                         sameSite: "strict",
                         path: "/",
-                        maxAge:3600
+                        maxAge: 3600
                     });
                 }
             }
@@ -314,14 +327,14 @@ export const actions = {
                     secure: true,
                     sameSite: "strict",
                     path: "/",
-                    maxAge:3600
+                    maxAge: 3600
                 });
                 cookies.set('userChecksum', generateChecksum(ver.result), {
                     httpOnly: false, // Accessible by frontend
                     secure: true,
                     sameSite: "strict",
                     path: "/",
-                    maxAge:3600
+                    maxAge: 3600
                 })
             }
 
@@ -352,14 +365,14 @@ export const actions = {
                     secure: true,
                     sameSite: "strict",
                     path: "/",
-                    maxAge:3600
+                    maxAge: 3600
                 });
                 cookies.set('userChecksum', generateChecksum(ver.result), {
                     httpOnly: false, // Accessible by frontend
                     secure: true,
                     sameSite: "strict",
                     path: "/",
-                    maxAge:3600
+                    maxAge: 3600
                 })
             }
             const userID = ver.result?.id;

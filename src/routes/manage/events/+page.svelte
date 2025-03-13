@@ -1,4 +1,5 @@
 <script lang="ts">
+    import BasicHeader from "$lib/components/ui/Basic/BasicHeader.svelte";
     import BasicInput from "$lib/components/ui/Basic/BasicInput.svelte";
     import { onMount } from "svelte";
 

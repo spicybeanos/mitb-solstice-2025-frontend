@@ -1,7 +1,7 @@
 import { verifyAndGetUser } from '$lib/server/Backend';
 import { getUserId, getUserInfo, registerUser, updateUserInfo } from '$lib/server/BackendAgentUser';
 import { generateChecksum } from '$lib/server/CacheMaster';
-import { getUserObjectFromJWT } from '$lib/server/GAuth';
+import { getUserObjectFromJWT, verifyGJWT, type VerificationResult } from '$lib/server/GAuth';
 import { error, fail, json, redirect } from '@sveltejs/kit';
 
 export async function load({ cookies }) {
@@ -33,6 +33,7 @@ export async function load({ cookies }) {
 }
 
 export const actions = {
+
     register: async ({ request, cookies }) => {
         try {
             const jwt = cookies.get('authToken');
@@ -77,7 +78,7 @@ export const actions = {
             const userJson = cookies.get('userInfo');
             const checksum = cookies.get('userChecksum');
             const user = await verifyAndGetUser(jwt, userJson, checksum);
-            if(user.success == false){return fail(403,{ error: 'User with this email does not exist!' })}
+            if (user.success == false) { return fail(403, { error: 'User with this email does not exist!' }) }
             if (userJson == null || checksum == null) {
                 const user = await verifyAndGetUser(cookies.get('authToken'), userJson, checksum);
                 if (user.result != null) {

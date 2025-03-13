@@ -7,6 +7,8 @@
     import { isSigningOut } from "../GoogleLogin.svelte.ts";
     import { tick } from "svelte";
 
+    import {PUBLIC_G_CLIENT} from '$env/static/public' 
+
     import { UserProfileData } from "../GoogleLogin.svelte.ts";
     //import { json } from "@sveltejs/kit";
     //import SimpleCard from "$lib/components/SimpleCard.svelte";
@@ -46,9 +48,8 @@
         }).finally(async () => {
             isSigningOut.status = false;
             console.log("done logging out!");
-            window.location.reload()
-            await tick()
-
+            window.location.reload();
+            await tick();
         });
     }
 </script>
@@ -70,7 +71,32 @@
                         class="card-glow w-full max-w-md shadow-[#AB83FE]/40 sm:shadow-0 bg-[#AB83FE]/30 sm:bg-black/40 backdrop-blur-sm rounded-xl p-6 sm:p-8 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500 flex justify-center shadow-lg hover:shadow-[#AB83FE]/40"
                         in:fly={cardAnimation}
                     >
-                        <GoogleLogin cookieJwt={data.authToken} />
+                        {#if !UserProfileData.loggedIn}
+                            <div
+                                id="g_id_onload"
+                                data-client_id={`${PUBLIC_G_CLIENT}.apps.googleusercontent.com`}
+                                data-context="signin"
+                                data-ux_mode="popup"
+                                data-login_uri="/profile/glogin"
+                                data-auto_select="true"
+                                data-itp_support="true"
+                            ></div>
+
+                            <div
+                                class="g_id_signin"
+                                data-type="standard"
+                                data-shape="rectangular"
+                                data-theme="outline"
+                                data-text="signin_with"
+                                data-size="large"
+                                data-logo_alignment="left"
+                            ></div>
+                        {/if}
+                        {#if UserProfileData.loggedIn}
+                            <p>Welcome, {UserProfileData.name}!</p>
+                            <p>Email: {UserProfileData.email}</p>
+                        {/if}
+                        <!-- <GoogleLogin cookieJwt={data.authToken} /> -->
                     </div>
                 </div>
             {:else}
@@ -102,6 +128,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <Button
                                 OnClicked={() => LogOut()}
                                 class="w-full sm:w-auto"
@@ -152,7 +179,9 @@
                                     refresh the page.
                                 </div>
                                 <div class="text-[#C7AE93] text-center mb-4">
-                                    Make sure that all your details match your ID's details as you will not be able to change them later!
+                                    Make sure that all your details match your
+                                    ID's details as you will not be able to
+                                    change them later!
                                 </div>
                                 <form
                                     action="?/register"
@@ -220,8 +249,8 @@
                                     <a href="/privacy" class="text-white">
                                         our privacy policy</a
                                     >
-                                    If you disagree, do not register yourself.
-                                    For more information
+                                    If you disagree, do not register yourself. For
+                                    more information
                                     <a href="/contactus" class="text-white"
                                         >contact us.</a
                                     ></span

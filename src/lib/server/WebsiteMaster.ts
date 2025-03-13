@@ -134,3 +134,38 @@ export async function deleteEventMedia(eventID: string): Promise<Result<null>> {
 
     return { success: true, result: null, error: null };
 }
+
+
+export async function isEventRegistrationEnabled(): Promise<Result<boolean>> {
+    const { data, error } = await supabaseAdmin
+        .from('website_properties')
+        .select('value')
+        .eq('name', 'enable_event_registration')
+        .single();
+
+    if (error || !data) {
+        console.warn(`Error fetching enable_event_registration: ${error?.message || "Property not found"}`);
+        return { success: false, result: false, error: error?.message || "Property not found" };
+    }
+
+    return { success: true, result: data.value === 'true', error: null };
+}
+
+/**
+ * Update the enable_event_registration property.
+ * @param enabled - Boolean indicating whether event registration should be enabled or disabled.
+ */
+export async function setEventRegistrationEnabled(enabled: boolean): Promise<Result<null>> {
+    const updateData = { name: 'enable_event_registration', value: enabled ? 'true' : 'false' };
+
+    const { error } = await supabaseAdmin
+        .from('website_properties')
+        .upsert([updateData], { onConflict: 'name' }); // <-- Fixed: Pass 'name' as a string, not an array
+
+    if (error) {
+        console.error(`Error updating enable_event_registration: ${error.message}`);
+        return { success: false, result: null, error: error.message };
+    }
+
+    return { success: true, result: null, error: null };
+}

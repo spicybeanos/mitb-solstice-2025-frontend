@@ -258,7 +258,7 @@
                 </div>
             </CardItem>
 
-            {#if data.canAccess && event.teamSize >= 1}
+            {#if data.canAccess && event.teamSize >= 1 && data.regisEnabled == true}
                 <CardItem className="w-full flex flex-col">
                     {#if !data.in_team}
                         <div
@@ -325,10 +325,6 @@
                                     <!-- {/if} -->
                                 </div>
                             </form>
-                            <button
-                                class="w-full text-center bg-white text-black hover:bg-black hover:text-white transition-all duration-200 p-2 rounded-sm mt-3 sm:mt-6"
-                                onclick={showTeams}>Show teams</button
-                            >
                         {:else if team_selection === "new"}
                             <form action="?/joinTeam" method="post">
                                 <div
@@ -416,9 +412,16 @@
                 {#if data.isRegistered == false}
                     <div style="color: white;">You're not logged in!</div>
                 {/if}
-                <div style="color: white;">
-                    You do not have the pass to register for this event!
-                </div>
+                {#if (data.regisEnabled == false)}
+                    <div style="color: white;">
+                        This event's registrations haven't started yet!
+                    </div>
+                {/if}
+                {#if data.canAccess == false}
+                    <div style="color: white;">
+                        You do not have the pass to register for this event!
+                    </div>
+                {/if}
             {/if}
             <div class="flex justify-between text-sm md:text-base pt-2">
                 <div class="flex-col">

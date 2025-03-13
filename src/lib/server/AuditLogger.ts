@@ -1,6 +1,7 @@
 // src/lib/server/auditLogger.ts
 import { supabaseAdmin } from './supabaseServer';
 import { v4 as uuid } from 'uuid';
+import { DateTime } from "luxon";
 
 interface AuditLogEntry {
     user_email: string;
@@ -18,7 +19,7 @@ export async function logAuditChange(entry: AuditLogEntry) {
     const { error } = await supabaseAdmin.from('audit_log').insert([
         {
             id: uuid(),
-            timestamp: (new Date()).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+            timestamp: DateTime.now().setZone("Asia/Kolkata").toFormat("yyyy-MM-dd HH:mm:ss"),
             user_email: entry.user_email,
             table_name: entry.table_name,
             record_id: entry.record_id ?? null,
@@ -33,7 +34,5 @@ export async function logAuditChange(entry: AuditLogEntry) {
         throw new Error('Failed to log audit change.');
     }
 }
-function uuidv4(): any {
-    throw new Error('Function not implemented.');
-}
+
 
