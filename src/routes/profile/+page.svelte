@@ -7,7 +7,7 @@
     import { isSigningOut } from "../GoogleLogin.svelte.ts";
     import { tick } from "svelte";
 
-    import {PUBLIC_G_CLIENT} from '$env/static/public' 
+    import { PUBLIC_G_CLIENT } from "$env/static/public";
 
     import { UserProfileData } from "../GoogleLogin.svelte.ts";
     //import { json } from "@sveltejs/kit";
@@ -160,6 +160,7 @@
                                 any event!
                             </div>
                         </div>
+                        <div>Feel free to screen shot this QR code!</div>
                     </div>
 
                     {#if data.user == null}
@@ -259,11 +260,13 @@
                         </div>
                     {:else}
                         <!-- Update Form and QR Section -->
+
                         <div class="flex justify-center">
                             <div
                                 class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-[#AB83FE]/40 sm:bg-black/60 backdrop-blur-sm rounded-xl p-4 sm:p-8 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500 w-1/3"
                                 in:fly={{ ...cardAnimation, delay: 700 }}
                             >
+                                <h1 class="text-2xl text-center">{data.user.id}</h1>
                                 <div class="flex justify-center gap-8">
                                     <!-- QR Code - Show first on mobile -->
                                     <div

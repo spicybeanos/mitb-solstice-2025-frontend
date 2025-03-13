@@ -26,7 +26,7 @@ export async function load({ cookies }) {
         }
     }
     if (usr.success) {
-        console.log(`User is registered! ${usr.result?.email_address}`);
+        // console.log(`User is registered! ${usr.result?.email_address}`);
         return { user: usr.result, authToken: cookies.get('authToken') }
     }
     return { authToken: cookies.get('authToken') };

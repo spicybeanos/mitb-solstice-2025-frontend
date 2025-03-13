@@ -11,7 +11,7 @@ export async function load() {
         const eventRegis = await isEventRegistrationEnabled();
         return { eventRegis: eventRegis.success == true ? eventRegis.result : false };
     } catch (ex) {
-
+        return fail(503)
     }
 
 }
@@ -48,9 +48,9 @@ export const actions = {
 
             const form = await request.formData();
             const reg = form.get('reg');
-            console.log(`calue : ${reg}`);
             await setEventRegistrationEnabled(reg == 'on')
             logAuditChange({ action: 'UPDATE', table_name: 'website_properties', user_email: guser.email, record_id: 'is_event_registration_enabled', new_data: { value: reg == 'on' }, old_data: { value: reg != 'on' } })
+            return {msg:'success!'}
         } catch (ex) {
             return fail(503,{msg:`Error : ${ex}`})
         }
