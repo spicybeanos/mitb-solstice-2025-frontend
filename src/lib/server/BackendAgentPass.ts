@@ -12,7 +12,11 @@ export async function getAllPasses(): Promise<SolsticePassInfo[] | null> {
     return null;
 }
 
-export async function getPassInfo(passID: string): Promise<SolsticePassInfo | null> {
+export async function getPassInfo(passID: string|null): Promise<SolsticePassInfo | null> {
+    if(passID == null){
+        return null;
+    }
+
     const res = await get(`pass/${passID}`);
 
     if (res.success) {

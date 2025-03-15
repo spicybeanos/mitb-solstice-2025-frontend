@@ -7,6 +7,7 @@
 
     let email = $state("");
     let userid = $state("");
+    let passName = $state('');
     let loaded = $state(false);
     let response: { error: string | null; userData: SolsticeUser | null } =
         $state({ error: null, userData: null });
@@ -27,6 +28,7 @@
         if (res.status == 200) {
             const info = await res.json();
             response.error = null;
+            passName = info.passName;
             response.userData = info.userData;
         } else {
             const info = await res.json();
@@ -50,6 +52,7 @@
         if (res.status == 200) {
             const info = await res.json();
             response.error = null;
+            passName = info.passName;
             response.userData = info.userData;
         } else {
             const info = await res.json();
@@ -126,6 +129,9 @@
                             Pass ID : {response.userData.pass_id == null
                                 ? "None"
                                 : response.userData.pass_id}
+                        </div>
+                        <div>
+                            Pass Name : {passName}
                         </div>
                     </div>
                 {/if}

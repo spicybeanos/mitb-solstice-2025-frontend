@@ -46,8 +46,16 @@ export async function GET({ url, cookies }: { url: URL, cookies: Cookies }) {
 
         const userInfo = await getUserInfo(userID);
         if (userInfo == null) { return json({ error: 'User info fetch failed!' }, { status: 400 }); }
+        
+        let pass_name = '';
+        const pass_details = await getPassInfo(userInfo.pass_id);
+        if(pass_details == null) {pass_name = 'No pass owned';}
+        else{
+            pass_name = pass_details.name;
+        }
 
         return json({
+            passName:pass_name,
             userData: userInfo,
             error: null
         }, { status: 200 })
