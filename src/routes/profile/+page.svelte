@@ -72,25 +72,31 @@
                         in:fly={cardAnimation}
                     >
                         {#if !UserProfileData.loggedIn}
-                            <div
-                                id="g_id_onload"
-                                data-client_id={`${PUBLIC_G_CLIENT}.apps.googleusercontent.com`}
-                                data-context="signin"
-                                data-ux_mode="popup"
-                                data-login_uri="/profile?/glogin"
-                                data-auto_select="true"
-                                data-itp_support="true"
-                            ></div>
+                            <div class="flex flex-col justify-center items-center">
+                                <div class="text-white">
+                                    If you do not see a google log in button,
+                                    kindly reload the page.
+                                </div>
+                                <div
+                                    id="g_id_onload"
+                                    data-client_id={`${PUBLIC_G_CLIENT}.apps.googleusercontent.com`}
+                                    data-context="signin"
+                                    data-ux_mode="popup"
+                                    data-login_uri="/profile?/glogin"
+                                    data-auto_select="true"
+                                    data-itp_support="true"
+                                ></div>
 
-                            <div
-                                class="g_id_signin"
-                                data-type="standard"
-                                data-shape="rectangular"
-                                data-theme="outline"
-                                data-text="signin_with"
-                                data-size="large"
-                                data-logo_alignment="left"
-                            ></div>
+                                <div
+                                    class="g_id_signin"
+                                    data-type="standard"
+                                    data-shape="rectangular"
+                                    data-theme="outline"
+                                    data-text="signin_with"
+                                    data-size="large"
+                                    data-logo_alignment="left"
+                                ></div>
+                            </div>
                         {/if}
                         {#if UserProfileData.loggedIn}
                             <p>Welcome, {UserProfileData.name}!</p>
