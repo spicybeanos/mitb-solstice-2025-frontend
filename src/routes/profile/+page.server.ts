@@ -1,5 +1,5 @@
 import { verifyAndGetUser } from '$lib/server/Backend';
-import { getUserId, getUserInfo, registerUser, updateUserInfo } from '$lib/server/BackendAgentUser';
+import { getUserId, getUserInfo, getUserPassInfo, registerUser, updateUserInfo } from '$lib/server/BackendAgentUser';
 import { generateChecksum } from '$lib/server/CacheMaster';
 import { getUserObjectFromJWT, verifyGJWT, type VerificationResult } from '$lib/server/GAuth';
 import { error, fail, json, redirect } from '@sveltejs/kit';
@@ -25,15 +25,45 @@ export async function load({ cookies }) {
             });
         }
     }
-    if (usr.success) {
+    if (usr.success && usr.result != null) {
         // console.log(`User is registered! ${usr.result?.email_address}`);
-        return { user: usr.result, authToken: cookies.get('authToken') }
+        const pass = await getUserPassInfo(usr.result?.id);
+        return { success: true, user: usr.result, pass:pass }
     }
-    return { authToken: cookies.get('authToken') };
+    return { success: false };
 }
 
 export const actions = {
+    glogin: async ({ request, cookies }) => {
+        try {
+            const form = await request.formData();
+            const token = form.get('credential') as string | null;
 
+            if (!token) {
+                return json({ message: 'Token is required' }, { status: 400 });
+            }
+
+            const res = (await verifyGJWT(token)) as VerificationResult;
+            if (res.result === true) {
+                cookies.set('authToken', token,
+                    {
+                        path: '/',
+                        httpOnly: true,  // Prevent access via JavaScript
+                        secure: true,    // Only send over HTTPS
+                        sameSite: 'strict', // Protect against CSRF
+                        maxAge: 24 * 3600 * 1000, // 24 hour
+                    }
+                );
+
+                return res.object
+            } else {
+                return fail(400, { message: 'Token is invalid' });
+            }
+        }
+        catch (ex) {
+            return fail(503, { message: `Failed to log in : ${ex}` });
+        }
+    },
     register: async ({ request, cookies }) => {
         try {
             const jwt = cookies.get('authToken');

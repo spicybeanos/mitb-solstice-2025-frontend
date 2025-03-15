@@ -77,7 +77,7 @@
                                 data-client_id={`${PUBLIC_G_CLIENT}.apps.googleusercontent.com`}
                                 data-context="signin"
                                 data-ux_mode="popup"
-                                data-login_uri="/profile/glogin"
+                                data-login_uri="/profile?/glogin"
                                 data-auto_select="true"
                                 data-itp_support="true"
                             ></div>
@@ -121,11 +121,30 @@
                                 </div>
                                 <div>
                                     <div class="text-[#C7AE93] text-xl">
-                                        {UserProfileData.name}
+                                        {data.user?.first_name}
+                                        {data.user?.last_name}
                                     </div>
                                     <div class="text-[#C7AE93] text-sm">
                                         {UserProfileData.email}
                                     </div>
+                                    <div class="text-[#C7AE93] text-sm">
+                                        +91 {data.user?.phone_number}
+                                    </div>
+                                    {#if data.user?.mahe_registration_number != null}
+                                        <div class="text-[#C7AE93] text-sm">
+                                            Registration number : {data.user
+                                                ?.mahe_registration_number}
+                                        </div>
+                                    {/if}
+                                    {#if data.pass != null}
+                                        <div class="text-[#C7AE93] text-sm">
+                                            Your pass : {data.pass.name}
+                                        </div>
+                                    {:else}
+                                        <div class="text-[#C7AE93] text-sm">
+                                            You do not own any pass!
+                                        </div>
+                                    {/if}
                                 </div>
                             </div>
 
@@ -266,7 +285,9 @@
                                 class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-[#AB83FE]/40 sm:bg-black/60 backdrop-blur-sm rounded-xl p-4 sm:p-8 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500 w-1/3"
                                 in:fly={{ ...cardAnimation, delay: 700 }}
                             >
-                                <h1 class="text-2xl text-center">{data.user.id}</h1>
+                                <h1 class="text-2xl text-center">
+                                    {data.user.id}
+                                </h1>
                                 <div class="flex justify-center gap-8">
                                     <!-- QR Code - Show first on mobile -->
                                     <div
