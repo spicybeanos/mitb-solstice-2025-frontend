@@ -1,5 +1,5 @@
 import { verifyAndGetUser } from "$lib/server/Backend";
-import { check_EventRW_Access, check_manage_Access, check_PassRW_Access } from "$lib/server/BackendAdmin";
+import { check_EventCreation_Access, check_EventRW_Access, check_manage_Access, check_PassRW_Access } from "$lib/server/BackendAdmin";
 import { getAllPasses } from "$lib/server/BackendAgentPass.ts";
 import { addEventPass, delEventPass, getEventPasses } from "$lib/server/BackendAgentEvent.ts";
 import { generateChecksum } from "$lib/server/CacheMaster";
@@ -11,7 +11,7 @@ export async function load({ cookies, params }) {
     const jwt = cookies.get('authToken');
     const userJson = cookies.get('userInfo');
     const checksum = cookies.get('userChecksum');
-    const canAccess = await check_PassRW_Access(jwt, userJson, checksum);
+    const canAccess = await check_EventCreation_Access(jwt, userJson, checksum);
     if (userJson == null || checksum == null) {
         const user = await verifyAndGetUser(cookies.get('authToken'), userJson, checksum);
         if (user.result != null) {
@@ -58,7 +58,7 @@ export const actions = {
         const jwt = cookies.get('authToken');
         const userJson = cookies.get('userInfo');
         const checksum = cookies.get('userChecksum');
-        const canAccess = await check_PassRW_Access(jwt, userJson, checksum);
+        const canAccess = await check_EventCreation_Access(jwt, userJson, checksum);
         if (userJson == null || checksum == null) {
             const user = await verifyAndGetUser(cookies.get('authToken'), userJson, checksum);
             if (user.result != null) {

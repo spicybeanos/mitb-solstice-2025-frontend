@@ -78,6 +78,9 @@ export async function check_EventCreation_Access(jwt: string | null | undefined,
     for (const e of OPS_CC_team) {
         if (e == user.result?.email_address) { return true; }
     }
+    for (const e of Finance_Team) {
+        if (e == user.result?.email_address) { return true; }
+    }
 
     return false;
 }
