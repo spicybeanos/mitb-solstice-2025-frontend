@@ -72,11 +72,15 @@ export const actions = {
             }
             const user = getUserObjectFromJWT(jwt);
             const form = await request.formData();
-            const fname = form.get('first_name') as string;
-            const lname = form.get('last_name') as string;
-            const phone = form.get('phone_num') as string;
+            const fname = form.get('first_name') as string | null;
+            const lname = form.get('last_name') as string | null;
+            const phone = form.get('phone_num') as string | null;
             const is_mahe = form.get('is_mahe');
             let reg = null;
+
+            if(fname == null){return { success: false, error: 'First name field empty!' }; }
+            if(lname == null){return { success: false, error: 'Last name field empty!' }; }
+            if(phone == null){return { success: false, error: 'Phone number field empty!' }; }
 
             if (phone.length != 10) { return { success: false, error: 'Phone number must be 10 digits only' }; }
             if (is_mahe != null) {
