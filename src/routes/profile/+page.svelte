@@ -22,7 +22,7 @@
         easing: backOut,
     };
 
-    let { data } = $props();
+    let { data, form } = $props();
 
     let isMahe = $state(true);
 
@@ -215,6 +215,25 @@
                                     ID's details as you will not be able to
                                     change them later!
                                 </div>
+                                <div class="text-[#C7AE93] text-center mb-4">
+                                    Make sure that all your details match that
+                                    of entered in the payment portal!
+                                </div>
+                                {#if form?.success}
+                                    {#if form.success == true}
+                                        <div
+                                            class="text-[#C7AE93] text-center mb-4"
+                                        >
+                                            Registration successful
+                                        </div>
+                                    {:else}
+                                        <div
+                                            class="text-[#C7AE93] text-center mb-4"
+                                        >
+                                            Could not register: {form.error}
+                                        </div>
+                                    {/if}
+                                {/if}
                                 <form
                                     action="?/register"
                                     method="post"
@@ -274,7 +293,7 @@
                                 >
                                 <span class="text-[#C7AE93]"
                                     >By registering to our site, you agree to
-                                    out <a href="/tos" class="text-white"
+                                    our <a href="/tos" class="text-white"
                                         >terms of service</a
                                     >
                                     and

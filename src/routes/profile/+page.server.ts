@@ -78,6 +78,7 @@ export const actions = {
             const is_mahe = form.get('is_mahe');
             let reg = null;
 
+            if (phone.length != 10) { return { success: false, error: 'Phone number must be 10 digits only' }; }
             if (is_mahe != null) {
                 reg = parseInt(form.get('mahe_num') as string);
             }
@@ -92,7 +93,7 @@ export const actions = {
                 pass_id: null
             });
             window.location.reload()
-            return { success: true };
+            return { success: true, user: soluser };
 
         } catch (err) {
             return { success: false, error: 'An error occurred while parsing form' };
