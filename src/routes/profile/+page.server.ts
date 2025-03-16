@@ -28,7 +28,7 @@ export async function load({ cookies }) {
     if (usr.success && usr.result != null) {
         // console.log(`User is registered! ${usr.result?.email_address}`);
         const pass = await getUserPassInfo(usr.result?.id);
-        return { success: true, user: usr.result, pass:pass }
+        return { success: true, user: usr.result, pass: pass }
     }
     return { success: false };
 }
@@ -76,10 +76,13 @@ export const actions = {
             const lname = form.get('last_name') as string;
             const phone = form.get('phone_num') as string;
             const is_mahe = form.get('is_mahe');
-            if (is_mahe == null) { return fail(400, { error: 'mahe student field is null!' }); }
-            const reg = parseInt(form.get('mahe_num') as string);
+            let reg = null;
 
-            const soluser = registerUser({
+            if (is_mahe != null) {
+                reg = parseInt(form.get('mahe_num') as string);
+            }
+
+            const soluser = await registerUser({
                 email_address: user.email,
                 first_name: fname,
                 last_name: lname,
