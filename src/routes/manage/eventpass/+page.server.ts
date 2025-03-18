@@ -36,17 +36,5 @@ export async function load({ cookies }) {
         redirect(308, '/manage');
     }
 
-    let eventPass = [] as {event:string,pass:string[]}[];
-    for (const e of events) {
-        const pr = await getEventPasses(e.id);
-        if(pr.success && pr.result != null){
-            let _p = [];
-            for (const _p_ of pr.result) {
-                _p.push(_p_.name);
-            }
-            eventPass.push({event:e.name,pass:_p})
-        }
-    }
-
-    return { events: events, eventPassMapping:eventPass }
+    return { events: events}
 }

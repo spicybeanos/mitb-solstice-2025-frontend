@@ -48,30 +48,6 @@
                 >Edit event-pass mapping</a
             >
         </div>
-        <SimpleCard>
-            <div class="flex flex-col">
-                <table>
-                    <thead>
-                        <tr>
-                            <th> Event name </th>
-                            <th> Passes </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {#each data.eventPassMapping as map}
-                            <tr>
-                                <th>{map.event}</th>
-                                <th
-                                    >{#each map.pass as p}
-                                        <span>{p} ,</span>
-                                    {/each}
-                                </th>
-                            </tr>
-                        {/each}
-                    </tbody>
-                </table>
-            </div>
-        </SimpleCard>
     </div>
 </div>
 
@@ -107,20 +83,5 @@
         backdrop-filter: blur(20px);
     }
 
-    table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        color: white;
-        padding: 8px;
-    }
-
-    tr:nth-child(even) {
-        background-color: #201a43;
-    }
+    
 </style>
