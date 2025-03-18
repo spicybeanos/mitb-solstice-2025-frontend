@@ -1,6 +1,6 @@
 import { verifyAndGetUser } from "$lib/server/Backend";
 import { check_EventCreation_Access, check_EventRW_Access, check_manage_Access, check_PassRW_Access } from "$lib/server/BackendAdmin";
-import { getEvents } from "$lib/server/BackendAgentEvent.js";
+import { getEventPasses, getEvents } from "$lib/server/BackendAgentEvent.js";
 import { generateChecksum } from "$lib/server/CacheMaster";
 import { redirect } from "@sveltejs/kit";
 
@@ -36,5 +36,17 @@ export async function load({ cookies }) {
         redirect(308, '/manage');
     }
 
-    return { events: events }
+    let eventPass = [] as {event:string,pass:string[]}[];
+    for (const e of events) {
+        const pr = await getEventPasses(e.id);
+        if(pr.success && pr.result != null){
+            let _p = [];
+            for (const _p_ of pr.result) {
+                _p.push(_p_.name);
+            }
+            eventPass.push({event:e.name,pass:_p})
+        }
+    }
+
+    return { events: events, eventPassMapping:eventPass }
 }
