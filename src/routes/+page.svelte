@@ -1,5 +1,4 @@
 <script lang="ts">
-
     interface SolEvent {
         name: string;
         description: string | null;
@@ -21,16 +20,16 @@
         | "technical";
     let landing_solstice = "/media/landing_solstice.svg";
     let tech = "/media/landing_tech.svg";
-    import QR from '$lib/components/QR.svelte'
+    import QR from "$lib/components/QR.svelte";
     import InteractiveHover from "$lib/components/ui/InteractiveHover.svelte";
     import Youtube from "$lib/components/Youtube.svelte";
+    import SimpleCard from "$lib/components/SimpleCard.svelte";
     import retro from "$lib/retro.svg";
     import matrix from "$lib/matrix2.svg";
-    import EventCard from '$lib/components/EventCard.svelte';
-    import Carousel from '$lib/components/Carousel.svelte';
+    import EventCard from "$lib/components/EventCard.svelte";
+    import Carousel from "$lib/components/Carousel.svelte";
     const content = ["A", "B", "C", "D"];
     let { data } = $props();
-
 </script>
 
 <main class="flex flex-col items-center justify-center min-h-screen">
@@ -63,13 +62,13 @@
 
         <div class="text-[#d9d9d9] flex flex-col gap-4 z-20 m-[30px]">
             <h1
-                class="font-akira text-2xl sm:text-6xl text-center gradient-text 
+                class="font-akira text-2xl sm:text-6xl text-center gradient-text
             "
             >
                 Book your tickets now!
             </h1>
         </div>
-        <div class="w-full grid place-items-center my-8 ">
+        <div class="w-full grid place-items-center my-8">
             <a href="/passes"
                 ><InteractiveHover
                     text="Book your tickets"
@@ -77,13 +76,63 @@
                 ></InteractiveHover></a
             >
         </div>
-    </div>
-    <Youtube />
 
-    <div
-        class="max-sm:hidden w-full h-[50vh] mb-24 flex flex-col justify-between text-[#d9d9d9] text-lg sm:text-2xl px-8 z-50"
-    >
-        
+        <SimpleCard>
+            <div
+                class="flex max-sm:flex-col gap-12 justify-between items-center video-container"
+            >
+                <iframe
+                    class="w-full sm:w-1/2 min-h-[12rem] sm:min-h-[5rem] sm:my-6 my-4 rounded-xl aspect-video"
+                    title="montage"
+                    src="https://www.youtube.com/embed/IYjSzDsYhgA?si=1Shh4M9aT8o9eA_q?controls=0"
+                >
+                </iframe>
+                <div
+                    class="text-center text-lg sm:text-left text-white w-full sm:w-1/2"
+                >
+                    Tech Solstice is the annual technical fest of Manipal
+                    Institute of Technology, Bangalore, uniting innovation,
+                    creativity, and cutting-edge technology. Featuring an
+                    exciting lineup of hackathons, competitions, robotics
+                    challenges, workshops, and speaker sessions, it provides a
+                    dynamic platform for students to showcase their skills,
+                    collaborate, and explore emerging tech trends. Get ready for
+                    an immersive experience of learning, competing, and
+                    networking at Tech Solstice!
+                </div>
+            </div>
+        </SimpleCard>
+        <div class="flex flex-center justify-center font-akira m-9">
+            <h1 class="text-white text-3xl">Our Sponsors</h1>
+        </div>
+        <div class="flex flex-center justify-center m-9">
+            <div class="bg-white w-md">
+                <img src="./Virya.svg" alt="Virya sponsor logo" />
+            </div>
+        </div>
+        <div
+            class="flex flex-col p-6 md:p-8 text-xs md:text-base text-white z-0 "
+        >
+            <div class="flex flex-row justify-between z-30">
+                <div class="flex flex-col">
+                    <p>Manipal Institute of Technology</p>
+                    <p>Yelahanka, Bengaluru</p>
+                    <p>Karnataka - 560064</p>
+
+                    <a href="/privacy" class="text-white">Our Privacy policy</a>
+                    <a href="/tos" class="text-white">Our terms of service</a>
+                </div>
+
+                <div class="flex flex-col text-right">
+                    <p>Contact @</p>
+                    <p>+91 79069 52055</p>
+                    <p>( Atharva Maikhuri - HR Head )</p>
+                    <p>+91 72045 87438</p>
+                    <p>( Rohit Nandagopal - HR Head )</p>
+                    <a href="/contactus">Contact us</a>
+                </div>
+            </div>
+        </div>
     </div>
 </main>
 
@@ -112,5 +161,4 @@
             background-position: 200% center;
         }
     }
-
 </style>
