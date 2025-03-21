@@ -128,7 +128,7 @@
                                     <img
                                         src={UserProfileData.picture}
                                         alt="Profile"
-                                        class="w-20 h-20 sm:w-16 sm:h-16 rounded-full border-2 border-[#AB83FE]"
+                                        class="sm:w-16 sm:h-16 rounded-full border-2 border-[#AB83FE]"
                                     />
                                 </div>
                                 <div>

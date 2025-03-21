@@ -106,12 +106,38 @@
             <h1 class="text-white text-3xl">Our Sponsors</h1>
         </div>
         <div class="flex flex-center justify-center m-9">
-            <div class="bg-white w-md">
-                <img src="./Virya.svg" alt="Virya sponsor logo" />
-            </div>
+            <SimpleCard>
+                <div class="flex flex-center justify-center ">
+                    <img
+                        src="./StockGrowpng.png"
+                        alt="Virya sponsor logo"
+                        width="500px"
+                    />
+                </div>
+            </SimpleCard>
+
+            <SimpleCard>
+                <div class="flex flex-center justify-center">
+                    <img
+                        src="./Virya.svg"
+                        alt="Virya sponsor logo"
+                        width="500px"
+                    />
+                </div>
+            </SimpleCard>
+
+            <SimpleCard>
+                <div class="flex flex-center justify-center">
+                    <img
+                        src="./Signitude.svg"
+                        alt="Virya sponsor logo"
+                        width="500px"
+                    />
+                </div>
+            </SimpleCard>
         </div>
         <div
-            class="flex flex-col p-6 md:p-8 text-xs md:text-base text-white z-0 "
+            class="flex flex-col p-6 md:p-8 text-xs md:text-base text-white z-0"
         >
             <div class="flex flex-row justify-between z-30">
                 <div class="flex flex-col">
