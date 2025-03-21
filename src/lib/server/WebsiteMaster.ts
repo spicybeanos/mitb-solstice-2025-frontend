@@ -13,13 +13,15 @@ export interface EventMedia {
     thumbnail: string;
     background: string;
     rulebook: string;
+    max_teams: number;
 }
 
 /** Default event media values */
 export const defaultEvent: Omit<EventMedia, 'eventID'> = {
     thumbnail: 'https://i.imgur.com/fLZJH60.jpg',
     background: 'https://i.imgur.com/fLZJH60.jpg',
-    rulebook: 'https://drive.google.com/file/d/12D-FxdrX6WiWRpa1zu22EJRzwxJLNd3J/view?usp=drive_link'
+    rulebook: 'https://drive.google.com/file/d/12D-FxdrX6WiWRpa1zu22EJRzwxJLNd3J/view?usp=drive_link',
+    max_teams: 10
 };
 
 /**
@@ -32,7 +34,7 @@ export async function getEventMedia(eventID: string): Promise<Result<EventMedia>
 
     const { data, error } = await supabaseAdmin
         .from('EventMedia')
-        .select('eventID, thumbnail, background, rulebook')
+        .select('eventID, thumbnail, background, rulebook, max_teams')
         .eq('eventID', eventID.trim())
         .single();
 
@@ -53,7 +55,7 @@ export async function getMultipleEventMedia(eventIDs: string[]): Promise<Result<
 
     const { data, error } = await supabaseAdmin
         .from('EventMedia')
-        .select('eventID, thumbnail, background, rulebook')
+        .select('eventID, thumbnail, background, rulebook,max_teams')
         .in('eventID', eventIDs.map(id => id.trim())); // Use .in() for multiple IDs
 
     if (error) {
@@ -80,7 +82,8 @@ export async function changeEventMedia(eventID: string, media: Partial<EventMedi
         .update({
             thumbnail: media.thumbnail ?? defaultEvent.thumbnail,
             background: media.background ?? defaultEvent.background,
-            rulebook: media.rulebook ?? defaultEvent.rulebook
+            rulebook: media.rulebook ?? defaultEvent.rulebook,
+            max_teams:media.max_teams ?? defaultEvent.max_teams
         })
         .eq('eventID', eventID.trim());
 
@@ -105,7 +108,8 @@ export async function addEventMedia(eventID: string, media: Partial<EventMedia>)
             eventID: eventID.trim(),
             thumbnail: media.thumbnail || defaultEvent.thumbnail,
             background: media.background || defaultEvent.background,
-            rulebook: media.rulebook || defaultEvent.rulebook
+            rulebook: media.rulebook || defaultEvent.rulebook,
+            max_teams:10
         }]);
 
     if (error) {
@@ -164,6 +168,57 @@ export async function setEventRegistrationEnabled(enabled: boolean): Promise<Res
 
     if (error) {
         console.error(`Error updating enable_event_registration: ${error.message}`);
+        return { success: false, result: null, error: error.message };
+    }
+
+    return { success: true, result: null, error: null };
+}
+
+/**
+ * Fetch the max_teams value for a given eventID.
+ * @param eventID - The ID of the event.
+ * @returns A Result object containing the max_teams value or an error.
+ */
+export async function getMaxTeams(eventID: string): Promise<Result<number>> {
+    if (!eventID.trim()) {
+        return { success: false, result: null, error: "Invalid eventID" };
+    }
+
+    const { data, error } = await supabaseAdmin
+        .from('EventMedia')
+        .select('max_teams')
+        .eq('eventID', eventID.trim())
+        .single();
+
+    if (error || !data) {
+        console.error(`Error fetching max_teams for eventID ${eventID}: ${error?.message || "Event not found"}`);
+        return { success: false, result: null, error: error?.message || "Event not found" };
+    }
+
+    return { success: true, result: data.max_teams, error: null };
+}
+/**
+ * Update the max_teams value for a given eventID.
+ * @param eventID - The ID of the event.
+ * @param maxTeams - The new max_teams value.
+ * @returns A Result object indicating success or failure.
+ */
+export async function updateMaxTeams(eventID: string, maxTeams: number): Promise<Result<null>> {
+    if (!eventID.trim()) {
+        return { success: false, result: null, error: "Invalid eventID" };
+    }
+
+    if (!Number.isInteger(maxTeams) || maxTeams < 1) {
+        return { success: false, result: null, error: "maxTeams must be a positive integer" };
+    }
+
+    const { error } = await supabaseAdmin
+        .from('EventMedia')
+        .update({ max_teams: maxTeams })
+        .eq('eventID', eventID.trim());
+
+    if (error) {
+        console.error(`Error updating max_teams for eventID ${eventID}: ${error.message}`);
         return { success: false, result: null, error: error.message };
     }
 

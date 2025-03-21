@@ -4,7 +4,7 @@ import { checkEventAccessibleByPass } from '$lib/server/BackendAgentPass';
 import { addUserToTeam, createTeamAndAttach, disbandTeam, getAllTeams, getTeamDetails, getUsersInTeam, removeUserFromTeam } from '$lib/server/BackendAgentTeam';
 import type { SolsticeUser } from '$lib/server/BackendTypes.js';
 import { generateChecksum } from '$lib/server/CacheMaster.js';
-import { getEventMedia, isEventRegistrationEnabled } from '$lib/server/WebsiteMaster';
+import { getEventMedia, getMaxTeams, isEventRegistrationEnabled } from '$lib/server/WebsiteMaster';
 import { error, fail, json, redirect } from '@sveltejs/kit';
 
 export const load = async ({ params, cookies }) => {
@@ -160,8 +160,17 @@ export const actions = {
 
             }
 
+            const max_teams = await getMaxTeams(params.slug);
+            if(max_teams.success == false || max_teams.result == null){
+                return fail(503, { msg: 'Teams service is unavailaible! Submit a ticket or contact the admins! error:' + max_teams.error })
+            }
+
             if (allteams.success == false) { return fail(503, { msg: 'Teams service is unavailaible! Submit a ticket or contact the admins! error:' + allteams.error }) }
             if (allteams.result != null) {
+                if(allteams.result.length >= max_teams.result){
+                    return fail(409, { msg: "Event full!" });
+                }
+
                 for (const team of allteams.result) {
                     if (team.name == teamName) { return fail(409, { msg: "A team with that name already exists!" }); }
                 }
