@@ -24,14 +24,12 @@
 
     let loading = $state(true);
     let SolsticeAllPassInfo: SolsticePassInfo[] | null = $state([]);
-    let EventsInAllPasses: EventInAllPasses[] | null = $state([]);
 
     let userPassInfo: SolsticePassInfo | null = $state(null);
 
     onMount(async () => {
         await new Promise((resolve) => setTimeout(resolve, 100));
         SolsticeAllPassInfo = data.SolsticeAllPassInfo;
-        EventsInAllPasses = data.EventsInAllPasses;
         userPassInfo = data.userPassInfo;
         loading = false;
     });
@@ -75,48 +73,44 @@
                                             opacity: 0,
                                         }}
                                     >
-                                        <PassCard>
-                                            <div class="detailContainer">
-                                                <div class="content-wrapper">
-                                                    <h1 class="text-6xl font-bold mb-1">{pass.name}</h1>
-                                                    <div class="desc text-sm mb-1">
-
-                                                        {pass.description}
-
-                                                    </div>
-
-                                                    <div
-                                                        class="eventsIncludedOuter"
-                                                    >
-                                                        {#if EventsInAllPasses !== null}
-                                                            {#each EventsInAllPasses as event}
-                                                                {#if event.passId === pass.id}
-                                                                    <div
-                                                                        class="eventsIncluded"
-                                                                    >
-                                                                        <a
-                                                                            href={`/events/${event.id}`}
-                                                                            >{event.name}</a
-                                                                        >
-                                                                    </div>
-                                                                {/if}
-                                                            {/each}
-                                                        {/if}
-                                                    </div>
-
-                                                    <div class="price">
-                                                        {pass.cost}
-                                                    </div>
-                                                </div>
-                                                <div class="button mt-2">
-                                                    <BuyPass href={passURL}>
-                                                        <div class="text">
-                                                            Buy Pass!
+                                        <a class="card-component cursor-pointer"
+                                        href={`/passes/${pass.id}`}
+                                        role="button"
+                                        aria-label={`Go to pass ${pass.name}`}
+                                        tabindex="0"
+                                        >
+                                            <PassCard>
+                                                <div class="detailContainer">
+                                                    <div class="content-wrapper">
+                                                        <h1 class="text-6xl font-bold mb-1">{pass.name}</h1>
+                                                        <div class="desc text-sm mb-1">
+    
+                                                            {pass.description}
+    
                                                         </div>
-                                                    </BuyPass>
+    
+                                                        <div
+                                                            class="eventsIncludedOuter"
+                                                        >
+                                                            
+                                                                        
+                                                                    
+                                                        </div>
+    
+                                                        <div class="price">
+                                                            {pass.cost}
+                                                        </div>
+                                                    </div>
+                                                    <div class="button mt-2">
+                                                        <BuyPass href={passURL}>
+                                                            <div class="text">
+                                                                Buy Pass!
+                                                            </div>
+                                                        </BuyPass>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </PassCard>
+                                            </PassCard>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -483,7 +477,7 @@
 
     @media screen and (max-width: 480px) {
         .inner {
-            max-width: 300px;
+            max-width: 250px;
             margin-left: 0px;
         }
 
