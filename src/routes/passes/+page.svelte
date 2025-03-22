@@ -31,6 +31,9 @@
     onMount(async () => {
         await new Promise((resolve) => setTimeout(resolve, 100));
         SolsticeAllPassInfo = data.SolsticeAllPassInfo;
+        SolsticeAllPassInfo?.sort((a, b) => {
+            return a.name.localeCompare(b.name);
+        });
         // EventsInAllPasses = data.EventsInAllPasses;
         userPassInfo = data.userPassInfo;
         loading = false;
