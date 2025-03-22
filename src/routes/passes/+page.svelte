@@ -351,8 +351,6 @@
             min-height: 100%;
             padding-bottom: 1rem;
         }
-
-        @media screen and (max-width: 1024px) {
             .container {
                 flex: 0 1 calc(50% - 20px);
                 max-width: 48%;
@@ -452,7 +450,7 @@
             .eventsIncludedOuter {
                 min-height: 100px;
             }
-        }
+        
         .detailContainer {
             padding: 1rem;
             min-height: auto;
@@ -477,7 +475,7 @@
 
     @media screen and (max-width: 480px) {
         .inner {
-            max-width: 250px;
+            max-width: 300px;
             margin-left: 0px;
         }
 
@@ -621,12 +619,47 @@
         flex-direction: column;
         align-items: flex-start;
         width: 100%;
+        height: 200px; /* Fixed height */
+        max-width: 280px; /* Fixed width */
+        margin: 16px auto; /* Center horizontally */
         padding: 16px 24px;
-        margin: 16px 0;
-        min-height: 200px;
         background: rgba(171, 131, 254, 0.05);
         border: 1px solid rgba(171, 131, 254, 0.1);
         border-radius: 8px;
+        overflow-y: auto; /* Add scroll for overflow content */
+    }
+
+    /* Add custom scrollbar styling */
+    .eventsIncludedOuter::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .eventsIncludedOuter::-webkit-scrollbar-track {
+        background: rgba(171, 131, 254, 0.05);
+    }
+
+    .eventsIncludedOuter::-webkit-scrollbar-thumb {
+        background: rgba(171, 131, 254, 0.2);
+        border-radius: 3px;
+    }
+
+    /* Responsive adjustments */
+    @media screen and (max-width: 768px) {
+        .eventsIncludedOuter {
+            height: 150px;
+            max-width: 240px;
+            padding: 12px 20px;
+            margin: 12px auto;
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .eventsIncludedOuter {
+            height: 200px;
+            min-width: 200px;
+            padding: 10px 16px;
+            margin: 10px auto;
+        }
     }
 
     .emptyPassOuter {
