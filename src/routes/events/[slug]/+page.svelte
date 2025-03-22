@@ -249,7 +249,7 @@
                                         <span
                                             >Max teams: {data.media.result
                                                 ?.max_teams}
-                                        </span> 
+                                        </span>
                                     </div>
                                 {:else}
                                     <div
@@ -277,7 +277,29 @@
                 </div>
             </CardItem>
 
-            {#if data.canAccess && event.teamSize >= 1 && data.regisEnabled == true}
+            <div
+                class="rounded-xl p-4 border-white bg-white text-black text-xl w-fit pl-15 pr-15"
+            >
+                Register Now!
+            </div>
+
+            {#if data.isRegistered == false}
+                <div style="color: red;" class="text-3xl">
+                    You're not logged in!
+                </div>
+            {/if}
+            {#if data.regisEnabled == false}
+                <div style="color: red;" class="text-3xl">
+                    This event's registrations haven't started yet!
+                </div>
+            {/if}
+            {#if data.canAccess == false}
+                <div style="color: red;" class="text-xl">
+                    You do not have the pass to register for this event!
+                </div>
+            {/if}
+
+            {#if event.teamSize >= 1 && data.regisEnabled == true && data.canAccess}
                 <CardItem className="w-full flex flex-col">
                     {#if !data.in_team}
                         <div
@@ -427,20 +449,6 @@
                         </form>
                     {/if}
                 </CardItem>
-            {:else}
-                {#if data.isRegistered == false}
-                    <div style="color: white;">You're not logged in!</div>
-                {/if}
-                {#if data.regisEnabled == false}
-                    <div style="color: white;">
-                        This event's registrations haven't started yet!
-                    </div>
-                {/if}
-                {#if data.canAccess == false}
-                    <div style="color: white;">
-                        You do not have the pass to register for this event!
-                    </div>
-                {/if}
             {/if}
             <div class="flex justify-between text-sm md:text-base pt-2">
                 <div class="flex-col">

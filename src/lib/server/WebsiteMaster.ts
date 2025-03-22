@@ -21,7 +21,7 @@ export const defaultEvent: Omit<EventMedia, 'eventID'> = {
     thumbnail: 'https://i.imgur.com/fLZJH60.jpg',
     background: 'https://i.imgur.com/fLZJH60.jpg',
     rulebook: 'https://drive.google.com/file/d/12D-FxdrX6WiWRpa1zu22EJRzwxJLNd3J/view?usp=drive_link',
-    max_teams: 10
+    max_teams: 1000
 };
 
 /**
@@ -109,7 +109,7 @@ export async function addEventMedia(eventID: string, media: Partial<EventMedia>)
             thumbnail: media.thumbnail || defaultEvent.thumbnail,
             background: media.background || defaultEvent.background,
             rulebook: media.rulebook || defaultEvent.rulebook,
-            max_teams:10
+            max_teams:media.max_teams || defaultEvent.max_teams
         }]);
 
     if (error) {

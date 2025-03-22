@@ -23,6 +23,7 @@ export async function load() {
         const SolsticeAllPassInfo: SolsticePassInfo[] | null = await getAllPasses();
         let EventsInAllPasses: EventInAllPasses[] = [];
 
+        /*
         if (SolsticeAllPassInfo !== null) {
             // Wait for all async operations to complete
             await Promise.all(
@@ -51,6 +52,7 @@ export async function load() {
                 })
             );
         }
+        */
 
         const userId: string | null = UserProfileData.userID
         let userPassInfo: SolsticePassInfo | null;
@@ -63,7 +65,7 @@ export async function load() {
 
         return ({
             SolsticeAllPassInfo: SolsticeAllPassInfo,
-            EventsInAllPasses: EventsInAllPasses,
+            // EventsInAllPasses: EventsInAllPasses,
             userPassInfo: userPassInfo
         });
     } catch (err) {

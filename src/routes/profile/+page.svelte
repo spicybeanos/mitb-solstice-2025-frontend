@@ -153,7 +153,7 @@
                                             Your pass : {data.pass.name}
                                         </div>
                                     {:else}
-                                        <div class="text-[#C7AE93] text-sm">
+                                        <div class="text-[#C7AE93] text-sm text-red-400">
                                             You do not own any pass!
                                         </div>
                                     {/if}
@@ -317,7 +317,7 @@
                                 in:fly={{ ...cardAnimation, delay: 700 }}
                             >
                                 <h1 class="text-2xl text-center">
-                                    {data.user.id}
+                                    Your User ID : {data.user.id}
                                 </h1>
                                 <div class="flex justify-center gap-8">
                                     <!-- QR Code - Show first on mobile -->
@@ -328,11 +328,13 @@
                                             delay: 700,
                                         }}
                                     >
+                                        Your User ID QR:
                                         <div
                                             class="bg-white border-1 sm:border-4 border-[#AB83FE]/50 p-1.5 shadow-lg shadow-[#AB83FE]/60 rounded-xl"
                                         >
                                             <QR text={data.user.id} />
                                         </div>
+                                        <div style="color: red;">This is not your pass ID</div>
                                     </div>
                                     <!-- Update Form -->
                                 </div>
