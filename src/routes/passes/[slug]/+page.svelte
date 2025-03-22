@@ -23,6 +23,14 @@
                         <h1 class="text-6xl font-bold mb-1" in:fade={{ duration: 300, delay: 500 }}>
                             {pass?.name || 'Loading...'}
                         </h1>
+                        <div 
+                            class="description-container"
+                            in:fade={{ duration: 300, delay: 600 }}
+                        >
+                            <p class="text-lg text-[#c7ae93]/80 leading-relaxed mb-6">
+                                {pass?.description || 'Loading description...'}
+                            </p>
+                        </div>
 
                         <div class="eventsIncludedOuter pt-14 pb-14" in:slide={{ duration: 500, delay: 700 }}>
                             {#if events && events.length > 0}
@@ -53,7 +61,7 @@
                             ₹{pass?.cost || 0}
                         </div>
                         
-                        <div class="button mt-2" in:scale={{ duration: 400, delay: 1000, start: 0.9 }}>
+                        <div class="button mt-2 text-black" in:scale={{ duration: 400, delay: 1000, start: 0.9 }}>
                             <BuyPass href={passURL}>
                                 <div class="text">
                                     Buy Pass!
