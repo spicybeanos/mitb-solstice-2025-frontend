@@ -134,7 +134,7 @@
                                             className="w-full mb-4"
                                         >
                                             <img
-                                                src={event.pictureURL}
+                                                src={thumbnail}
                                                 height="1000"
                                                 width="1000"
                                                 class="h-48 w-full rounded-xl object-cover"
