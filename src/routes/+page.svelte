@@ -28,14 +28,18 @@
     import matrix from "$lib/matrix2.svg";
     import EventCard from '$lib/components/EventCard.svelte';
     import Carousel from '$lib/components/Carousel.svelte';
+
     const content = ["A", "B", "C", "D"];
+    import type { PageData } from './$types';
     let { data } = $props();
 
+
+    console.log('Page Data:', data);
 </script>
 
-<main class="flex flex-col items-center justify-center min-h-screen">
+<main class="flex flex-col items-center justify-center min-h-screen space-y-8">
     <div
-        class="h-screen flex flex-col justify-center items-center w-full overflow-hidden pb-[16rem]"
+        class="h-screen flex flex-col justify-center items-center w-full overflow-hidden pb-[4rem]"
     >
         <div
             class="relative h-[70%] w-[90%] flex flex-col justify-center items-center text-white gap-5 md:gap-3"
@@ -58,10 +62,10 @@
             >
         </div>
     </div>
-    <div class="h-[100vh] w-full flex flex-col my-12 sm:my-20 z-20">
-        <Carousel {data}></Carousel>
+  <div class="h-[100vh] w-full flex flex-col mb-12 sm:mb-60 mt-2 z-20">
+    <Carousel {data}></Carousel>
 
-        <div class="text-[#d9d9d9] flex flex-col gap-4 z-20 m-[30px]">
+     <div class="text-[#d9d9d9] flex flex-col gap-4 z-20 m-[30px] mt-16">
             <h1
                 class="font-akira text-2xl sm:text-6xl text-center gradient-text 
             "
