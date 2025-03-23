@@ -28,13 +28,9 @@
     import matrix from "$lib/matrix2.svg";
     import EventCard from '$lib/components/EventCard.svelte';
     import Carousel from '$lib/components/Carousel.svelte';
-
     const content = ["A", "B", "C", "D"];
-    import type { PageData } from './$types';
     let { data } = $props();
 
-
-    console.log('Page Data:', data);
 </script>
 
 <main class="flex flex-col items-center justify-center min-h-screen space-y-8">
