@@ -6,8 +6,19 @@
     } from "$lib/components/ui/ThreeDCardEffect";
     import SimpleCard from "$lib/components/SimpleCard.svelte";
     import BasicHeader from "$lib/components/ui/Basic/BasicHeader.svelte";
+    import { onMount } from "svelte";
+    import { displayDateTime } from "$lib/components/DisplayTime.js";
     let { data } = $props();
     let isMouseEntered = $state(false);
+
+    let dateFrom = $state('');
+    let dateTo = $state('');
+    onMount(() =>{
+        const df = new Date(data.result?.date_from);
+        const dt = new Date(data.result?.date_to);
+        dateFrom = displayDateTime(df);
+        dateTo = displayDateTime(dt);
+    })
 </script>
 
 <div class="flex flex-center justify-center align-center">
@@ -35,28 +46,18 @@
                     <div class="text-white bg-gray-900 rounded-xl w-fit p-3">
                         <div class="flex flex-col justify-center align-center">
                             <div class="bg-gray-500 p-2 rounded-lg m-2">
-                                {data.result?.club}
+                                Club <span>{data.result?.club}</span>
                             </div>
                             <div class="bg-gray-500 p-2 rounded-lg m-2">
-                                {data.result?.venue}
+                                Venue {data.result?.venue}
                             </div>
                             
                             <div class="bg-gray-500 p-2 rounded-lg m-2">
-                                From {new Date(data.result?.date_from)
-                                    .toString()
-                                    .replace(
-                                        "GMT+0530 (India Standard Time)",
-                                        "",
-                                    )} to {new Date(data.result?.date_to)
-                                    .toString()
-                                    .replace(
-                                        "GMT+0530 (India Standard Time)",
-                                        "",
-                                    )}
+                                From {dateFrom}
                             </div>
-                            <code class="bg-gray-500 p-2 rounded-lg m-2">
-                                {data.result?.id}
-                            </code>
+                            <div class="bg-gray-500 p-2 rounded-lg m-2">
+                                From {dateTo}
+                            </div>
                         </div>
                     </div>
                     <div class="text-white w-fit m-4">

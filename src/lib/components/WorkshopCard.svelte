@@ -1,6 +1,7 @@
 <script lang="ts">
     import { quintOut } from "svelte/easing";
     import { fade, scale, slide } from "svelte/transition";
+    import { displayDateTime } from "./DisplayTime";
 
     let { index, id, name, club, venue, image_url, date_from } = $props();
 </script>
@@ -32,9 +33,7 @@
             <hr class="line" />
             <h1 class="text-white font-akira text-xl">{name}</h1>
             <div class="text-white">
-                {new Date(date_from)
-                    .toString()
-                    .replace("GMT+0530 (India Standard Time)", "")}
+                Starts from {displayDateTime(new Date(date_from))}
             </div>
             <div class="flex flex-row justify-between">
                 <div class="text-gray-300 text-md">{club}</div>
