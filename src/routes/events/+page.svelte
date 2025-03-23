@@ -93,8 +93,8 @@
                 </div>
             {:else}
                 {#each eventTypes as cat}
-                    <div>
-                        <div class="text-xl font-akira text-white">
+                    <div class="border-y-solid border-y-2 border-sky-500">
+                        <div class="m-5 text-3xl font-akira text-white text-center">
                             {cat.replace("_", " ").toUpperCase()}
                         </div>
                         <div class="e-centre">

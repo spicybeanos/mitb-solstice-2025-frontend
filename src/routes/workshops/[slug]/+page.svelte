@@ -7,18 +7,22 @@
     import SimpleCard from "$lib/components/SimpleCard.svelte";
     import BasicHeader from "$lib/components/ui/Basic/BasicHeader.svelte";
     import { onMount } from "svelte";
-    import { displayDateTime } from "$lib/components/DisplayTime.js";
+    import { displayDate, displayDateTime, displayTime } from "$lib/components/DisplayTime.js";
     let { data } = $props();
     let isMouseEntered = $state(false);
 
-    let dateFrom = $state('');
-    let dateTo = $state('');
-    onMount(() =>{
+    let dateFrom = $state("");
+    let dateTo = $state("");
+    let date_to = $state(new Date());
+    let date_from = $state(new Date());
+    onMount(() => {
         const df = new Date(data.result?.date_from);
         const dt = new Date(data.result?.date_to);
+        date_to = dt;
+        date_from = df;
         dateFrom = displayDateTime(df);
         dateTo = displayDateTime(dt);
-    })
+    });
 </script>
 
 <div class="flex flex-center justify-center align-center">
@@ -51,13 +55,19 @@
                             <div class="bg-gray-500 p-2 rounded-lg m-2">
                                 Venue {data.result?.venue}
                             </div>
-                            
-                            <div class="bg-gray-500 p-2 rounded-lg m-2">
-                                From {dateFrom}
-                            </div>
-                            <div class="bg-gray-500 p-2 rounded-lg m-2">
-                                From {dateTo}
-                            </div>
+
+                            {#if date_to.getFullYear() >= 2025}
+                                <div class="bg-gray-500 p-2 rounded-lg m-2">
+                                    From {dateFrom}
+                                </div>
+                                <div class="bg-gray-500 p-2 rounded-lg m-2">
+                                    To {dateTo}
+                                </div>
+                            {:else}
+                                <div class="bg-gray-500 p-2 rounded-lg m-2">
+                                    From {displayTime(date_from)} to {displayTime(date_to)}, {displayDate(date_from)}
+                                </div>
+                            {/if}
                         </div>
                     </div>
                     <div class="text-white w-fit m-4">
