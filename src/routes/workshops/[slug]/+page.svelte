@@ -7,7 +7,11 @@
     import SimpleCard from "$lib/components/SimpleCard.svelte";
     import BasicHeader from "$lib/components/ui/Basic/BasicHeader.svelte";
     import { onMount } from "svelte";
-    import { displayDate, displayDateTime, displayTime } from "$lib/components/DisplayTime.js";
+    import {
+        displayDate,
+        displayDateTime,
+        displayTime,
+    } from "$lib/components/DisplayTime.js";
     let { data } = $props();
     let isMouseEntered = $state(false);
 
@@ -50,24 +54,18 @@
                     <div class="text-white bg-gray-900 rounded-xl w-fit p-3">
                         <div class="flex flex-col justify-center align-center">
                             <div class="bg-gray-500 p-2 rounded-lg m-2">
-                                Club <span>{data.result?.club}</span>
+                                Presented by <span>{data.result?.club}</span>
                             </div>
                             <div class="bg-gray-500 p-2 rounded-lg m-2">
-                                Venue {data.result?.venue}
+                                Venue :{data.result?.venue}
                             </div>
 
-                            {#if date_to.getFullYear() >= 2025}
-                                <div class="bg-gray-500 p-2 rounded-lg m-2">
-                                    From {dateFrom}
-                                </div>
-                                <div class="bg-gray-500 p-2 rounded-lg m-2">
-                                    To {dateTo}
-                                </div>
-                            {:else}
-                                <div class="bg-gray-500 p-2 rounded-lg m-2">
-                                    From {displayTime(date_from)} {date_to.getHours() == 0 ? "" : "to "+displayTime(date_to)}, {displayDate(date_from)}
-                                </div>
-                            {/if}
+                            <div class="bg-gray-500 p-2 rounded-lg m-2">
+                                On {displayDate(date_from)}
+                            </div>
+                            <div class="bg-gray-500 p-2 rounded-lg m-2">
+                                From {displayTime(date_from)}
+                            </div>
                         </div>
                     </div>
                     <div class="text-white w-fit m-4">

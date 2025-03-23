@@ -9,5 +9,5 @@ export function displayTime(date: Date) {
 }
 export function displayDate(date: Date) {
     let ispm = date.getHours() > 12;
-    return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
 }

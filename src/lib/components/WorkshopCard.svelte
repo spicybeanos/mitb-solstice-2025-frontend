@@ -1,7 +1,7 @@
 <script lang="ts">
     import { quintOut } from "svelte/easing";
     import { fade, scale, slide } from "svelte/transition";
-    import { displayDateTime } from "./DisplayTime";
+    import { displayDate, displayDateTime, displayTime } from "./DisplayTime";
 
     let { index, id, name, club, venue, image_url, date_from } = $props();
 </script>
@@ -33,7 +33,10 @@
             <hr class="line" />
             <h1 class="text-white font-akira text-xl">{name}</h1>
             <div class="text-white">
-                Starts from {displayDateTime(new Date(date_from))}
+                On {displayDate(new Date(date_from))}
+            </div>
+            <div class="text-white">
+                Starts from {displayTime(new Date(date_from))}
             </div>
             <div class="flex flex-row justify-between">
                 <div class="text-gray-300 text-md">{club}</div>
