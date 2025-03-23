@@ -2,7 +2,7 @@
     import { quintOut } from "svelte/easing";
     import { fade, scale, slide } from "svelte/transition";
 
-    let { index, id, name, club, venue, image_url,date_from } = $props();
+    let { index, id, name, club, venue, image_url, date_from } = $props();
 </script>
 
 <div
@@ -28,15 +28,18 @@
         <!-- From Uiverse.io by iconicchandu -->
         <div class="card">
             <!-- svelte-ignore a11y_missing_attribute -->
-            <img
-                class="rounded-lg"
-                src={image_url}
-            />
+            <img class="rounded-lg" src={image_url} />
             <hr class="line" />
             <h1 class="text-white font-akira text-xl">{name}</h1>
-            <div class="text-white">{(new Date(date_from).toString().replace('GMT+0530 (India Standard Time)',''))}</div>
-            <div class="text-gray-300 text-md">{club}</div>
-            <div class="text-gray-300 text-sm">{venue}</div>
+            <div class="text-white">
+                {new Date(date_from)
+                    .toString()
+                    .replace("GMT+0530 (India Standard Time)", "")}
+            </div>
+            <div class="flex flex-row justify-between">
+                <div class="text-gray-300 text-md">{club}</div>
+                <div class="text-gray-300 text-md">{venue}</div>
+            </div>
             <a
                 href={`/workshops/${id}`}
                 class="button font-akira text-lg text-cetre flex flex-center justify-center"

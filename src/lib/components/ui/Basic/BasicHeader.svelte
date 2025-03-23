@@ -9,5 +9,8 @@
     h1{
         color: white;
         font-size: xx-large;
+        text-align: center;
+        margin: 5px 5px 5px 5px;
+        font-family: 'akira';
     }
 </style>
