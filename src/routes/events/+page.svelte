@@ -28,17 +28,7 @@
     let search = $state("");
     let loading = $state(true);
 
-    let eventTypes = [
-        "cultural",
-        "e_sports",
-        "experiences",
-        "finance",
-        "hackathon",
-        "other",
-        "robotics",
-        "sports",
-        "technical",
-    ];
+    let eventTypes = $state([] as string[]);
 
     function searchEvent(e: SolsticeEvent) {
         // if (e.description.toUpperCase().includes(search.toUpperCase())) {
@@ -60,6 +50,11 @@
     onMount(() => {
         events = data.events;
         loading = false;
+        for (const ev of events) {
+            if(!eventTypes.includes(ev.category)){
+                eventTypes.push(ev.category);
+            }
+        }
     });
 </script>
 
