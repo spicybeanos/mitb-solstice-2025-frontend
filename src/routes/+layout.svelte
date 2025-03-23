@@ -133,7 +133,7 @@
         <img
             src={bg}
             alt="bg"
-            class="fixed inset-0 object-cover w-full h-screen z-0 sm:hidden"
+            class="fixed inset-0 object-cover w-full h-screen -z-10 sm:hidden"
         />
         {@render children()}
     </WavyBackground>
