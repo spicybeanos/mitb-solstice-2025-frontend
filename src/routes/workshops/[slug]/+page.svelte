@@ -65,7 +65,7 @@
                                 </div>
                             {:else}
                                 <div class="bg-gray-500 p-2 rounded-lg m-2">
-                                    From {displayTime(date_from)} to {displayTime(date_to)}, {displayDate(date_from)}
+                                    From {displayTime(date_from)} {date_to.getHours() == 0 ? "" : "to "+displayTime(date_to)}, {displayDate(date_from)}
                                 </div>
                             {/if}
                         </div>
