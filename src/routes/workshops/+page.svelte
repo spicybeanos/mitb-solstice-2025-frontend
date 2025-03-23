@@ -8,7 +8,7 @@
 <div class="flex justify-center flex-row">
     <div
         in:fade={{ duration: 300, delay: 150 }}
-        class="flex justify-center flex-row"
+        class="flex justify-center flex-row flex-wrap"
     >
         {#if data.workshops.success && data.workshops.result != null}
             {#each data.workshops.result as ws, i}
