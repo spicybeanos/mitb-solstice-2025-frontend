@@ -23,6 +23,16 @@ export function isValidEvent(type: string): boolean {
             break;
     }
 }
+export interface Workshop {
+    id: string;
+    name: string;
+    description: string;
+    venue: string;
+    club: string;
+    date_from: string; // Using ISO string format
+    date_to: string; // Using ISO string format
+    image_url?: string | null;
+}
 export interface SolsticeEventInfo {
     name: string,
     description: string | null,

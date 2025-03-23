@@ -9,7 +9,7 @@
 <style>
     div{
         background: rgba(194, 194, 194, 0.15);
-        backdrop-filter: blur(15px) saturate(120%); 
+        backdrop-filter: blur(15px) saturate(120%);
         -webkit-backdrop-filter: blur(15px) saturate(120%);
         border-radius: 15px;
         border: 1px solid rgba(255, 255, 255, 0.2);

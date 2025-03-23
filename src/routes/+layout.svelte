@@ -32,7 +32,9 @@
         { name: "Passes", link: "/passes" },
         { name: "Events", link: "/events" },
         { name: "Support", link: "/support" },
+        { name: "Workshops", link: "/workshops" },
         { name: "Stay", link: "/stay" },
+        
     ];
     if (manageAccess) {
         navItems.push({ name: "Manage", link: "/manage" });
@@ -136,7 +138,6 @@
         {@render children()}
     </WavyBackground>
 </div>
-
 
 <style>
     :global(body) {
