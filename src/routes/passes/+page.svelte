@@ -34,10 +34,23 @@
         SolsticeAllPassInfo?.sort((a, b) => {
             return a.name.localeCompare(b.name);
         });
-        // EventsInAllPasses = data.EventsInAllPasses;
         userPassInfo = data.userPassInfo;
         loading = false;
     });
+
+    /*
+    {#if EventsInAllPasses !== null}
+                                    {#each EventsInAllPasses as event}
+                                        {#if event.passId === pass.id}
+                                            <div class="eventsIncluded">
+                                                <a href={`/events/${event.id}`}
+                                                    >{event.name}</a
+                                                >
+                                            </div>
+                                        {/if}
+                                    {/each}
+                                {/if}
+    */
 </script>
 
 {#snippet passCardInfo(i: number, pass: SolsticePassInfo)}
@@ -80,19 +93,7 @@
                                 {pass.description}
                             </div>
 
-                            <div class="eventsIncludedOuter">
-                                {#if EventsInAllPasses !== null}
-                                    {#each EventsInAllPasses as event}
-                                        {#if event.passId === pass.id}
-                                            <div class="eventsIncluded">
-                                                <a href={`/events/${event.id}`}
-                                                    >{event.name}</a
-                                                >
-                                            </div>
-                                        {/if}
-                                    {/each}
-                                {/if}
-                            </div>
+                            <div class="eventsIncludedOuter"></div>
 
                             <div class="price">
                                 {pass.cost}
@@ -117,8 +118,6 @@
             {#if userPassInfo == null}
                 {#if SolsticeAllPassInfo !== null}
                     {#each SolsticeAllPassInfo as pass, i}
-
-
                         {#if pass.name.startsWith("MAHE")}
                             {#if pass.name !== undefined}
                                 {@render passCardInfo(i, pass)}
@@ -161,7 +160,6 @@
                                         <BuyPass href="/events">
                                             <div class="text">View Events</div>
                                         </BuyPass>
-
                                     </div>
                                 </div>
                             </div>
@@ -419,106 +417,106 @@
             min-height: 100%;
             padding-bottom: 1rem;
         }
-            .container {
-                flex: 0 1 calc(50% - 20px);
-                max-width: 48%;
-            }
-
-            .desc {
-                flex-grow: 1;
-                text-align: center;
-                font-size: 1rem;
-                margin-bottom: 32px;
-                margin-top: 20px;
-            }
-            .uniqueString {
-                color: #ab83fe;
-                flex-grow: 1;
-                text-align: center;
-                font-size: 1rem;
-                margin-bottom: 32px;
-                margin-top: 20px;
-                word-break: break-word;
-                white-space: normal;
-            }
-
-            .button {
-                width: 100%;
-                display: flex;
-                justify-content: center;
-            }
-
-            .text {
-                color: #000000;
-            }
-
-            .detailContainer h1 {
-                font-size: 2.5rem;
-                margin-top: -10px;
-                font-weight: 800;
-                line-height: 1.1;
-                padding-bottom: 16px;
-            }
-
-            .detailContainer {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                align-items: center;
-                width: 100%;
-                font-size: 1.5rem;
-                margin-top: 2%;
-                transition: opacity 1s ease;
-                color: #c7ae93;
-                text-align: center;
-                flex-grow: 1;
-                height: 100%;
-            }
+        .container {
+            flex: 0 1 calc(50% - 20px);
+            max-width: 48%;
         }
-        @media screen and (max-width: 768px) {
-            .container {
-                flex: 1 1 100%;
-                max-width: 100%;
-                margin-bottom: 16px;
-            }
-            .detailContainer h1 {
-                font-size: 1.6rem;
-                margin: 0 0 8px 0;
-            }
-            .desc {
-                font-size: 0.85rem;
-                margin: 8px 0;
-                line-height: 1.3;
-            }
-            .single-container {
-                max-width: 320px;
-            }
 
-            .single-pass-container {
-                padding: 0.75rem;
-            }
+        .desc {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 1rem;
+            margin-bottom: 32px;
+            margin-top: 20px;
+        }
+        .uniqueString {
+            color: #ab83fe;
+            flex-grow: 1;
+            text-align: center;
+            font-size: 1rem;
+            margin-bottom: 32px;
+            margin-top: 20px;
+            word-break: break-word;
+            white-space: normal;
+        }
 
-            .pass-info {
-                padding: 0.25rem;
-                width: 80%;
-            }
+        .button {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
 
-            .pass-name {
-                font-size: 1rem;
-            }
+        .text {
+            color: #000000;
+        }
 
-            .qr-wrapper {
-                width: 80%;
-                padding: 0.75rem;
-                max-width: 180px;
-            }
-            .info-box {
-                padding: 0.25rem;
-            }
-            .eventsIncludedOuter {
-                min-height: 100px;
-            }
-        
+        .detailContainer h1 {
+            font-size: 2.5rem;
+            margin-top: -10px;
+            font-weight: 800;
+            line-height: 1.1;
+            padding-bottom: 16px;
+        }
+
+        .detailContainer {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            font-size: 1.5rem;
+            margin-top: 2%;
+            transition: opacity 1s ease;
+            color: #c7ae93;
+            text-align: center;
+            flex-grow: 1;
+            height: 100%;
+        }
+    }
+    @media screen and (max-width: 768px) {
+        .container {
+            flex: 1 1 100%;
+            max-width: 100%;
+            margin-bottom: 16px;
+        }
+        .detailContainer h1 {
+            font-size: 1.6rem;
+            margin: 0 0 8px 0;
+        }
+        .desc {
+            font-size: 0.85rem;
+            margin: 8px 0;
+            line-height: 1.3;
+        }
+        .single-container {
+            max-width: 320px;
+        }
+
+        .single-pass-container {
+            padding: 0.75rem;
+        }
+
+        .pass-info {
+            padding: 0.25rem;
+            width: 80%;
+        }
+
+        .pass-name {
+            font-size: 1rem;
+        }
+
+        .qr-wrapper {
+            width: 80%;
+            padding: 0.75rem;
+            max-width: 180px;
+        }
+        .info-box {
+            padding: 0.25rem;
+        }
+        .eventsIncludedOuter {
+            min-height: 100px;
+        }
+
         .detailContainer {
             padding: 1rem;
             min-height: auto;

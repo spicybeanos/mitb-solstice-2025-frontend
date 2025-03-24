@@ -98,12 +98,17 @@ export const actions = {
             const back = form.get('backg') as string | null;
             const rule = form.get('rule') as string | null;
             const str_max_teams = form.get('max_teams') as string | null;
+            let prize_pool = form.get('prize_pool') as string | null;
 
 
             if (thumb == undefined || thumb == null) { return fail(400, { success: false, error: 'thumbnail field undefined/null!' }) }
             if (back == undefined || back == null) { return fail(400, { success: false, error: 'background field undefined/null!' }) }
             if (rule == undefined || rule == null) { return fail(400, { success: false, error: 'rule field undefined/null!' }) }
             if (str_max_teams == undefined || str_max_teams == null) { return fail(400, { success: false, error: 'max teams undefined/null!' }) }
+
+            if (prize_pool == '') {
+                prize_pool = null;
+            }
 
             const max_teams = parseInt(str_max_teams);
 
@@ -115,7 +120,8 @@ export const actions = {
                 thumbnail: thumb,
                 rulebook: rule,
                 eventID: params.slug,
-                max_teams: max_teams
+                max_teams: max_teams,
+                prize_pool:prize_pool
             }
             await logAuditChange({ action: "UPDATE", table_name: 'media', user_email: guser.email, record_id: params.slug, new_data: new_media });
 

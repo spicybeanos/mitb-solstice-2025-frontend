@@ -14,6 +14,7 @@ export interface EventMedia {
     background: string;
     rulebook: string;
     max_teams: number;
+    prize_pool:string | null;
 }
 
 /** Default event media values */
@@ -21,7 +22,8 @@ export const defaultEvent: Omit<EventMedia, 'eventID'> = {
     thumbnail: 'https://i.imgur.com/fLZJH60.jpg',
     background: 'https://i.imgur.com/fLZJH60.jpg',
     rulebook: 'https://drive.google.com/file/d/12D-FxdrX6WiWRpa1zu22EJRzwxJLNd3J/view?usp=drive_link',
-    max_teams: 1000
+    max_teams: 1000,
+    prize_pool:null
 };
 
 /**
@@ -34,7 +36,7 @@ export async function getEventMedia(eventID: string): Promise<Result<EventMedia>
 
     const { data, error } = await supabaseAdmin
         .from('EventMedia')
-        .select('eventID, thumbnail, background, rulebook, max_teams')
+        .select('eventID, thumbnail, background, rulebook, max_teams,prize_pool')
         .eq('eventID', eventID.trim())
         .single();
 
@@ -55,7 +57,7 @@ export async function getMultipleEventMedia(eventIDs: string[]): Promise<Result<
 
     const { data, error } = await supabaseAdmin
         .from('EventMedia')
-        .select('eventID, thumbnail, background, rulebook,max_teams')
+        .select('eventID, thumbnail, background, rulebook,max_teams,prize_pool')
         .in('eventID', eventIDs.map(id => id.trim())); // Use .in() for multiple IDs
 
     if (error) {
@@ -83,7 +85,8 @@ export async function changeEventMedia(eventID: string, media: Partial<EventMedi
             thumbnail: media.thumbnail ?? defaultEvent.thumbnail,
             background: media.background ?? defaultEvent.background,
             rulebook: media.rulebook ?? defaultEvent.rulebook,
-            max_teams:media.max_teams ?? defaultEvent.max_teams
+            max_teams:media.max_teams ?? defaultEvent.max_teams,
+            prize_pool:media.prize_pool??defaultEvent.prize_pool
         })
         .eq('eventID', eventID.trim());
 
@@ -109,7 +112,8 @@ export async function addEventMedia(eventID: string, media: Partial<EventMedia>)
             thumbnail: media.thumbnail || defaultEvent.thumbnail,
             background: media.background || defaultEvent.background,
             rulebook: media.rulebook || defaultEvent.rulebook,
-            max_teams:media.max_teams || defaultEvent.max_teams
+            max_teams:media.max_teams || defaultEvent.max_teams,
+            prize_pool:media.prize_pool || defaultEvent.prize_pool
         }]);
 
     if (error) {

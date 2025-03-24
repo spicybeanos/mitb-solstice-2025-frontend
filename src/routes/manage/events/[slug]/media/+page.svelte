@@ -12,6 +12,7 @@
         rulebook: "",
         thumbnail: "",
         max_teams: 0,
+        prize_pool:null
     } as EventMedia);
     onMount(() => {
         if (data.media.success == true && data.media.result != null) {
@@ -67,6 +68,12 @@
                         placeholder="Max number of teams"
                         bind:value={media.max_teams}
                         type="number"
+                    />
+                    <label class="text-white" for="prize_pool">Prize pool:</label>
+                    <BasicInput
+                        name="prize_pool"
+                        placeholder="Prize pool"
+                        bind:value={media.prize_pool}
                     />
                 </div>
 
