@@ -1,4 +1,5 @@
 <script lang="ts">
+    import SimpleCard from "$lib/components/SimpleCard.svelte";
     import BasicInput from "$lib/components/ui/Basic/BasicInput.svelte";
     import { onMount } from "svelte";
 
@@ -22,27 +23,31 @@
 </script>
 
 <div class="flex justify-center">
-    <div class="p-[30px]">
-        <h1>Enter event ID to modify event-pass mapping</h1>
+    <div class="flex flex-col">
+        <div class="p-[30px]">
+            <h1>Enter event ID to modify event-pass mapping</h1>
 
-        <BasicInput
-            required
-            name="eventID"
-            bind:value={eventID}
-            placeholder="Enter event ID"
-        />
-        <select
-            bind:value={eventID}
-            class="border p-[8px] rounded-md bg-black text-white"
-        >
-            {#each events as event}
-                <option value={event.eventID}>
-                    {event.name}
-                </option>
-            {/each}
-        </select>
+            <BasicInput
+                required
+                name="eventID"
+                bind:value={eventID}
+                placeholder="Enter event ID"
+            />
+            <select
+                bind:value={eventID}
+                class="border p-[8px] rounded-md bg-black text-white"
+            >
+                {#each events as event}
+                    <option value={event.eventID}>
+                        {event.name}
+                    </option>
+                {/each}
+            </select>
 
-        <a href={`/manage/eventpass/${eventID.trim()}/pass`}>Edit event-pass mapping</a>
+            <a href={`/manage/eventpass/${eventID.trim()}/pass`}
+                >Edit event-pass mapping</a
+            >
+        </div>
     </div>
 </div>
 
@@ -77,4 +82,6 @@
         background: rgba(255, 255, 255, 0.075);
         backdrop-filter: blur(20px);
     }
+
+    
 </style>

@@ -18,6 +18,7 @@
     import { Link } from "lucide-svelte";
     import ShareButton from "$lib/components/ShareButton.svelte";
     import BasicButtonFilled from "$lib/components/ui/Basic/BasicButtonFilled.svelte";
+    import { displayDateTime } from "$lib/components/DisplayTime";
 
     let isLoaded = $state(false);
 
@@ -187,23 +188,11 @@
                                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                                     />
                                 </svg>
-                                <span>{event.time}</span>
-                            </div>
-                            <div class="event-detail-item">
-                                <svg
-                                    class="w-4 h-4 inline-block mr-2"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
+                                <span
+                                    >{displayDateTime(
+                                        new Date(event.time),
+                                    )}</span
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                    />
-                                </svg>
-                                <span>{event.duration} hours</span>
                             </div>
                             <CardItem
                                 {isMouseEntered}
@@ -258,7 +247,37 @@
                 </div>
             </CardItem>
 
-            {#if data.canAccess && event.teamSize >= 1 && data.regisEnabled == true}
+            <div
+                class="rounded-xl p-4 border-white bg-white text-black text-xl w-fit pl-15 pr-15"
+            >
+                Register Now!
+            </div>
+
+            {#if data.isRegistered == false}
+                <div style="color: red;" class="text-3xl">
+                    You're not logged in!
+                </div>
+            {/if}
+            {#if data.regisEnabled == false}
+                <div style="color: red;" class="text-3xl">
+                    This event's registrations haven't started yet!
+                </div>
+            {/if}
+            {#if data.canAccess == false}
+                <div style="color: red;" class="text-xl">
+                    You do not have the pass to register for this event!
+                </div>
+                <div class="text-white text-lg p-2 bg-gray-900 w-fit rounded-lg">
+                    This event is accessable by
+                    <ul>
+                        {#each data.passes as p}
+                        <li class="p-1 m-1 rounded-md bg-teal-950 text-md">{p.name}</li>
+                        {/each}
+                    </ul>
+                </div>
+            {/if}
+
+            {#if event.teamSize >= 1 && data.regisEnabled == true && data.canAccess}
                 <CardItem className="w-full flex flex-col">
                     {#if !data.in_team}
                         <div
@@ -408,20 +427,6 @@
                         </form>
                     {/if}
                 </CardItem>
-            {:else}
-                {#if data.isRegistered == false}
-                    <div style="color: white;">You're not logged in!</div>
-                {/if}
-                {#if (data.regisEnabled == false)}
-                    <div style="color: white;">
-                        This event's registrations haven't started yet!
-                    </div>
-                {/if}
-                {#if data.canAccess == false}
-                    <div style="color: white;">
-                        You do not have the pass to register for this event!
-                    </div>
-                {/if}
             {/if}
             <div class="flex justify-between text-sm md:text-base pt-2">
                 <div class="flex-col">

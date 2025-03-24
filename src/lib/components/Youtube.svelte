@@ -1,4 +1,9 @@
-<div class="h-full w-full relative flex max-sm:flex-col gap-12 justify-between items-center my-12 video-container">
+<script>
+    import SimpleCard from "./SimpleCard.svelte";
+
+</script>
+
+<div class="h-full w-full flex max-sm:flex-col gap-12 justify-between items-center my-12 video-container">
     <iframe class="w-full sm:w-1/2 min-h-[12rem] sm:min-h-[5rem] sm:my-6 my-4 rounded-xl aspect-video"
         title="montage"
         src="https://www.youtube.com/embed/IYjSzDsYhgA?si=1Shh4M9aT8o9eA_q?controls=0">

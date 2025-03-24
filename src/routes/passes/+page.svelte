@@ -16,7 +16,7 @@
         "Finance",
         "All Access",
         "non-mahe",
-        'e-Sports'
+        "e-Sports",
     ];
     // last element for demo purposes
 
@@ -30,90 +30,158 @@
     onMount(async () => {
         await new Promise((resolve) => setTimeout(resolve, 100));
         SolsticeAllPassInfo = data.SolsticeAllPassInfo;
+
+        SolsticeAllPassInfo?.sort((a, b) => {
+            return a.name.localeCompare(b.name);
+        });
+        // EventsInAllPasses = data.EventsInAllPasses;
         userPassInfo = data.userPassInfo;
         loading = false;
     });
 </script>
 
+{#snippet passCardInfo(i: number, pass: SolsticePassInfo)}
+    <div
+        class="container"
+        style="--index:{i}"
+        in:slide={{
+            delay: i * 200,
+            duration: 1000,
+            easing: quintOut,
+            axis: "y",
+        }}
+        out:fade|global={{
+            duration: 300,
+        }}
+    >
+        <div
+            class="card-wrapper"
+            in:scale|global={{
+                delay: i * 200,
+                duration: 800,
+                start: 0.95,
+                opacity: 0,
+            }}
+        >
+            <div
+                class="card-wrapper"
+                in:scale|global={{
+                    delay: i * 200,
+                    duration: 800,
+                    start: 0.95,
+                    opacity: 0,
+                }}
+            >
+                <PassCard>
+                    <div class="detailContainer">
+                        <div class="content-wrapper">
+                            <h1 class="text-6xl font-bold mb-1">{pass.name}</h1>
+                            <div class="desc text-sm mb-1">
+                                {pass.description}
+                            </div>
+
+                            <div class="eventsIncludedOuter">
+                                {#if EventsInAllPasses !== null}
+                                    {#each EventsInAllPasses as event}
+                                        {#if event.passId === pass.id}
+                                            <div class="eventsIncluded">
+                                                <a href={`/events/${event.id}`}
+                                                    >{event.name}</a
+                                                >
+                                            </div>
+                                        {/if}
+                                    {/each}
+                                {/if}
+                            </div>
+
+                            <div class="price">
+                                {pass.cost}
+                            </div>
+                        </div>
+                        <div class="button mt-2">
+                            <BuyPass href={passURL}>
+                                <div class="text">Buy Pass!</div>
+                            </BuyPass>
+                        </div>
+                    </div>
+                </PassCard>
+            </div>
+        </div>
+    </div>
+{/snippet}
+
 {#if !loading}
+    <div class="text-4xl font-akira text-white p-15">MAHE passes</div>
     <div class="outer" in:fade={{ duration: 300, delay: 150 }}>
         <div class="inner">
             {#if userPassInfo == null}
                 {#if SolsticeAllPassInfo !== null}
                     {#each SolsticeAllPassInfo as pass, i}
-                        {#if pass.name !== undefined}
-                            <div
-                                class="container"
-                                style="--index:{i}"
-                                in:slide={{
-                                    delay: i * 200,
-                                    duration: 1000,
-                                    easing: quintOut,
-                                    axis: "y",
-                                }}
-                                out:fade|global={{
-                                    duration: 300,
-                                }}
-                            >
-                                <div
-                                    class="card-wrapper"
-                                    in:scale|global={{
-                                        delay: i * 200,
-                                        duration: 800,
-                                        start: 0.95,
-                                        opacity: 0,
-                                    }}
-                                >
-                                    <div
-                                        class="card-wrapper"
-                                        in:scale|global={{
-                                            delay: i * 200,
-                                            duration: 800,
-                                            start: 0.95,
-                                            opacity: 0,
-                                        }}
-                                    >
-                                        <a class="card-component cursor-pointer"
-                                        href={`/passes/${pass.id}`}
-                                        role="button"
-                                        aria-label={`Go to pass ${pass.name}`}
-                                        tabindex="0"
-                                        >
-                                            <PassCard>
-                                                <div class="detailContainer">
-                                                    <div class="content-wrapper">
-                                                        <h1 class="text-6xl font-bold mb-1">{pass.name}</h1>
-                                                        <div class="desc text-sm mb-1">
-    
-                                                            {pass.description}
-    
-                                                        </div>
-    
-                                                        <div
-                                                            class="eventsIncludedOuter"
-                                                        >
-                                                            
-                                                                        
-                                                                    
-                                                        </div>
-    
-                                                        <div class="price">
-                                                            {pass.cost}
-                                                        </div>
-                                                    </div>
-                                                    <div class="button mt-2">
-                                                        <BuyPass href={passURL}>
-                                                            <div class="text">
-                                                                Buy Pass!
-                                                            </div>
-                                                        </BuyPass>
-                                                    </div>
-                                                </div>
-                                            </PassCard>
-                                        </a>
+
+
+                        {#if pass.name.startsWith("MAHE")}
+                            {#if pass.name !== undefined}
+                                {@render passCardInfo(i, pass)}
+                            {/if}
+                        {/if}
+                    {/each}
+                {:else}
+                    <div class="emptyPassOuter">
+                        <div class="emptyPassInner">
+                            No Passes Online at the moment. Check Another time
+                        </div>
+                    </div>
+                {/if}
+            {:else}
+                <div
+                    class="container single-container"
+                    in:fade={{ duration: 300 }}
+                >
+                    <PassCard>
+                        <div class="detailContainer single-pass-container">
+                            <div class="content-wrapper">
+                                <h1 class="text-4xl font-bold mb-4">
+                                    Your Pass
+                                </h1>
+                                <div class="info-box">
+                                    <div class="pass-info">
+                                        <h2 class="pass-name">
+                                            {userPassInfo.name}
+                                        </h2>
+                                        <div class="uniqueString">
+                                            Unique Id: <span class="id-text"
+                                                >{userPassInfo.id}</span
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="qr-wrapper">
+                                        <QRCode text={userPassInfo.id} />
+                                    </div>
+                                    <div class="button-wrapper">
+                                        <BuyPass href="/events">
+                                            <div class="text">View Events</div>
+                                        </BuyPass>
+
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </PassCard>
+                </div>
+            {/if}
+        </div>
+    </div>
+
+    <div class="text-4xl font-akira text-white p-15">non-MAHE passes</div>
+    <div class="outer" in:fade={{ duration: 300, delay: 150 }}>
+        <div class="inner">
+            {#if userPassInfo == null}
+                {#if SolsticeAllPassInfo !== null}
+                    {#each SolsticeAllPassInfo as pass, i}
+                        {#if !pass.name.startsWith("MAHE")}
+                            {#if pass.name !== undefined}
+                                {@render passCardInfo(i, pass)}
+                            {/if}
                         {/if}
                     {/each}
                 {:else}

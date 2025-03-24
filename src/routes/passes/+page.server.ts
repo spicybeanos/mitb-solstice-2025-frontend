@@ -22,7 +22,6 @@ export async function load() {
     try {
         const SolsticeAllPassInfo: SolsticePassInfo[] | null = await getAllPasses();
 
-        
 
         const userId: string | null = UserProfileData.userID
         let userPassInfo: SolsticePassInfo | null;

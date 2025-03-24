@@ -38,15 +38,15 @@ export async function getEventsAccessibleByPass(passID: string): Promise<Solstic
     return null;
 }
 
-export async function checkEventAccessibleByPass(eventID: string, passID: string | null): Promise<boolean> {
+export async function checkEventAccessibleByPass(eventID: string, passID: string | null) {
     const res = await get(`event/${eventID}/passes`);
-    if (res.success == false) { return false; }
+    if (res.success == false) { return {success:false,passes:null}; }
     const passes = res.result as SolsticePassInfo[];
-    if (passes.length == 0) { return true; }
+    if (passes.length == 0) { return {success:true,passes:passes}; }
     for (const pass of passes) {
-        if (passID == pass.id) { return true; }
+        if (passID == pass.id) { return {success:true,passes:passes}; }
     }
-    return false;
+    return {success:false,passes:passes};
 }
 
 export async function getAllEventsInPass(passId: string) {

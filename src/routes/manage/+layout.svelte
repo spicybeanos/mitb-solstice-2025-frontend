@@ -6,6 +6,7 @@
     <a href="/manage/verify/">Verify user pass</a>
     <a href="/manage/ids/">Get Details</a>
     <a href="/manage/events/">Events</a>
+    <a href="/manage/workshop/">Workshops</a>
     <a href="/manage/eventpass/">Event-Pass</a>
     <a href="/manage/pass/">Passes</a>
     <a href="/manage/support/">Support</a>

@@ -8,13 +8,13 @@
     import { FloatingNavbar } from "../lib/components/ui/FloatingNavBar/index.ts";
     import { onMount } from "svelte";
     import { checkLoggedIn } from "./GoogleLogin.svelte.ts";
- import bg from "$lib/icons/gif2.gif"
+    import bg from "$lib/icons/gif2.gif";
     import { WavyBackground } from "$lib/components/ui/Waves/index.ts";
     import { Hamburger } from "svelte-hamburgers";
     import { MobileWaves } from "$lib/components/ui/MobileWaves/index.ts";
 
     let hamOpen = $state(false);
- 
+
     let { children, data } = $props();
     let manageAccess = data.manageAccess;
 
@@ -32,7 +32,9 @@
         { name: "Passes", link: "/passes" },
         { name: "Events", link: "/events" },
         { name: "Support", link: "/support" },
+        { name: "Workshops", link: "/workshops" },
         { name: "Stay", link: "/stay" },
+        
     ];
     if (manageAccess) {
         navItems.push({ name: "Manage", link: "/manage" });
@@ -126,37 +128,16 @@
     </div>
 </div>
 
-
-<div class="bg-[#1E1E1E] z-20 " style="min-height: 70vh; height:fit-content">
-    <WavyBackground >
-        <img src={bg} alt="bg" class="fixed inset-0 object-cover w-full h-screen z-0 sm:hidden" />
+<div class="bg-[#1E1E1E] z-20" style="min-height: 70vh; height:fit-content">
+    <WavyBackground>
+        <img
+            src={bg}
+            alt="bg"
+            class="fixed inset-0 object-cover w-full h-screen -z-10 sm:hidden"
+        />
         {@render children()}
     </WavyBackground>
 </div>
-
-<footer
-    class="flex flex-col p-6 md:p-8 text-xs md:text-base text-white z-20 bg-[#1e1e1e]"
->
-    <div class="flex flex-row justify-between z-30">
-        <div class="flex flex-col">
-            <p>Manipal Institute of Technology</p>
-            <p>Yelahanka, Bengaluru</p>
-            <p>Karnataka - 560064</p>
-
-            <a href="/privacy" class="text-white">Our Privacy policy</a>
-            <a href="/tos" class="text-white">Our terms of service</a>
-        </div>
-
-        <div class="flex flex-col text-right">
-            <p>Contact @</p>
-            <p>+91 79069 52055</p>
-            <p>( Atharva Maikhuri - HR Head )</p>
-            <p>+91 72045 87438</p>
-            <p>( Rohit Nandagopal - HR Head )</p>
-            <a href="/contactus">Contact us</a>
-        </div>
-    </div>
-</footer>
 
 <style>
     :global(body) {

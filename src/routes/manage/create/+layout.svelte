@@ -5,6 +5,7 @@
 <aside>
     <a href="/manage/create/pass">Create passes</a>
     <a href="/manage/create/event">Create event</a>
+    <a href="/manage/create/workshop">Create workshop</a>
 </aside>
 {@render children()}
 

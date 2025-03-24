@@ -5,7 +5,7 @@
     import BasicInput from "$lib/components/ui/Basic/BasicInput.svelte";
     import BasicButtonOutline from "$lib/components/ui/Basic/BasicButtonOutline.svelte";
 
-    let { data,form } = $props();
+    let { data, form } = $props();
     let selectedAdd = $state(data.otherPasses[0].id);
     let toBeAdded = $state("");
 
@@ -33,21 +33,21 @@
         <SimpleCard>
             <BasicHeader>Assign or unassign passes to an event</BasicHeader>
             {#if form?.msg}
-            <div class="text-white">{form.msg}</div>
+                <div class="text-white">{form.msg}</div>
             {/if}
             {#if form?.err}
-            <div class="text-white">Error : {form.err}</div>
+                <div class="text-white">Error : {form.err}</div>
             {/if}
             <form action="?/modifyPasses" method="post" class="flex flex-col">
                 <BasicInput
                     placeholder="passes to be assigned"
                     bind:value={toBeAdded}
-                    name='assign'
+                    name="assign"
                 />
                 <BasicInput
                     placeholder="passes to be unassigned"
                     bind:value={toBeRemoved}
-                    name='remove'
+                    name="remove"
                 />
                 <BasicButtonFilled>SUBMIT</BasicButtonFilled>
             </form>
@@ -72,5 +72,42 @@
                 >
             </div>
         </SimpleCard>
+        <SimpleCard>
+            <table>
+                <thead>
+                    <tr>
+                        <th> Passes Allowed </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#each data.eventPasses as p}
+                        <tr>
+                            <th>
+                                {p.name}
+                            </th>
+                        </tr>
+                    {/each}
+                </tbody>
+            </table>
+        </SimpleCard>
     </div>
 </div>
+
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        color: white;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #201a43;
+    }
+</style>

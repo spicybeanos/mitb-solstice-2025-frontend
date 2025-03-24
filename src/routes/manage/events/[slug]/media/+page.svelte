@@ -11,9 +11,12 @@
         eventID: "",
         rulebook: "",
         thumbnail: "",
+        max_teams: 0,
     } as EventMedia);
     onMount(() => {
-        media = data.media.result;
+        if (data.media.success == true && data.media.result != null) {
+            media = data.media.result;
+        }
     });
 </script>
 
@@ -48,12 +51,22 @@
                     bind:value={media.background}
                 />
                 <div>
-                    <label class="text-white" for="venue">Rulebook link:</label>
+                    <label class="text-white" for="rule">Rulebook link:</label>
                     <BasicInput
                         required
                         name="rule"
                         placeholder="rulebook link"
                         bind:value={media.rulebook}
+                    />
+                </div>
+                <div>
+                    <label class="text-white" for="max_teams">Max teams:</label>
+                    <BasicInput
+                        required
+                        name="max_teams"
+                        placeholder="Max number of teams"
+                        bind:value={media.max_teams}
+                        type="number"
                     />
                 </div>
 
