@@ -23,8 +23,10 @@ export async function getSolsticePassInfo(passID: string | null): Promise<Solsti
     const p = await getCachedPass(passID);
     return p.success ? p.result : null;
 }
-
-export async function getPass(passId: string): Promise<SolsticePassInfo | null> {
+export async function getPassInfo(passID: string | null) {
+    return await getPass(passID);
+}
+export async function getPass(passId: string | null): Promise<SolsticePassInfo | null> {
     return await getSolsticePassInfo(passId);
 }
 

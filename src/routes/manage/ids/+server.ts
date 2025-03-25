@@ -2,7 +2,7 @@
 
 import { verifyAndGetUser } from "$lib/server/Backend";
 import { check_manage_Access } from "$lib/server/BackendAdmin";
-import { getPassInfo } from "$lib/server/BackendAgentPass";
+import { getPass } from "$lib/server/BackendAgentPass";
 import { getUserId, getUserInfo } from "$lib/server/BackendAgentUser";
 import { generateChecksum } from "$lib/server/CacheMaster";
 import { error, fail, json, type Cookies } from "@sveltejs/kit";
@@ -48,7 +48,7 @@ export async function GET({ url, cookies }: { url: URL, cookies: Cookies }) {
         if (userInfo == null) { return json({ error: 'User info fetch failed!' }, { status: 400 }); }
         
         let pass_name = '';
-        const pass_details = await getPassInfo(userInfo.pass_id);
+        const pass_details = await getPass(userInfo.pass_id);
         if(pass_details == null) {pass_name = 'No pass owned';}
         else{
             pass_name = pass_details.name;

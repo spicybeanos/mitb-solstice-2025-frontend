@@ -1,5 +1,5 @@
 import type { Result } from "$lib/server/Backend";
-import { getPassInfo } from "$lib/server/BackendAgentPass";
+import { getPass } from "$lib/server/BackendAgentPass";
 import { getUserInfo } from "$lib/server/BackendAgentUser";
 import type { SolsticePassInfo, SolsticeUser } from "$lib/server/BackendTypes";
 import { verifyGJWT } from "$lib/server/GAuth";
@@ -32,7 +32,7 @@ export async function GET({ request, params }: RequestEvent) {
             return json({msg:`user not found`},{status:404})
         }
 
-        const pass = await getPassInfo(userInfo.pass_id);
+        const pass = await getPass(userInfo.pass_id);
 
         return json({ pass: pass, user: userInfo } as UserInfoRequest)
 
