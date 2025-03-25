@@ -19,6 +19,8 @@
     import ShareButton from "$lib/components/ShareButton.svelte";
     import BasicButtonFilled from "$lib/components/ui/Basic/BasicButtonFilled.svelte";
     import { displayDateTime } from "$lib/components/DisplayTime";
+    import InfoCard from "$lib/components/InfoCard.svelte";
+    import GlowDiv from "$lib/components/ui/GlowDiv.svelte";
 
     let isLoaded = $state(false);
 
@@ -272,31 +274,40 @@
             </div>
 
             {#if data.isRegistered == false}
-                <div style="color: red;" class="text-3xl">
-                    You're not logged in!
-                </div>
-            {/if}
-            {#if data.regisEnabled == false}
-                <div style="color: red;" class="text-3xl">
-                    This event's registrations haven't started yet!
-                </div>
-            {/if}
-            {#if data.canAccess == false}
-                <div style="color: red;" class="text-xl">
-                    You do not have the pass to register for this event!
-                </div>
-                <div
-                    class="text-white text-lg p-4 bg-gray-900 w-fit rounded-lg"
-                >
-                    Passes for this event:
-                    <ul>
-                        {#each data.passes as p}
-                            <li class="p-1 m-1 rounded-md bg-teal-950 text-md">
-                                {p.name}
-                            </li>
-                        {/each}
-                    </ul>
-                </div>
+                <InfoCard>
+                    <div class="text-xl text-white">You're not logged in!</div>
+                </InfoCard>
+            {:else}
+                {#if data.regisEnabled == false}
+                    <InfoCard>
+                        <div class="text-xl text-white">
+                            This event's registrations haven't started yet!
+                        </div>
+                    </InfoCard>
+                {/if}
+                {#if data.canAccess == false}
+                    <InfoCard>
+                        <spane class="text-white"
+                            >You do not have the pass to register for this
+                            event!</spane
+                        >
+                    </InfoCard>
+
+                    {#if data.passes != null}
+                        <div
+                            class="text-white text-lg p-4 bg-gray-900 w-fit rounded-lg inset-shadow-sm inset-shadow-cyan-500/50 shadow-lg shadow-cyan-500/50 "
+                        >
+                            Passes for this event:
+                            <ul>
+                                {#each data.passes as p}
+                                    <li>
+                                        <GlowDiv>{p.name}</GlowDiv>
+                                    </li>
+                                {/each}
+                            </ul>
+                        </div>
+                    {/if}
+                {/if}
             {/if}
 
             {#if event.teamSize >= 1 && data.regisEnabled == true && data.canAccess}
