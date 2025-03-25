@@ -295,7 +295,7 @@
 
                     {#if data.passes != null}
                         <div
-                            class="text-white text-lg p-4 bg-gray-900 w-fit rounded-lg inset-shadow-sm inset-shadow-cyan-500/50 shadow-lg shadow-cyan-500/50 "
+                            class="text-white text-lg p-4 bg-gray-900 w-fit rounded-lg inset-shadow-sm inset-shadow-cyan-500/50 hover:shadow-lg shadow-cyan-500/50 transition-all duration-500"
                         >
                             Passes for this event:
                             <ul>

@@ -15,6 +15,7 @@
     //import InfoCard from "$lib/components/InfoCard.svelte";
 
     import { backOut } from "svelte/easing";
+    import GlowDiv from "$lib/components/ui/GlowDiv.svelte";
 
     const cardAnimation = {
         y: 50,
@@ -153,7 +154,9 @@
                                             Your pass : {data.pass.name}
                                         </div>
                                     {:else}
-                                        <div class="text-[#C7AE93] text-sm text-red-400">
+                                        <div
+                                            class="text-[#C7AE93] text-sm text-red-400"
+                                        >
                                             You do not own any pass!
                                         </div>
                                     {/if}
@@ -172,7 +175,15 @@
                             </Button>
                         </div>
                     </div>
-
+                    {#if data.pass != null}
+                        <div class="w-full flex flex-center justify-center">
+                            <div
+                                class={`text-3xl font-bold w-fit flex justify-center ring-amber-300 ring-sm bg-amber-500/60 backdrop-blur-sm inset-shadow-xl  inset-shadow-yellow-300/50 rounded-xl p-6 m-1 hover:shadow-xl shadow-yellow-300/50 transition-all duration-500`}
+                            >
+                                {data.pass.name}
+                            </div>
+                        </div>
+                    {/if}
                     <!-- Info Card - Improve mobile layout -->
                     <div
                         class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-black/30 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500"
@@ -334,7 +345,9 @@
                                         >
                                             <QR text={data.user.id} />
                                         </div>
-                                        <div style="color: red;">This is not your pass ID</div>
+                                        <div style="color: red;">
+                                            This is not your pass ID
+                                        </div>
                                     </div>
                                     <!-- Update Form -->
                                 </div>
