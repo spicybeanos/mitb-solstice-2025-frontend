@@ -106,8 +106,9 @@
             <h1 class="text-white text-3xl">Our Sponsors</h1>
         </div>
         <div class="flex flex-center flex-col justify-center">
-            <div class="flex flex-center bg-white w-fit m-7">
-                <img src="./Virya.svg" alt="Virya sponsor logo" width="700px" />
+
+            <div class="flex flex-center justify-center w-full m-7">
+                <img src="./Virya.svg" alt="Virya sponsor logo" class='bg-white' width="700px" />
             </div>
 
             <div class="flex flex-center justify-center">
