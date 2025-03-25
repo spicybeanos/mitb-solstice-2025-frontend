@@ -1,6 +1,8 @@
 import { logAuditChange } from "$lib/server/AuditLogger.js";
 import { verifyAndGetUser } from "$lib/server/Backend";
 import { check_EventRW_Access, check_manage_Access } from "$lib/server/BackendAdmin";
+import { synchronizeSupabaseEvents } from "$lib/server/BackendAgentEvent.js";
+import { synchronizeSupabasePasses } from "$lib/server/BackendAgentPass.js";
 import { generateChecksum } from "$lib/server/CacheMaster";
 import { getUserObjectFromJWT } from "$lib/server/GAuth.js";
 import { isEventRegistrationEnabled, setEventRegistrationEnabled } from "$lib/server/WebsiteMaster";
@@ -17,6 +19,32 @@ export async function load() {
 }
 
 export const actions = {
+    pass_synch: async ({ cookies }) => {
+        const jwt = cookies.get('authToken');
+        const userJson = cookies.get('userInfo');
+        const checksum = cookies.get('userChecksum');
+        const canAccess = await check_manage_Access(jwt, userJson, checksum);
+        if (userJson == null || checksum == null) {
+            const user = await verifyAndGetUser(cookies.get('authToken'), userJson, checksum);
+            if (user.result != null) {
+                cookies.set('userInfo', JSON.stringify(user.result), {
+                    httpOnly: false, // Accessible by frontend
+                    secure: true,
+                    sameSite: "strict",
+                    path: "/",
+                    maxAge: 3600
+                });
+                cookies.set('userChecksum', generateChecksum(user.result), {
+                    httpOnly: false, // Accessible by frontend
+                    secure: true,
+                    sameSite: "strict",
+                    path: "/",
+                    maxAge: 3600
+                });
+            }
+        }
+        const guser = getUserObjectFromJWT(jwt as string);
+    },
     set_event_regist: async ({ cookies, request }) => {
         try {
             const jwt = cookies.get('authToken');
@@ -50,9 +78,9 @@ export const actions = {
             const reg = form.get('reg');
             await setEventRegistrationEnabled(reg == 'on')
             logAuditChange({ action: 'UPDATE', table_name: 'website_properties', user_email: guser.email, record_id: 'is_event_registration_enabled', new_data: { value: reg == 'on' }, old_data: { value: reg != 'on' } })
-            return {msg:'success!'}
+            return { msg: 'success!' }
         } catch (ex) {
-            return fail(503,{msg:`Error : ${ex}`})
+            return fail(503, { msg: `Error : ${ex}` })
         }
 
     }

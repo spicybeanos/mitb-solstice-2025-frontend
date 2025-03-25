@@ -27,6 +27,9 @@
                 </label>
                 <BasicButtonFilled>UPDATE</BasicButtonFilled>
             </form>
+            <form action='?/pass_synch' method='post'>
+                <BasicButtonFilled>Synch Cache passes</BasicButtonFilled>
+            </form>
         </div>
     </div>
 </div>

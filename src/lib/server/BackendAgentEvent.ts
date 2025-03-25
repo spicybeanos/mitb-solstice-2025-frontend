@@ -1,4 +1,4 @@
-import { get, post, patch, del } from "./Backend.ts";
+import { get, post, patch, del, type Result } from "./Backend.ts";
 import { getUsersInTeam } from "./BackendAgentTeam.ts";
 import type { EventImages, SolsticeEventInfo, SolsticeEventRegRow, SolsticePassInfo, SolsticeTeamInfo, SolsticeUser, UpdateEvent, UserID } from "./BackendTypes.ts";
 import { supabaseAdmin } from "./supabaseServer.ts";
@@ -34,16 +34,122 @@ export async function getEventRegisTable(eventID: string): Promise<SolsticeEvent
 }
 
 export async function getEvents(): Promise<SolsticeEventInfo[] | null> {
-    const res = await get<SolsticeEventInfo[]>("event/");
-    if (res.success) {
-        serverEvents = res.result as SolsticeEventInfo[];
-        return serverEvents;
-    }
-    return null;
+    const res = await getAllCachedEvents();
+    return res.success ? res.result : null;
+    // const res = await get<SolsticeEventInfo[]>("event/");
+    // if (res.success) {
+    //     serverEvents = res.result as SolsticeEventInfo[];
+    //     return serverEvents;
+    // }
+    // return null;
 
 }
 
+export async function synchronizeSupabaseEvents() {
+    const apiEvents = await getEvents();
+    let erros = []
+    if(apiEvents != null){
+        for (const e of apiEvents) {
+            const res = await upsertCachedEvent(e);
+            if(res.error != null){
+                erros.push(res.error)
+            }
+        }
+    }
+
+    return erros;
+}
+
+/**
+ * Fetch a single cached event by ID.
+ */
+export async function getCachedEvent(id: string): Promise<Result<SolsticeEventInfo>> {
+    if (!id.trim()) {
+        return { success: false, result: null, error: "Invalid event ID" };
+    }
+
+    const { data, error } = await supabaseAdmin
+        .from("events_info_cache")
+        .select("id, name, description, type, team_members, start, venue, organizer_id")
+        .eq("id", id.trim())
+        .single();
+
+    if (error || !data) {
+        return { success: false, result: null, error: error?.message || "Event not found" };
+    }
+
+    return { success: true, result: data, error: null };
+}
+
+/**
+ * Fetch all cached events.
+ */
+export async function getAllCachedEvents(): Promise<Result<SolsticeEventInfo[]>> {
+    const { data, error } = await supabaseAdmin
+        .from("events_info_cache")
+        .select("id, name, description, type, team_members, start, venue, organizer_id");
+
+    if (error || !data) {
+        return { success: false, result: null, error: error?.message || "No events found" };
+    }
+
+    return { success: true, result: data, error: null };
+}
+
+/**
+ * Insert a new cached event.
+ */
+export async function addCachedEvent(event: SolsticeEventInfo): Promise<Result<null>> {
+    const { error } = await supabaseAdmin.from("events_info_cache").insert([event]);
+
+    if (error) {
+        return { success: false, result: null, error: error.message };
+    }
+
+    return { success: true, result: null, error: null };
+}
+
+/**
+ * Upsert (update if exists, insert if not) a cached event.
+ */
+export async function upsertCachedEvent(event: SolsticeEventInfo): Promise<Result<null>> {
+    if (!event.id.trim()) {
+        return { success: false, result: null, error: "Invalid event ID" };
+    }
+
+    const { error } = await supabaseAdmin
+        .from("events_info_cache")
+        .upsert([event], { onConflict: "id" }); // Ensure unique id constraint
+
+    if (error) {
+        return { success: false, result: null, error: error.message };
+    }
+
+    return { success: true, result: null, error: null };
+}
+
+/**
+ * Delete a cached event by ID.
+ */
+export async function deleteCachedEvent(id: string): Promise<Result<null>> {
+    if (!id.trim()) {
+        return { success: false, result: null, error: "Invalid event ID" };
+    }
+
+    const { error } = await supabaseAdmin
+        .from("events_info_cache")
+        .delete()
+        .eq("id", id.trim());
+
+    if (error) {
+        return { success: false, result: null, error: error.message };
+    }
+
+    return { success: true, result: null, error: null };
+}
+
 export async function getEventID(eventName: string): Promise<string | null> {
+
     if (!serverEvents.length) await getEvents();
     return serverEvents.find(ev => ev.name === eventName)?.id ?? null;
 }
@@ -90,6 +196,7 @@ export async function updateEventDetails(eventID: string, info: UpdateEvent) {
     }
     if (res.success) return { success: true };
     const body = await res.error
+    await upsertCachedEvent({id:eventID,...info})
     return { success: false, error: body, code: 500 };
 }
 
@@ -97,8 +204,9 @@ export async function createEvent(info: UpdateEvent) {
     const res = await post<SolsticeEventInfo>(`event/`, info);
 
     if (res.success) {
-        if (res.result != null) { serverEvents.push(res.result); }
-        return { success: true ,result:res.result};
+        if (res.result != null) { serverEvents.push(res.result); addCachedEvent(res.result);}
+        
+        return { success: true, result: res.result };
     }
     const body = await res.error
     return { success: false, error: body, code: 500 };
@@ -120,10 +228,10 @@ export async function getUser_s_TeamIDInEvent(userID: string, eventID: string): 
 export async function getEventPasses(eventID: string) {
     return await get<SolsticePassInfo[]>(`event/${eventID}/passes`);
 }
-export async function addEventPass(eventID: string,passID:string) {
+export async function addEventPass(eventID: string, passID: string) {
     return await post<string>(`event/${eventID}/passes/${passID}`);
 }
-export async function delEventPass(eventID: string,passID:string) {
+export async function delEventPass(eventID: string, passID: string) {
     return await del<string>(`event/${eventID}/passes/${passID}`);
 }
 
@@ -141,11 +249,14 @@ export async function getHost_sTeamInfo(hostID: string, eventID: string): Promis
 }
 
 export async function getEventInfo(eventId: string): Promise<SolsticeEventInfo | null> {
-    const res = await get(`event/${eventId}`);
-    return res.success ? (await res.result) as SolsticeEventInfo : null;
+    const res = await getCachedEvent(eventId);
+    return res.success ? res.result : null;
+    // const res = await get(`event/${eventId}`);
+    // return res.success ? (await res.result) as SolsticeEventInfo : null;
 }
-export async function delteEvent(eventId: string): Promise<SolsticeEventInfo | null> {
+export async function deleteEvent(eventId: string): Promise<SolsticeEventInfo | null> {
     const res = await del(`event/${eventId}`);
+    deleteCachedEvent(eventId)
     return res.success ? (await res.result) as SolsticeEventInfo : null;
 }
 

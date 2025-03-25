@@ -1,5 +1,5 @@
 import { check_EventRW_Access, checkAdminAccess } from "$lib/server/BackendAdmin";
-import { delteEvent, getEventInfo, getEventPasses, updateEventDetails } from "$lib/server/BackendAgentEvent";
+import { deleteEvent, getEventInfo, getEventPasses, updateEventDetails } from "$lib/server/BackendAgentEvent";
 import { error, fail, redirect } from "@sveltejs/kit";
 import type { DateTime } from "@auth/core/providers/kakao";
 import type { EventType, SolsticeEventInfo, SolsticePassInfo, UpdateEvent } from "$lib/server/BackendTypes";
@@ -86,7 +86,7 @@ export const actions = {
             }
         }
         const guser = getUserObjectFromJWT(cookies.get('authToken') as string);
-        const res = await delteEvent(params.slug);
+        const res = await deleteEvent(params.slug);
         if (res != null) {
             await logAuditChange({ action: "DELETE", table_name: 'event', user_email: guser.email, record_id: params.slug });
             return { success: true }; 
