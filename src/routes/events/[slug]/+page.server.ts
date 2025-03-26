@@ -1,5 +1,5 @@
 import { verifyAndGetUser } from '$lib/server/Backend';
-import { eventsRegistrationOn, getEventID, getEventInfo, getEvents, getHost_sTeamInfo, getTeams, getUserIDsInEvent, getUser_s_TeamIDInEvent } from '$lib/server/BackendAgentEvent';
+import { eventsRegistrationOn, getEventID, getEventInfo, getEventPasses, getEvents, getHost_sTeamInfo, getTeams, getUserIDsInEvent, getUser_s_TeamIDInEvent } from '$lib/server/BackendAgentEvent';
 import { checkEventAccessibleByPass } from '$lib/server/BackendAgentPass';
 import { addUserToTeam, createTeamAndAttach, disbandTeam, getAllTeams, getTeamDetails, getUsersInTeam, removeUserFromTeam } from '$lib/server/BackendAgentTeam';
 import type { SolsticeUser } from '$lib/server/BackendTypes.js';
@@ -93,7 +93,7 @@ export const load = async ({ params, cookies }) => {
             event: event,
             media: media,
             canAccess: canAccess.success,
-            passes:canAccess.passes,
+            passes: canAccess.passes,
             regisEnabled: regEnabled.success ? regEnabled.result : false,
             isRegistered: true,
             isLeader: team?.host_id == user.result.id,
@@ -161,13 +161,13 @@ export const actions = {
             }
 
             const max_teams = await getMaxTeams(params.slug);
-            if(max_teams.success == false || max_teams.result == null){
+            if (max_teams.success == false || max_teams.result == null) {
                 return fail(503, { msg: 'Teams service is unavailaible! Submit a ticket or contact the admins! error:' + max_teams.error })
             }
 
             if (allteams.success == false) { return fail(503, { msg: 'Teams service is unavailaible! Submit a ticket or contact the admins! error:' + allteams.error }) }
             if (allteams.result != null) {
-                if(allteams.result.length >= max_teams.result){
+                if (allteams.result.length >= max_teams.result) {
                     return fail(409, { msg: "Event full!" });
                 }
 
@@ -185,8 +185,8 @@ export const actions = {
             }
 
             const regEnabled = await isEventRegistrationEnabled();
-            if(regEnabled.success ==false || regEnabled.result == false){
-                return fail(400,{msg:'registrations for this event arent open yet!'})
+            if (regEnabled.success == false || regEnabled.result == false) {
+                return fail(400, { msg: 'registrations for this event arent open yet!' })
             }
 
             const res_team = await createTeamAndAttach(teamName as string, hostID, eventId);
@@ -201,7 +201,6 @@ export const actions = {
 
     },
     joinTeam: async ({ cookies, request, params }) => {
-
         try {
             const form = await request.formData();
             const g_jwt = cookies.get('authToken');
@@ -232,26 +231,27 @@ export const actions = {
                     });
                 }
             }
+
             if (ver.success == false) return fail(401, { msg: ver.error });
             if (ver.result == null) return fail(401, { msg: 'null user' });
 
             const userID = ver.result?.id;
 
-            if (userJson == null || checksum == null) {
-                cookies.set('userInfo', JSON.stringify(ver.result), {
-                    httpOnly: false, // Accessible by frontend
-                    secure: true,
-                    sameSite: "strict",
-                    path: "/"
-                });
-                cookies.set('userChecksum', generateChecksum(ver.result), {
-                    httpOnly: false, // Accessible by frontend
-                    secure: true,
-                    sameSite: "strict",
-                    path: "/",
-                    maxAge: 3600
-                })
-            }
+            // if (userJson == null || checksum == null) {
+            //     cookies.set('userInfo', JSON.stringify(ver.result), {
+            //         httpOnly: false, // Accessible by frontend
+            //         secure: true,
+            //         sameSite: "strict",
+            //         path: "/"
+            //     });
+            //     cookies.set('userChecksum', generateChecksum(ver.result), {
+            //         httpOnly: false, // Accessible by frontend
+            //         secure: true,
+            //         sameSite: "strict",
+            //         path: "/",
+            //         maxAge: 3600
+            //     })
+            // }
 
             const eventId = params.slug;
             if (eventId == null) return fail(400, { msg: 'event id is null!' });
@@ -288,13 +288,23 @@ export const actions = {
             }
 
             const regEnabled = await isEventRegistrationEnabled();
-            if(regEnabled.success ==false || regEnabled.result == false){
-                return fail(400,{msg:'registrations for this event arent open yet!'})
+            if (regEnabled.success == false || regEnabled.result == false) {
+                return fail(400, { msg: 'registrations for this event arent open yet!' })
             }
-
-            const added = await addUserToTeam(teamID, userID);
-            if (added == null) { return fail(403, { msg: 'Failed to add user to team!' }); }
-            return { teamJoined: added };
+            if (ver.result.mahe_registration_number == null) {
+                const added = await addUserToTeam(teamID, userID);
+                if (added == null) { return fail(403, { msg: 'Failed to add user to team!' }); }
+                return { teamJoined: added };
+            } else {
+                const canAccess = await checkEventAccessibleByPass(eventDetails.id, ver.result.pass_id);
+                if (canAccess) {
+                    const added = await addUserToTeam(teamID, userID);
+                    if (added == null) { return fail(403, { msg: 'Failed to add user to team!' }); }
+                    return { teamJoined: added };
+                } else {
+                    return fail(403, { msg: 'You must have a pass to join a team in this event!' });
+                }
+            }
         } catch (err) {
             return fail(500, { msg: `Could not join team : ${err}` });
 

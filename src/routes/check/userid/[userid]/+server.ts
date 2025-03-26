@@ -2,7 +2,7 @@ import type { Result } from "$lib/server/Backend";
 import { getPass } from "$lib/server/BackendAgentPass";
 import { getUserInfo } from "$lib/server/BackendAgentUser";
 import type { SolsticePassInfo, SolsticeUser } from "$lib/server/BackendTypes";
-import { verifyGJWT } from "$lib/server/GAuth";
+import { validateToken } from "$lib/server/CheckerUser";
 import { fail, json, type RequestEvent } from "@sveltejs/kit";
 
 interface UserInfoRequest {
@@ -19,12 +19,13 @@ export async function GET({ request, params }: RequestEvent) {
             return json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const usr = await verifyGJWT(token);
-        const email = usr.object?.email;
+        const valid = await validateToken(token);
+        if(!valid) {return json({ error: 'Invalid token' }, { status: 403 });}
+        
         const userID = params.userid;
 
         if (userID == null || userID == undefined) {
-            return json({msg:`user feid null`},{status:400})
+            return json({msg:`user feild null`},{status:400})
         }
 
         const userInfo = await getUserInfo(userID);

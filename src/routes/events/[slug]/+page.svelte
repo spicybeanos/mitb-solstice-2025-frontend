@@ -309,7 +309,7 @@
                 {/if}
             {/if}
 
-            {#if event.teamSize >= 1 && data.regisEnabled == true && data.canAccess}
+            {#if event.teamSize >= 1 && data.regisEnabled == true}
                 <CardItem className="w-full flex flex-col">
                     {#if !data.in_team}
                         <div
@@ -332,7 +332,7 @@
                                 >
                             </div>
                         </div>
-                        {#if team_selection === "existing"}
+                        {#if team_selection === "existing" && data.canAccess}
                             {#if form?.msg}
                                 <div style="color: pink;">
                                     Error! {form.msg}
