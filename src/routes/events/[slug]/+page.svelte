@@ -289,7 +289,8 @@
                     <InfoCard>
                         <span class="text-white"
                             >You do not have the pass to register for this
-                            event!</span>
+                            event!</span
+                        >
                     </InfoCard>
 
                     {#if data.passes != null}
@@ -411,7 +412,7 @@
                                     </button>
                                 </div>
                             </form>
-                        {:else}
+                        {:else if data.canAccess}
                             <div
                                 class="bg-black text-white w-full pt-2 sm:pt-8 mt-6"
                             >
@@ -423,6 +424,12 @@
                                     >
                                 </div>
                             </div>
+                        {:else}
+                            <GlowDiv
+                                >
+                                <div class='text-white'>You need to own the required pass to create a
+                                team</div></GlowDiv
+                            >
                         {/if}
                     {:else if data.isLeader}
                         <div class="text-white">
