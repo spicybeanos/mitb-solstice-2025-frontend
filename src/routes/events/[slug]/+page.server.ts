@@ -23,22 +23,22 @@ export const load = async ({ params, cookies }) => {
         const userJson = cookies.get('userInfo');
         const checksum = cookies.get('userChecksum');
         const user = await verifyAndGetUser(token, userJson, checksum);
-        if (user.success == true && user.error != null && user.result != null) {
-            cookies.set('userInfo', JSON.stringify(user.result), {
-                httpOnly: false, // Accessible by frontend
-                secure: true,
-                sameSite: "strict",
-                path: "/",
-                maxAge: 3600
-            });
-            cookies.set('userChecksum', generateChecksum(user.result), {
-                httpOnly: false, // Accessible by frontend
-                secure: true,
-                sameSite: "strict",
-                path: "/",
-                maxAge: 3600
-            })
-        }
+        // if (user.success == true && user.error != null && user.result != null) {
+        //     cookies.set('userInfo', JSON.stringify(user.result), {
+        //         httpOnly: false, // Accessible by frontend
+        //         secure: true,
+        //         sameSite: "strict",
+        //         path: "/",
+        //         maxAge: 3600
+        //     });
+        //     cookies.set('userChecksum', generateChecksum(user.result), {
+        //         httpOnly: false, // Accessible by frontend
+        //         secure: true,
+        //         sameSite: "strict",
+        //         path: "/",
+        //         maxAge: 3600
+        //     })
+        // }
 
         const event = await getEventInfo(params.slug);
         if (event == null) { redirect(300, '/') }
@@ -70,7 +70,6 @@ export const load = async ({ params, cookies }) => {
                 playersInTeam: [] as SolsticeUser[]
             };
         }
-        const eventDetails = await getEventInfo(eventID);
         const canAccess = await checkEventAccessibleByPass(eventID, user.result.pass_id);
         const teamID = await getUser_s_TeamIDInEvent(user.result.id, eventID);
         let is_in_team = teamID != null;

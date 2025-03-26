@@ -287,10 +287,9 @@
                 {/if}
                 {#if data.canAccess == false}
                     <InfoCard>
-                        <spane class="text-white"
+                        <span class="text-white"
                             >You do not have the pass to register for this
-                            event!</spane
-                        >
+                            event!</span>
                     </InfoCard>
 
                     {#if data.passes != null}

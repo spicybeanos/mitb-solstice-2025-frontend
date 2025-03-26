@@ -33,12 +33,12 @@ export async function verifyAndGetUser(jwt: string | null | undefined, userInfoC
     if (ver.result == false) { return { success: false, error: 'jwt verification failed!', result: null }; }
     if (ver.object == null) { return { success: false, error: 'google user is null!', result: null }; }
 
-    const res_cache = verifyUserInfoCookie(userInfoCookieJson, userChecksum);
-    if (res_cache.success == true) {
-        if (res_cache.result?.email_address.trim() == ver.object.email.trim()) {
-            return res_cache;
-        }
-    }
+    // const res_cache = verifyUserInfoCookie(userInfoCookieJson, userChecksum);
+    // if (res_cache.success == true) {
+    //     if (res_cache.result?.email_address.trim() == ver.object.email.trim()) {
+    //         return res_cache;
+    //     }
+    // }
 
     const userID = await getUserId(ver.object?.email);
     if (userID == null) { return { success: false, error: 'email is not registered!', result: null }; }
