@@ -65,6 +65,14 @@
         team_selection = "new";
     }
 
+    /*
+    <div
+                        class="text font-medium items-start sm:items-center text-base"
+                    >
+                        <CopyToClipboard text={`${event.id}`}></CopyToClipboard>
+                    </div>
+    */
+
     function delTeam() {}
 
     onMount(() => {
@@ -143,11 +151,7 @@
                 <div
                     class="flex flex-col-reverse sm:flex-col justify-center space-y-3"
                 >
-                    <div
-                        class="text font-medium items-start sm:items-center text-base"
-                    >
-                        <CopyToClipboard text={`${event.id}`}></CopyToClipboard>
-                    </div>
+                    
                     <CardItem
                         {isMouseEntered}
                         translateZ="50"

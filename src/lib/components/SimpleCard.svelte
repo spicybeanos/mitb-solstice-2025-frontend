@@ -1,16 +1,16 @@
 <script lang="ts">
-    let {children} = $props();
+    let { children, className = "" } = $props();
 </script>
 
-<div>
-{@render children()}
+<div class={className}>
+    {@render children()}
 </div>
 
 <style>
-    div{
+    div {
         background: rgba(68, 68, 68, 0.15);
         backdrop-filter: blur(15px) saturate(120%);
-        -webkit-backdrop-filter: blur(15px) saturate(120%); 
+        -webkit-backdrop-filter: blur(15px) saturate(120%);
         border-radius: 15px;
         border: 1px solid rgba(255, 255, 255, 0.2);
         padding: 15px;
@@ -19,7 +19,7 @@
         margin: 10px;
     }
 
-    div:hover{
+    div:hover {
         background: rgba(255, 255, 255, 0.075);
         backdrop-filter: blur(20px);
     }

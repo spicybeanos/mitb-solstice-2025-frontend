@@ -28,6 +28,7 @@
     import matrix from "$lib/matrix2.svg";
     import EventCard from "$lib/components/EventCard.svelte";
     import Carousel from "$lib/components/Carousel.svelte";
+    import BasicHeader from "$lib/components/ui/Basic/BasicHeader.svelte";
     const content = ["A", "B", "C", "D"];
     let { data } = $props();
 </script>
@@ -57,10 +58,28 @@
             >
         </div>
     </div>
-  <div class="h-[100vh] w-full flex flex-col mb-12 sm:mb-60 mt-2 z-20">
-    <Carousel {data}></Carousel>
+    <div class="flex flex-center justify-center">
+        <SimpleCard className="w-[70%]">
+            <img src="/divya_kumar.png" />
+            <BasicHeader>Divya Kumar</BasicHeader>
+            <div class="text-white text-2xl p-5 text-center">
+                Presenting Divya Kumar - The Voice Behind Your Favorite Beats!
+                <br>
+                With 14 million+ monthly listeners on Spotify, Divya Kumar is
+                the powerhouse voice behind chartbusters like "Maston Ka Jhund"
+                (Bhaag Milkha Bhaag), "Kamariya" (Stree), and "Sun Saathiya"
+                (ABCD 2). Born into a legacy of music, Divya's soulful and
+                high-energy vocals have made him a fan favourite across
+                Bollywood and beyond. Whether it's a foot-tapping party anthem
+                or a heartfelt melody, he knows how to hit the right
+                note every time!
+            </div>
+        </SimpleCard>
+    </div>
+    <div class="h-[100vh] w-full flex flex-col mb-12 sm:mb-60 mt-2 z-20">
+        <Carousel {data}></Carousel>
 
-     <div class="text-[#d9d9d9] flex flex-col gap-4 z-20 m-[30px] mt-16">
+        <div class="text-[#d9d9d9] flex flex-col gap-4 z-20 m-[30px] mt-16">
             <h1
                 class="font-akira text-2xl sm:text-6xl text-center gradient-text
             "
@@ -106,13 +125,19 @@
             <h1 class="text-white text-3xl">Our Sponsors</h1>
         </div>
         <div class="flex flex-center flex-col justify-center">
-
             <div class="flex flex-center justify-center w-full m-7">
-                <img src="./Virya.svg" alt="Virya sponsor logo" class='bg-white' width="700px" />
+                <img
+                    src="./Virya.svg"
+                    alt="Virya sponsor logo"
+                    class="bg-white"
+                    width="700px"
+                />
             </div>
 
             <div class="flex flex-center justify-center">
-                <div class="flex flex-center justify-center bg-white m-7 rounded-xl">
+                <div
+                    class="flex flex-center justify-center bg-white m-7 rounded-xl"
+                >
                     <img
                         src="./StockGrowpng.png"
                         alt="Virya sponsor logo"
