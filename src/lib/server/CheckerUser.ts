@@ -1,8 +1,9 @@
 import type { Result } from "./Backend";
 import { supabaseAdmin } from "./supabaseServer";
-import { sha256, sha224 } from 'js-sha256';
+import { sha224 } from 'js-sha256';
 import { CACHE_MASTER_SALT } from "$env/static/private";
 import { error } from "@sveltejs/kit";
+import { createHash } from "crypto";
 
 export interface CheckerUserLogin {
     user: string;
@@ -10,12 +11,12 @@ export interface CheckerUserLogin {
 }
 
 function hashPasswrod(checker: CheckerUserLogin) {
-    return sha256(checker.pass + CACHE_MASTER_SALT + checker.user);
+    return createHash("sha256").update(checker.pass + CACHE_MASTER_SALT + checker.user).digest("base64");
 }
 
 async function createToken(username: string) {
     const timeOfCreation = new Date().getTime();
-    const token = sha256(username + CACHE_MASTER_SALT + timeOfCreation);
+    const token = createHash("sha256").update(username + CACHE_MASTER_SALT + timeOfCreation).digest("base64");
 
     // Set expiry time (24 hours)
     const expiresAt = new Date(timeOfCreation + 24 * 60 * 60 * 1000).toISOString();
