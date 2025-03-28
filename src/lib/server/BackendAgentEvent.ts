@@ -1,3 +1,4 @@
+import { error } from "@sveltejs/kit";
 import { get, post, patch, del, type Result } from "./Backend.ts";
 import { getUsersInTeam } from "./BackendAgentTeam.ts";
 import type { EventImages, SolsticeEventInfo, SolsticeEventRegRow, SolsticePassInfo, SolsticeTeamInfo, SolsticeUser, UpdateEvent, UserID } from "./BackendTypes.ts";
@@ -48,10 +49,10 @@ export async function getEvents(): Promise<SolsticeEventInfo[] | null> {
 export async function synchronizeSupabaseEvents() {
     const apiEvents = await getEvents();
     let erros = []
-    if(apiEvents != null){
+    if (apiEvents != null) {
         for (const e of apiEvents) {
             const res = await upsertCachedEvent(e);
-            if(res.error != null){
+            if (res.error != null) {
                 erros.push(res.error)
             }
         }
@@ -194,9 +195,13 @@ export async function updateEventDetails(eventID: string, info: UpdateEvent) {
             serverEvents[i] = { ...info, id: eventID };
         }
     }
-    if (res.success) return { success: true };
     const body = await res.error
-    await upsertCachedEvent({id:eventID,...info})
+    const c = await upsertCachedEvent({ id: eventID, ...info })
+    if (c.error != null) {
+        return { success: false, error: c.error, result: null }
+    } else {
+        if (res.success) return { success: true };
+    }
     return { success: false, error: body, code: 500 };
 }
 
@@ -204,8 +209,8 @@ export async function createEvent(info: UpdateEvent) {
     const res = await post<SolsticeEventInfo>(`event/`, info);
 
     if (res.success) {
-        if (res.result != null) { serverEvents.push(res.result); addCachedEvent(res.result);}
-        
+        if (res.result != null) { serverEvents.push(res.result); addCachedEvent(res.result); }
+
         return { success: true, result: res.result };
     }
     const body = await res.error
