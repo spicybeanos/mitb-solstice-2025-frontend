@@ -1,10 +1,10 @@
 <script lang="ts">
-    let {placeholder='',name='',type='',required=false,value=$bindable(),multiline=false} = $props();
+    let {placeholder='',name='',type='',required=false,value=$bindable(),multiline=false,className=''} = $props();
 </script>
 
 {#if multiline == false}
 <input
-    class="border-none outline-none focus:ring-0 focus:border-transparent"
+    class={`${className} border-none outline-none focus:ring-0 focus:border-transparent`}
     {required}
     {type}
     {name}
@@ -13,7 +13,7 @@
 />
 {:else}
 <textarea
-    class="border-none outline-none focus:ring-0 focus:border-transparent"
+    class={`${className} border-none outline-none focus:ring-0 focus:border-transparent`}
     {required}
     {name}
     {placeholder}

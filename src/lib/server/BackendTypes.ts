@@ -80,6 +80,10 @@ export interface SolsticeUser {
     id: UserID;
 }
 
+export interface SolsticeTeamContent {
+    [key: string]: SolsticeUser[];
+}
+
 export interface SolsticeEventRegRow {
     team_name: string,
     player_name: string,

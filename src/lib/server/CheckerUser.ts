@@ -9,14 +9,26 @@ export interface CheckerUserLogin {
     user: string;
     pass: string;
 }
+export interface CheckerUserReset {
+    user: string;
+    pass: string;
+    newPass: string;
+}
 
+function hashingFunction(content: string) {
+    return toUrlSafeBase64(createHash("sha256").update(content).digest("base64"));
+}
 function hashPasswrod(checker: CheckerUserLogin) {
-    return createHash("sha256").update(checker.pass + CACHE_MASTER_SALT + checker.user).digest("base64");
+    return hashingFunction(checker.pass + CACHE_MASTER_SALT + checker.user);
+}
+function toUrlSafeBase64(base64: string) {
+    return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
 async function createToken(username: string) {
     const timeOfCreation = new Date().getTime();
-    const token = createHash("sha256").update(username + CACHE_MASTER_SALT + timeOfCreation).digest("base64");
+
+    const token = `${username}@${hashingFunction(username + CACHE_MASTER_SALT + timeOfCreation)}`;
 
     // Set expiry time (24 hours)
     const expiresAt = new Date(timeOfCreation + 24 * 60 * 60 * 1000).toISOString();
@@ -78,6 +90,26 @@ export async function logIn(checkerLogin: CheckerUserLogin): Promise<Result<stri
     const token = await createToken(checkerLogin.user);
 
     return { success: true, result: token, error: null }
+}
+
+export async function resetPass(user: CheckerUserReset) {
+    const auth = await authenticateCreds(user);
+
+    if (auth.success == false) { return { success: false, error: auth.error, result: null }; }
+    if (auth.result == false) { return { success: false, error: 'Unauthorized! Username or password incorrect!', result: null }; }
+
+    const newHash = hashPasswrod({ user: user.user, pass: user.newPass });
+
+    const { error } = await supabaseAdmin
+        .from('AuthorizedPassValidators')
+        .update({ passhash: newHash })
+        .eq('username', user.user);
+
+    if (error) {
+        return { success: false, error: error.message, result: null };
+    }
+
+    return { success: true, result: user.user, error: null };
 }
 
 export async function signUp(checkerLogin: CheckerUserLogin): Promise<Result<string>> {

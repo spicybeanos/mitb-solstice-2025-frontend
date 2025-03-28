@@ -1,6 +1,6 @@
 import { get, post, patch, del, type Result } from "./Backend.ts";
 import { addTeamToEvent } from "./BackendAgentEvent.ts";
-import type { SolsticeUser, SolsticeTeamInfo } from "./BackendTypes.ts";
+import type { SolsticeUser, SolsticeTeamInfo, SolsticeTeamContent } from "./BackendTypes.ts";
 
 export async function createTeam(teamName: string, hostId: string): Promise<SolsticeTeamInfo | null> {
 
@@ -30,13 +30,16 @@ export async function addUserToTeam(teamId: string, userInfo:string): Promise<So
 export async function removeUserFromTeam(teamId: string, userID: string): Promise<SolsticeTeamInfo | null> {
     const res = await del<SolsticeTeamInfo>(`team/${teamId}/users/${userID}`);
     if(res.success == false){
-        console.log(`error while leaving team : ${res.error}`)
+        console.log(`error while leaving team : ${JSON.stringify(res.error)}`)
     }
     return res.success ? res.result : null;
 }
 
 export async function getAllTeams() {
     return await get<SolsticeTeamInfo[]>(`team/`)
+}
+export async function getAllMembers(eventID:string) {
+    return await get<SolsticeTeamContent>(`event/${eventID}/teams/users`)
 }
 
 export async function getUsersInTeam(teamId: string): Promise<SolsticeUser[] | null> {
@@ -64,7 +67,6 @@ export async function disbandTeam(teamID: string) {
     if (parts != null) {
         for (const usr of parts) {
             await removeUserFromTeam(teamID, usr.id);
-
         }
     }
     return await deleteTeam(teamID);

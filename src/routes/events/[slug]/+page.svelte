@@ -36,9 +36,6 @@
     let isMouseEntered = $state(false);
     let { data, form } = $props();
 
-    let isInTeam = $state(false);
-    let myTeam: SolsticeTeamInfo | null = $state(null);
-
     let event: SolsticeEvent = $state({
         img_alt: "picture of the event",
         name: "",
@@ -54,34 +51,10 @@
         venue: "",
         category: "",
     });
-
-    function showTeams() {
-        console.log("Showing teams");
-    }
-    function tab_existingTeam() {
-        team_selection = "existing";
-    }
-    function tab_newTeam() {
-        team_selection = "new";
-    }
-
-    /*
-    <div
-                        class="text font-medium items-start sm:items-center text-base"
-                    >
-                        <CopyToClipboard text={`${event.id}`}></CopyToClipboard>
-                    </div>
-    */
-
     function delTeam() {}
 
     onMount(() => {
         const eventID = data.slug;
-        isInTeam = data.in_team;
-
-        if (isInTeam) {
-            myTeam = data.team;
-        }
         event = toSolsticeEvent(data.event);
         teamSize = event.teamSize;
         teamMembers = Array(teamSize - 1).fill("");
@@ -93,12 +66,6 @@
             isLoaded = true;
         }, 5000);
     });
-
-    async function handleNewTeam() {}
-
-    let loading = $state(false);
-    let error = $state("");
-    let successMessage = $state("");
 
     function openPDF() {
         let url = data.media.result?.rulebook;
@@ -151,7 +118,6 @@
                 <div
                     class="flex flex-col-reverse sm:flex-col justify-center space-y-3"
                 >
-                    
                     <CardItem
                         {isMouseEntered}
                         translateZ="50"
@@ -271,207 +237,15 @@
                 </div>
             </CardItem>
 
-            <div
-                class="rounded-xl p-4 border-white bg-white text-black text-xl w-fit pl-15 pr-15"
+            <a
+                class="rounded-xl p-4 border-white bg-white text-black text-xl w-fit pl-15 pr-15 m-6"
+                href={`/events/${data.slug}/team`}
             >
                 Register Now!
-            </div>
+            </a>
 
-            {#if data.isRegistered == false}
-                <InfoCard>
-                    <div class="text-xl text-white">You're not logged in!</div>
-                </InfoCard>
-            {:else}
-                {#if data.regisEnabled == false}
-                    <InfoCard>
-                        <div class="text-xl text-white">
-                            This event's registrations haven't started yet!
-                        </div>
-                    </InfoCard>
-                {/if}
-                {#if data.canAccess == false}
-                    <InfoCard>
-                        <span class="text-white"
-                            >You do not have the pass to register for this
-                            event!</span
-                        >
-                    </InfoCard>
-
-                    {#if data.passes != null}
-                        <div
-                            class="text-white text-lg p-4 bg-gray-900 w-fit rounded-lg inset-shadow-sm inset-shadow-cyan-500/50 hover:shadow-lg shadow-cyan-500/50 transition-all duration-500"
-                        >
-                            Passes for this event:
-                            <ul>
-                                {#each data.passes as p}
-                                    <li>
-                                        <GlowDiv>{p.name}</GlowDiv>
-                                    </li>
-                                {/each}
-                            </ul>
-                        </div>
-                    {/if}
-                {/if}
-            {/if}
-
-            {#if event.teamSize >= 1 && data.regisEnabled == true}
-                <CardItem className="w-full flex flex-col">
-                    {#if !data.in_team}
-                        <div
-                            class="picker relative sm:px-2 flex justify-between font-light text-xs"
-                        >
-                            <div
-                                class={`rounded-xs w-1/2 text-center py-1 ${team_selection === "new" ? `bg-white text-black` : `bg-[#1d1d1d] text-white border `}`}
-                            >
-                                <button
-                                    class="cursor-pointer"
-                                    onclick={tab_newTeam}>Existing Team</button
-                                >
-                            </div>
-                            <div
-                                class={`rounded-xs w-1/2 text-center py-1 ${team_selection === "existing" ? `bg-white text-black` : `bg-[#1d1d1d] text-white border `}`}
-                            >
-                                <button
-                                    class="cursor-pointer"
-                                    onclick={tab_existingTeam}>New Team</button
-                                >
-                            </div>
-                        </div>
-                        {#if team_selection === "existing" && data.canAccess}
-                            {#if form?.msg}
-                                <div style="color: pink;">
-                                    Error! {form.msg}
-                                </div>
-                            {/if}
-                            {#if form?.team}
-                                <div style="color: white;">
-                                    team info:
-                                    <pre>Team name : {form.team.name}</pre>
-                                    <pre>Team ID : {form.team.id}</pre>
-                                    <pre>Host ID : {form.team.host_id}</pre>
-                                </div>
-                            {/if}
-                            <form
-                                action="?/newTeam"
-                                method="POST"
-                                use:enhance={handleNewTeam}
-                            >
-                                <div
-                                    class="bg-black text-white w-full pt-2 sm:pt-8"
-                                >
-                                    <div class="mb-6 sm:mb-8">
-                                        <label
-                                            for="team_name"
-                                            class="block mb-1">Team Name</label
-                                        >
-                                        <input
-                                            required
-                                            placeholder="Enter team name"
-                                            class="w-full p-2 border text-white bg-[#1d1d1d]"
-                                            bind:value={teamName}
-                                            name="team_name"
-                                        />
-                                    </div>
-                                    <button
-                                        class="w-full text-center bg-white text-black hover:bg-black hover:text-white transition-all duration-200 p-2 rounded-sm max-sm:mt-3"
-                                        >Register</button
-                                    >
-                                    <!-- {#if } FUNCTIONALITY TO CHECK IF USER IS HR TO BE IMPLEMENTED -->
-
-                                    <!-- {/if} -->
-                                </div>
-                            </form>
-                        {:else if team_selection === "new"}
-                            <form action="?/joinTeam" method="post">
-                                <div
-                                    class="bg-black text-white w-full pt-6 sm:pt-8"
-                                >
-                                    <div class="mb-6 sm:mb-8">
-                                        <label for="team-ID" class="block mb-1"
-                                            >Team ID</label
-                                        >
-                                        <input
-                                            placeholder="Enter team ID"
-                                            class="w-full p-2 border text-white bg-[#1d1d1d]"
-                                            bind:value={existing_team_ID}
-                                            name="team_id"
-                                        />
-                                    </div>
-
-                                    {#if error}
-                                        <div class="text-red-500 mt-2">
-                                            {error}
-                                        </div>
-                                    {/if}
-                                    {#if successMessage}
-                                        <div class="text-green-500 mt-2">
-                                            {successMessage}
-                                        </div>
-                                    {/if}
-                                    <button
-                                        class="w-full text-center bg-white text-black hover:bg-black hover:text-white transition-all duration-200 p-2 rounded-sm mt-4"
-                                        disabled={loading}
-                                    >
-                                        {loading ? "Joining..." : "Join"}
-                                    </button>
-                                </div>
-                            </form>
-                        {:else if data.canAccess}
-                            <div
-                                class="bg-black text-white w-full pt-2 sm:pt-8 mt-6"
-                            >
-                                <div class="mb-8 mt-6">
-                                    <p>Your Team ID : {teamID}</p>
-                                    <button
-                                        class="w-full text-center mt-6 bg-white text-black hover:bg-black hover:text-white transition-all duration-200 p-2 rounded-sm max-sm:mt-3"
-                                        onclick={delTeam}>Delete Team</button
-                                    >
-                                </div>
-                            </div>
-                        {:else}
-                            <GlowDiv
-                                >
-                                <div class='text-white'>You need to own the required pass to create a
-                                team</div></GlowDiv
-                            >
-                        {/if}
-                    {:else if data.isLeader}
-                        <div class="text-white">
-                            You're the leader of team <b
-                                >{data.team?.name} with id
-                                <code>{data.team?.id}, host </code></b
-                            >
-                        </div>
-                        <div class="text-white">Players:</div>
-                        <ol class="white">
-                            {#each data.playersInTeam as plr}
-                                <li class="text-white">
-                                    {plr.first_name}
-                                    {plr.last_name}
-                                </li>
-                            {/each}
-                        </ol>
-                        <form action={`?/disbandTeam`} method="post">
-                            <BasicButtonFilled color="red"
-                                ><b>DISBAND</b></BasicButtonFilled
-                            >
-                        </form>
-                    {:else}
-                        <div class="text-white">
-                            You're already in team <b>{data.team?.name}</b>
-                        </div>
-                        {#if form?.msg}
-                            <div class="text-white">{form?.msg}</div>
-                        {/if}
-                        <form action={`?/leaveTeam`} method="post">
-                            <BasicButtonFilled color="red"
-                                ><b>LEAVE</b></BasicButtonFilled
-                            >
-                        </form>
-                    {/if}
-                </CardItem>
-            {/if}
-            <div class="flex justify-between text-sm md:text-base pt-2">
+            
+            <div class="flex justify-between text-sm md:text-base pt-2 m-6">
                 <div class="flex-col">
                     <div
                         class="flex justify-evenly underline text-blue-500 space-x-2"
