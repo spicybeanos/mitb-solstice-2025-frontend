@@ -10,7 +10,6 @@ export interface CheckerUserLogin {
     pass: string;
 }
 export interface CheckerUserReset {
-    user: string;
     pass: string;
     newPass: string;
 }
@@ -56,6 +55,17 @@ export async function validateToken(token: string) {
     return new Date(data.expires_at) > new Date();
 }
 
+export async function getTokenUser(token: string) {
+    const { data, error } = await supabaseAdmin
+        .from("AuthorizedPassValidators")
+        .select("username")
+        .eq("token", token)
+        .single();
+    if (error || !data) return null;
+
+    return data.username as string;
+}
+
 export async function logout(token: string) {
     await supabaseAdmin.from("AuthorizedPassValidators")
         .update({ token: null, expires_at: null })
@@ -92,24 +102,28 @@ export async function logIn(checkerLogin: CheckerUserLogin): Promise<Result<stri
     return { success: true, result: token, error: null }
 }
 
-export async function resetPass(user: CheckerUserReset) {
-    const auth = await authenticateCreds(user);
+export async function resetPass(passwords: CheckerUserReset, token: string) {
+    const user = await getTokenUser(token);
 
-    if (auth.success == false) { return { success: false, error: auth.error, result: null }; }
-    if (auth.result == false) { return { success: false, error: 'Unauthorized! Username or password incorrect!', result: null }; }
+    if (user == null) { return { success: false, error: "Token not valid", result: null }; }
 
-    const newHash = hashPasswrod({ user: user.user, pass: user.newPass });
+    const auth = await authenticateCreds({ pass: passwords.pass, user: user })
+
+    if (auth.success == false) { return { success: false, error: "Could not authenticate", result: null }; }
+    if (auth.result == false) { return { success: false, error: "Creds not valid", result: null }; }
+
+    const newHash = hashPasswrod({ user: user, pass: passwords.newPass });
 
     const { error } = await supabaseAdmin
         .from('AuthorizedPassValidators')
         .update({ passhash: newHash })
-        .eq('username', user.user);
+        .eq('username', user);
 
     if (error) {
         return { success: false, error: error.message, result: null };
     }
 
-    return { success: true, result: user.user, error: null };
+    return { success: true, result: user, error: null };
 }
 
 export async function signUp(checkerLogin: CheckerUserLogin): Promise<Result<string>> {

@@ -13,32 +13,32 @@ interface UserInfoRequest {
 export async function GET({ request, params }: RequestEvent) {
     try {
         const header = request.headers.get('Authorization');
-        const token = header?.split(' ')[1]; 
+        const token = header?.split(' ')[1];
 
-        if(token == undefined || token == null){
+        if (token == undefined || token == null) {
             return json({ error: 'Unauthorized' }, { status: 401 });
         }
 
         const valid = await validateToken(token);
-        if(!valid) {return json({ error: 'Invalid token' }, { status: 403 });}
-        
+        if (!valid) { return json({ error: 'Invalid token' }, { status: 403 }); }
+
         const userID = params.userid;
 
-        if (userID == null || userID == undefined) {
-            return json({msg:`user feild null`},{status:400})
+        if (userID == null || userID == undefined || userID == '') {
+            return json({ msg: `user feild null` }, { status: 400 })
         }
 
         const userInfo = await getUserInfo(userID);
         if (userInfo == null) {
-            return json({msg:`user not found`},{status:404})
+            return json({ msg: `user not found` }, { status: 404 })
         }
 
         const pass = await getPass(userInfo.pass_id);
 
-        return json({ pass: pass, user: userInfo } as UserInfoRequest)
+        return json({ pass: pass, user: userInfo } as UserInfoRequest,{status:200})
 
 
     } catch (ex) {
-
+        return json({ msg: `${JSON.stringify(ex)}` }, { status: 500 });
     }
 }
