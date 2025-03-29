@@ -43,7 +43,7 @@ export async function POST({ request, params }) {
         const get = await getProshowBand(params.userid);
         if (get.success == false) { return json({ error: `Database error when getting ${get.error}` }, { status: 500 }) }
 
-        if (get.result != null) { return json({ error: `User has already been given a band by ${get.result.given_by} at time ${displayDateTime(new Date(get.result.time))}` }, { status: 409 }); }
+        if (get.result != null) { return json({ error: `User has already been given a band by ${get.result.given_by} at time ${get.result.time}` }, { status: 409 }); }
 
         const givenBy = token.split('@')[0];
         const time = new Date().toISOString()
