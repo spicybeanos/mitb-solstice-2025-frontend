@@ -129,7 +129,7 @@
                 <img
                     src="./Virya.png"
                     alt="Virya sponsor logo"
-                    class="bg-white"
+                    class=""
                     width="700px"
                 />
             </div>
