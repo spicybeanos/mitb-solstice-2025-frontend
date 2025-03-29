@@ -106,6 +106,11 @@
                             <div class="price">
                                 {pass.cost}
                             </div>
+                            <div class="button mt-2">
+                                <BuyPass href={passURL}>
+                                    <div class="text">Buy Pass!</div>
+                                </BuyPass>
+                            </div>
                         </div>
                     </div>
                 </PassCard>
