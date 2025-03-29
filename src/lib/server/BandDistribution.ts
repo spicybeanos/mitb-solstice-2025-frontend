@@ -6,7 +6,7 @@ import { supabaseAdmin } from "./supabaseServer";
  */
 export interface ProshowBandRow {
     user_id: string;
-    time: Date; // Using string to store timestampz
+    time: string; // Using string to store timestampz
     given_by: string;
 }
 
@@ -39,7 +39,7 @@ export async function getProshowBand(userID: string): Promise<Result<ProshowBand
 
     const { data, error } = await supabaseAdmin
         .from("proshow_bands")
-        .select("*") // Fetch all columns (user_id, time, given_by)
+        .select("*")
         .eq("user_id", userID.trim())
         .maybeSingle();
 
@@ -47,5 +47,16 @@ export async function getProshowBand(userID: string): Promise<Result<ProshowBand
         return { success: false, result: null, error: error.message };
     }
 
-    return { success: true, result: data, error: null };
+    if (data) {
+        return { 
+            success: true, 
+            result: { 
+                ...data, 
+                time: new Date(data.time).toISOString() // ✅ Ensure it's in a proper Date format
+            }, 
+            error: null 
+        };
+    }
+
+    return { success: true, result: null, error: null };
 }
