@@ -50,6 +50,7 @@ export async function POST({ request, params }) {
 
         if (adding.error != null) { return json({ error: `Database error ${adding.error}` }, { status: 500 }) }
 
+        return json({ added_by: givenBy }, { status: 200 })
     } catch (exc) {
         return json({ error: JSON.stringify(exc) }, { status: 500 })
     }
