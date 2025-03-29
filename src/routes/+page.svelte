@@ -127,7 +127,7 @@
         <div class="flex flex-center flex-col justify-center">
             <div class="flex flex-center justify-center w-full m-7">
                 <img
-                    src="./Virya.png"
+                    src="/Virya.png"
                     alt="Virya sponsor logo"
                     class=""
                     width="700px"
@@ -139,7 +139,7 @@
                     class="flex flex-center justify-center bg-white m-7 rounded-xl"
                 >
                     <img
-                        src="./StockGrowpng.png"
+                        src="/StockGrowpng.png"
                         alt="StockGrowpng sponsor logo"
                         width="350px"
                     />
@@ -147,7 +147,7 @@
 
                 <div class="flex flex-center justify-center bg-white m-7">
                     <img
-                        src="./Signitude.svg"
+                        src="/Signitude.svg"
                         alt="Signitude sponsor logo"
                         width="350px"
                     />
