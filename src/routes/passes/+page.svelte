@@ -9,6 +9,14 @@
     import { fade, slide, scale } from "svelte/transition";
     import { cubicOut, quintOut } from "svelte/easing";
 
+    /* 
+        <div class="button mt-2">
+            <BuyPass href={passURL}>
+                <div class="text">Buy Pass!</div>
+            </BuyPass>
+        </div>
+    */
+
     let { data } = $props();
     let nonmahe_pass_list = [
         "Robotics",
@@ -98,11 +106,6 @@
                             <div class="price">
                                 {pass.cost}
                             </div>
-                        </div>
-                        <div class="button mt-2">
-                            <BuyPass href={passURL}>
-                                <div class="text">Buy Pass!</div>
-                            </BuyPass>
                         </div>
                     </div>
                 </PassCard>
