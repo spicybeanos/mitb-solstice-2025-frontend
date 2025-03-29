@@ -1,3 +1,4 @@
+import { displayDateTime } from '$lib/components/DisplayTime.js';
 import { addProshowBand, getProshowBand } from '$lib/server/BandDistribution';
 import { validateToken } from '$lib/server/CheckerUser';
 import { fail, json, text } from '@sveltejs/kit';
@@ -40,15 +41,15 @@ export async function POST({ request, params }) {
         if (!valid) { return json({ error: 'Invalid token' }, { status: 403 }); }
 
         const get = await getProshowBand(params.userid);
-        if (get.success == false) { return json({ error: `Database error ${get.error}` }, { status: 500 }) }
+        if (get.success == false) { return json({ error: `Database error when getting ${get.error}` }, { status: 500 }) }
 
-        if (get.result != null) { return json({ error: `User has already been given a band by ${get.result.given_by} at time ${get.result.time}` }, { status: 400 }); }
+        if (get.result != null) { return json({ error: `User has already been given a band by ${get.result.given_by} at time ${displayDateTime(new Date(get.result.time))}` }, { status: 409 }); }
 
         const givenBy = token.split('@')[0];
         const time = new Date().toISOString()
         const adding = await addProshowBand({ given_by: givenBy, time: time, user_id: params.userid });
 
-        if (adding.error != null) { return json({ error: `Database error ${adding.error}` }, { status: 500 }) }
+        if (adding.error != null) { return json({ error: `Database error when adding ${adding.error}` }, { status: 500 }) }
 
         return json({ added_by: givenBy }, { status: 200 })
     } catch (exc) {
