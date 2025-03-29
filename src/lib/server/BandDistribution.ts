@@ -6,7 +6,7 @@ import { supabaseAdmin } from "./supabaseServer";
  */
 export interface ProshowBandRow {
     user_id: string;
-    time: string; // Using string to store timestampz
+    time: Date; // Using string to store timestampz
     given_by: string;
 }
 

@@ -1,4 +1,4 @@
-import { getProshowBand } from '$lib/server/BandDistribution';
+import { addProshowBand, getProshowBand } from '$lib/server/BandDistribution';
 import { validateToken } from '$lib/server/CheckerUser';
 import { fail, json, text } from '@sveltejs/kit';
 
@@ -18,7 +18,7 @@ export async function GET({ request, params }) {
         const get = await getProshowBand(params.userid);
 
         if (get.success == false) { return json({ error: get.error }, { status: 400 }) }
-        if (get.result == null) { return json({ error: "Not found" }, { status: 404 }) }
+        if (get.result == null) { return json({ error: "User not in band list" }, { status: 404 }) }
 
         return json({ entry: get.result }, { status: 200 });
 
@@ -40,8 +40,17 @@ export async function POST({ request, params }) {
         if (!valid) { return json({ error: 'Invalid token' }, { status: 403 }); }
 
         const get = await getProshowBand(params.userid);
-        
+        if (get.success == false) { return json({ error: `Database error ${get.error}` }, { status: 500 }) }
+
+        if (get.result != null) { return json({ error: `User has already been given a band by ${get.result.given_by} at time ${get.result.time}` }, { status: 400 }); }
+
+        const givenBy = token.split('@')[0];
+        const time = new Date()
+        const adding = await addProshowBand({ given_by: givenBy, time: time, user_id: params.userid });
+
+        if (adding.error != null) { return json({ error: `Database error ${adding.error}` }, { status: 500 }) }
+
     } catch (exc) {
-        
+        return json({ error: JSON.stringify(exc) }, { status: 500 })
     }
 }

@@ -87,7 +87,7 @@
                                         data-context="signin"
                                         data-ux_mode="popup"
                                         data-login_uri="/profile?/glogin"
-                                        data-auto_select="true"
+                                        data-auto_select="false"
                                         data-itp_support="true"
                                     ></div>
 

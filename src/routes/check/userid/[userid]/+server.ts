@@ -25,12 +25,12 @@ export async function GET({ request, params }: RequestEvent) {
         const userID = params.userid;
 
         if (userID == null || userID == undefined || userID == '') {
-            return json({ msg: `user feild null` }, { status: 400 })
+            return json({ error: `user feild null` }, { status: 400 })
         }
 
         const userInfo = await getUserInfo(userID);
         if (userInfo == null) {
-            return json({ msg: `user not found` }, { status: 404 })
+            return json({ error: `user not found` }, { status: 404 })
         }
 
         const pass = await getPass(userInfo.pass_id);
@@ -39,6 +39,6 @@ export async function GET({ request, params }: RequestEvent) {
 
 
     } catch (ex) {
-        return json({ msg: `${JSON.stringify(ex)}` }, { status: 500 });
+        return json({ error: `${JSON.stringify(ex)}` }, { status: 500 });
     }
 }
