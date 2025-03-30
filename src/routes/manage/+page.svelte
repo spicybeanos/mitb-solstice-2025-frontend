@@ -30,6 +30,10 @@
             <form action='?/pass_synch' method='post'>
                 <BasicButtonFilled>Synch Cache passes</BasicButtonFilled>
             </form>
+
+            <a href='/apps/solstice-verifier.apk' download>
+                <BasicButtonFilled>Download verifier app</BasicButtonFilled>
+            </a>
         </div>
     </div>
 </div>
