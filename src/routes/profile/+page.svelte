@@ -179,6 +179,7 @@
                         <div class="w-full flex flex-center justify-center">
                             <div
                                 class={`text-3xl font-bold w-fit flex justify-center ring-amber-300 ring-sm bg-amber-500/60 backdrop-blur-sm inset-shadow-xl  inset-shadow-yellow-300/50 rounded-xl p-6 m-1 hover:shadow-xl shadow-yellow-300/50 transition-all duration-500`}
+                                in:fly={{ ...cardAnimation, delay: 700 }}
                             >
                                 {data.pass.name}
                             </div>
@@ -324,11 +325,13 @@
 
                         <div class="flex justify-center">
                             <div
-                                class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-[#AB83FE]/40 sm:bg-black/60 backdrop-blur-sm rounded-xl p-4 sm:p-8 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500 w-1/3"
+                                class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-[#AB83FE]/40 sm:bg-black/60 backdrop-blur-sm rounded-xl p-4 sm:p-8 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500 w-fit"
                                 in:fly={{ ...cardAnimation, delay: 700 }}
                             >
                                 <h1 class="text-2xl text-center">
-                                    Your User ID : {data.user.id}
+                                    User ID : <GlowDiv
+                                        ><code>{data.user.id}</code></GlowDiv
+                                    >
                                 </h1>
                                 <div class="flex justify-center gap-8">
                                     <!-- QR Code - Show first on mobile -->
@@ -339,7 +342,10 @@
                                             delay: 700,
                                         }}
                                     >
-                                        Your User ID QR:
+                                        <div class="text-white text-xl">
+                                            Your User ID QR:
+                                        </div>
+
                                         <div
                                             class="bg-white border-1 sm:border-4 border-[#AB83FE]/50 p-1.5 shadow-lg shadow-[#AB83FE]/60 rounded-xl"
                                         >
