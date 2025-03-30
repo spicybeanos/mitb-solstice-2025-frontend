@@ -35,6 +35,8 @@ export async function GET({ params }) {
             members = teams.result[teamID]
         }
 
+        console.log(`Members : ${JSON.stringify(members)}`)
+
         const ret_data = { inTeam: inTeam, teamID: teamID, team: team, members: members };
         return json(ret_data, { status: 200 })
     } catch (exc) {
