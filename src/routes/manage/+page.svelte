@@ -31,7 +31,7 @@
                 <BasicButtonFilled>Synch Cache passes</BasicButtonFilled>
             </form>
 
-            <a href='/apps/solstice-verifier.apk' download>
+            <a href='https://www.mediafire.com/file/wlhoi1onvr7llli/solstice-verifier.apk/file' download>
                 <BasicButtonFilled>Download verifier app</BasicButtonFilled>
             </a>
         </div>
