@@ -72,6 +72,60 @@ export async function logout(token: string) {
         .eq("token", token);
 }
 
+export async function setBandDistributionEnabled(allowBandDist: boolean): Promise<Result<null>> {
+    const { data, error } = await supabaseAdmin
+        .from('website_properties')
+        .update({ value: allowBandDist.toString() })
+        .eq('name', 'band_distribution');
+
+    if (error || !data) {
+        return { success: false, error: `Could not fetch property : ${error}`, result: null }
+    }
+
+    return { success: true, error: null, result: null }
+}
+
+export async function getAuthenticatorRights(token: string): Promise<Result<string>> {
+    const { data, error } = await supabaseAdmin
+        .from("AuthorizedPassValidators")
+        .select('rights')
+        .eq('token', token)
+        .single()
+
+    if (error || !data) {
+        return { success: false, result: null, error: `Could not get autherizor rights : ${error}` }
+    }
+
+    return { success: true, result: data.rights, error: null }
+}
+
+export async function getBandPasses() {
+    const { data, error } = await supabaseAdmin
+        .from('website_properties')
+        .select('value')
+        .eq('name', 'band_passes')
+        .single();
+
+    if (error || !data) {
+        return { success: false, error: `Could not fetch property : ${error}`, result: null }
+    }
+
+    return { success: true, result: JSON.parse(data.value) as string[], error: null };
+}
+
+export async function getBandDistributionEnabled(): Promise<Result<boolean>> {
+    const { data, error } = await supabaseAdmin
+        .from('website_properties')
+        .select('value')
+        .eq('name', 'band_distribution')
+        .single();
+
+    if (error || !data) {
+        return { success: false, error: `Could not fetch property : ${error}`, result: null }
+    }
+
+    return { success: true, result: data.value == 'true', error: null }
+}
 
 export async function authenticateCreds(checkerLogIn: CheckerUserLogin): Promise<Result<boolean>> {
 
