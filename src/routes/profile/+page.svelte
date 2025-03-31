@@ -55,6 +55,27 @@
     }
 </script>
 
+{#snippet glog()}
+    <div
+        id="g_id_onload"
+        data-client_id={`${PUBLIC_G_CLIENT}.apps.googleusercontent.com`}
+        data-context="signin"
+        data-ux_mode="popup"
+        data-login_uri="/profile?/glogin"
+        data-auto_prompt="false"
+    ></div>
+
+    <div
+        class="g_id_signin"
+        data-type="standard"
+        data-shape="rectangular"
+        data-theme="outline"
+        data-text="signin_with"
+        data-size="large"
+        data-logo_alignment="left"
+    ></div>
+{/snippet}
+
 <!-- Replace the outer container -->
 <div class="min-h-screen flex flex-col justify-between">
     <!-- Main content -->
@@ -80,27 +101,6 @@
                                     If you do not see a google log in button,
                                     kindly reload the page.
                                 </div>
-                                {#snippet glog()}
-                                    <div
-                                        id="g_id_onload"
-                                        data-client_id={`${PUBLIC_G_CLIENT}.apps.googleusercontent.com`}
-                                        data-context="signin"
-                                        data-ux_mode="popup"
-                                        data-login_uri="/profile?/glogin"
-                                        data-auto_select="false"
-                                        data-itp_support="true"
-                                    ></div>
-
-                                    <div
-                                        class="g_id_signin"
-                                        data-type="standard"
-                                        data-shape="rectangular"
-                                        data-theme="outline"
-                                        data-text="signin_with"
-                                        data-size="large"
-                                        data-logo_alignment="left"
-                                    ></div>
-                                {/snippet}
 
                                 {@render glog()}
                             </div>
