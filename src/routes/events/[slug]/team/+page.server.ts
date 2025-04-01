@@ -46,13 +46,6 @@ export async function load({ cookies, params }) {
             }
         }
 
-        console.log(JSON.stringify({
-            canAccessEvent: canAccessEvent,
-            registrationEnabled: registrationEnabled,
-            eventPasses: eventPasses,
-            isRegistered: isRegistered
-        }))
-
         return {
             canAccessEvent: eventPasses.length > 0 ? canAccessEvent : true,
             registrationEnabled: registrationEnabled,
@@ -60,7 +53,7 @@ export async function load({ cookies, params }) {
             isRegistered: isRegistered,
             eventID: params.slug,
             userID: userInfo.result?.id,
-            userRegNo:userInfo.result == null ? null : userInfo.result.mahe_registration_number
+            userRegNo: userInfo.result == null ? null : userInfo.result.mahe_registration_number
         }
 
     } catch (exc) {
@@ -134,7 +127,7 @@ export const actions = {
                     return fail(409, { msg: "Event full!" });
                 }
                 for (const key of Object.keys(allMem.result)) {
-                    if(teamName == key){
+                    if (teamName == key) {
                         return fail(409, { msg: "A team with that name already exists!" });
                     }
                 }
@@ -176,7 +169,7 @@ export const actions = {
             const userJson = cookies.get('userInfo');
             const checksum = cookies.get('userChecksum');
             const ver = await verifyAndGetUser(g_jwt, userJson, checksum);
-            
+
 
             if (ver.success == false) return fail(401, { msg: ver.error });
             if (ver.result == null) return fail(401, { msg: 'null user' });
@@ -234,6 +227,7 @@ export const actions = {
             }
             if (ver.result.mahe_registration_number == null) {
                 const added = await addUserToTeam(teamID, userID);
+                // console.log(JSON.stringify(added))
                 if (added == null) { return fail(403, { msg: 'Failed to add user to team!' }); }
                 return { teamJoined: added };
             } else {

@@ -22,8 +22,8 @@ export async function createTeamAndAttach(teamName: string, hostId: string, even
 }
 
 export async function addUserToTeam(teamId: string, userInfo:string): Promise<SolsticeTeamInfo | null> {
-    const res = await post<SolsticeTeamInfo>(`team/${teamId}/users/${userInfo}`);
-    if(res.success == false){console.log(`could not attach user to team: ${res.error}`)}
+    const res = await post<SolsticeTeamInfo>(`team/${teamId}/users/${userInfo}?validate=false`);
+    if(res.success == false){console.log(`could not attach user to team: ${JSON.stringify(res.error)}`)}
     return res.success ? res.result : null;
 }
 

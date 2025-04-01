@@ -19,7 +19,6 @@ export async function GET({ params }) {
         let inTeam = false;
         let teamID = null;
         for (const key of Object.keys(teams.result)) {
-            console.log(`Category: ${key}`);
             for (const person of teams.result[key]) {
                 if (person.id == userID) {
                     inTeam = true;
@@ -34,8 +33,6 @@ export async function GET({ params }) {
             team = await getTeamDetails(teamID);
             members = teams.result[teamID]
         }
-
-        console.log(`Members : ${JSON.stringify(members)}`)
 
         const ret_data = { inTeam: inTeam, teamID: teamID, team: team, members: members };
         return json(ret_data, { status: 200 })
