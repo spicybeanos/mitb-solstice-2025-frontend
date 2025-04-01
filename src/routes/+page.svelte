@@ -8,6 +8,27 @@
         venue: string | null;
         id: string;
     }
+    /*
+    
+        <!-- <div class="flex flex-center justify-center">
+        <SimpleCard className="w-[70%]">
+            <img src="/divya_kumar.png" />
+            <BasicHeader>Divya Kumar</BasicHeader>
+            <div class="text-white text-2xl p-5 text-center">
+                Presenting Divya Kumar - The Voice Behind Your Favorite Beats!
+                <br>
+                With 14 million+ monthly listeners on Spotify, Divya Kumar is
+                the powerhouse voice behind chartbusters like "Maston Ka Jhund"
+                (Bhaag Milkha Bhaag), "Kamariya" (Stree), and "Sun Saathiya"
+                (ABCD 2). Born into a legacy of music, Divya's soulful and
+                high-energy vocals have made him a fan favourite across
+                Bollywood and beyond. Whether it's a foot-tapping party anthem
+                or a heartfelt melody, he knows how to hit the right
+                note every time!
+            </div>
+        </SimpleCard>
+    </div> -->
+    */
     type EventType =
         | "cultural"
         | "e_sports"
@@ -58,24 +79,7 @@
             >
         </div>
     </div>
-    <!-- <div class="flex flex-center justify-center">
-        <SimpleCard className="w-[70%]">
-            <img src="/divya_kumar.png" />
-            <BasicHeader>Divya Kumar</BasicHeader>
-            <div class="text-white text-2xl p-5 text-center">
-                Presenting Divya Kumar - The Voice Behind Your Favorite Beats!
-                <br>
-                With 14 million+ monthly listeners on Spotify, Divya Kumar is
-                the powerhouse voice behind chartbusters like "Maston Ka Jhund"
-                (Bhaag Milkha Bhaag), "Kamariya" (Stree), and "Sun Saathiya"
-                (ABCD 2). Born into a legacy of music, Divya's soulful and
-                high-energy vocals have made him a fan favourite across
-                Bollywood and beyond. Whether it's a foot-tapping party anthem
-                or a heartfelt melody, he knows how to hit the right
-                note every time!
-            </div>
-        </SimpleCard>
-    </div> -->
+
     <div class="h-[100vh] w-full flex flex-col mb-12 sm:mb-60 mt-2 z-20">
         <Carousel {data}></Carousel>
 
