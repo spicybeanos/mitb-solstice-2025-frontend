@@ -12,7 +12,6 @@
         SolsticeTeamInfo,
         SolsticeUser,
     } from "$lib/server/BackendTypes.js";
-    import { MemoryStick } from "lucide-svelte";
 
     let { data, form } = $props();
 
@@ -151,6 +150,55 @@
                             >
                         </form>
                     </SimpleCard>
+                {:else}
+                    <SimpleCard>
+                        <h1 class="text-2xl text-white">
+                            {registrationData.team.name}
+                        </h1>
+                        <div class="text-white">
+                            Team ID <code class="text-white"
+                                >{registrationData.team.id}</code
+                            >
+                        </div>
+                        <GlowDiv>
+                            <div class="text-white">Members</div>
+                            {#each registrationData.members as mem}
+                                <GlowDiv className="bg-gray-700"
+                                    >{`${mem.first_name} ${mem.last_name}`}</GlowDiv
+                                >
+                            {/each}
+                        </GlowDiv>
+                        <form action="?/leaveTeam" method="post">
+                            <BasicButtonFilled color="#ff0000"
+                                >LEAVE</BasicButtonFilled
+                            >
+                        </form>
+                    </SimpleCard>
+                {/if}
+            {:else}
+                <GlowDiv className="p-6">
+                    <h1 class="text-2xl text-white">Loading...</h1>
+                    <div class="text-white">This may take a while...</div>
+                </GlowDiv>
+            {/if}
+        {:else if data.userRegNo == null}
+            {#if teamDataLoaded}
+                {#if !registrationData.inTeam}
+                    <GlowDiv className="p-6">
+                        <h1 class="text-2xl text-white">Join team</h1>
+                        <form
+                            class="flex flex-col flex-wrap w-fit"
+                            action="?/joinTeam"
+                            method="post"
+                        >
+                            <BasicInput
+                                className=""
+                                placeholder="Team ID"
+                                name="team_id"
+                            />
+                            <BasicButtonFilled>Join team</BasicButtonFilled>
+                        </form>
+                    </GlowDiv>
                 {:else}
                     <SimpleCard>
                         <h1 class="text-2xl text-white">

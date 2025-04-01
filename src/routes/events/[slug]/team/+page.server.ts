@@ -59,7 +59,8 @@ export async function load({ cookies, params }) {
             eventPasses: eventPasses,
             isRegistered: isRegistered,
             eventID: params.slug,
-            userID: userInfo.result?.id
+            userID: userInfo.result?.id,
+            userRegNo:userInfo.result == null ? null : userInfo.result.mahe_registration_number
         }
 
     } catch (exc) {
