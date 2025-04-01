@@ -58,7 +58,7 @@
             >
         </div>
     </div>
-    <div class="flex flex-center justify-center">
+    <!-- <div class="flex flex-center justify-center">
         <SimpleCard className="w-[70%]">
             <img src="/divya_kumar.png" />
             <BasicHeader>Divya Kumar</BasicHeader>
@@ -75,7 +75,7 @@
                 note every time!
             </div>
         </SimpleCard>
-    </div>
+    </div> -->
     <div class="h-[100vh] w-full flex flex-col mb-12 sm:mb-60 mt-2 z-20">
         <Carousel {data}></Carousel>
 
