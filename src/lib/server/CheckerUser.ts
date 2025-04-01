@@ -78,7 +78,7 @@ export async function setBandDistributionEnabled(allowBandDist: boolean): Promis
         .update({ value: allowBandDist.toString() })
         .eq('name', 'band_distribution');
 
-    if (error || !data) {
+    if (error) {
         return { success: false, error: `Could not fetch property : ${error}`, result: null }
     }
 
