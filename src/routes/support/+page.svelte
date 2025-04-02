@@ -5,6 +5,7 @@
     import SimpleCard from "$lib/components/SimpleCard.svelte";
     import InfoCard from "$lib/components/InfoCard.svelte";
     import GlowDiv from '$lib/components/ui/GlowDiv.svelte'
+    import { onMount } from "svelte";
 
     interface ProblemTicket {
         name: String;
@@ -23,6 +24,12 @@
 
     let { data, form } = $props();
     let selected = $state("website");
+
+    onMount(()=>{
+        if(data.selected != null){
+            selected = data.selected;
+        }
+    })
 
     let categories = [
         "contest",

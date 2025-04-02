@@ -200,9 +200,13 @@
                                     class="w-6 h-6"
                                 />
                                 <div class="text-[#C7AE93]">
-                                    Bought a pass but it isn't showing? <a href='/support' class="text-yellow-500"
-                                        >Submit a ticket.</a>
-                                        If you have bought a dual pass, make sure to also include the other person's details.
+                                    Bought a pass but it isn't showing? <a
+                                        href="/support?sel=passes"
+                                        class="text-yellow-500"
+                                        >Submit a ticket.</a
+                                    >
+                                    If you have bought a dual pass, make sure to
+                                    also include the other person's details.
                                 </div>
                             </div>
                         </div>

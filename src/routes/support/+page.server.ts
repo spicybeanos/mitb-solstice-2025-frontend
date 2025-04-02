@@ -6,12 +6,13 @@ import { verifyAndGetUser } from '$lib/server/Backend';
 import { createTicket } from '$lib/server/BackendAgentSupport.js';
 import { generateChecksum } from '$lib/server/CacheMaster';
 
-export function load({ cookies }) {
+export function load({ cookies, url }) {
     let sessionId = cookies.get('sessionId');
+    const sel = url.searchParams.get('sel')
 
     if (!sessionId) {
         //redirect(300,'\signin');
-        return { isLoggedIn: false };
+        return { isLoggedIn: false,selected:sel };
     }
 }
 
