@@ -8,12 +8,14 @@
 
     let regOn = $state(false);
     let bandOn = $state(false);
+    let artOn = $state(false);
     let gform = $state("");
 
     onMount(() => {
         regOn = data.eventRegis ? data.eventRegis : false;
         bandOn = data.bandDist ? data.bandDist : false;
         gform = data.gform;
+        artOn = data.art;
     });
 </script>
 
@@ -55,6 +57,22 @@
                     </label>
                     <BasicButtonFilled>UPDATE</BasicButtonFilled>
                 </form>
+                <form
+                    action="?/art"
+                    class="flex flex-col"
+                    method="POST"
+                >
+                    <label class="text-white flex flex-row">
+                        Show artist
+                        <input
+                            class="w-8"
+                            type="checkbox"
+                            name="art"
+                            bind:checked={artOn}
+                        />
+                    </label>
+                    <BasicButtonFilled>UPDATE</BasicButtonFilled>
+                </form>
                 <a
                     href="https://www.mediafire.com/file/wlhoi1onvr7llli/solstice-verifier.apk/file"
                     download
@@ -81,5 +99,13 @@
 <style>
     * {
         color: white;
+    }
+    form{
+        border-style: solid;
+        border-radius: 10px;
+        border-width: 2px;
+        border-color: black;
+        padding: 10px 10px 10px 10px;
+        margin: 10px 10px 10px 10px;
     }
 </style>

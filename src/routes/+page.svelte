@@ -73,22 +73,31 @@ The musical alter ego of Garv Taneja, he’s the mastermind behind hits like Jha
             >
         </div>
     </div>
-
-    <div class="flex flex-center justify-center">
-        <SimpleCard className="w-fit flex flex-col flex-center justify-center">
-            <img src="/divya_kumar.png" />
-            <BasicHeader>Divya Kumar</BasicHeader>
-            <div class="text-white text-2xl p-5 text-center">
-                Presenting Divya Kumar - The Voice Behind Your Favorite Beats!
-                <br />
-                Step into the sonic universe of Chaar Diwaari—where jazz, hip-hop,<br>
-                and rock collide to create pure magic! The musical alter ego of Garv<br>
-                Taneja, he’s the mastermind behind hits like Jhaag and Roshni, blending<br>
-                raw emotions with experimental beats. Brace yourself for an unforgettable<br>
-                night as he sets Solstice on fire with his electrifying vibe!<br>
-            </div>
-        </SimpleCard>
-    </div>
+    {#if data.showArtist != null && data.showArtist == true}
+        <div class="flex flex-center justify-center">
+            <SimpleCard
+                className="w-fit flex flex-col flex-center justify-center"
+            >
+                <img src="/divya_kumar.png" />
+                <BasicHeader>Divya Kumar</BasicHeader>
+                <div class="text-white text-2xl p-5 text-center">
+                    Presenting Divya Kumar - The Voice Behind Your Favorite
+                    Beats!
+                    <br />
+                    Step into the sonic universe of Chaar Diwaari—where jazz, hip-hop,<br
+                    />
+                    and rock collide to create pure magic! The musical alter ego
+                    of Garv<br />
+                    Taneja, he’s the mastermind behind hits like Jhaag and Roshni,
+                    blending<br />
+                    raw emotions with experimental beats. Brace yourself for an unforgettable<br
+                    />
+                    night as he sets Solstice on fire with his electrifying vibe!<br
+                    />
+                </div>
+            </SimpleCard>
+        </div>
+    {/if}
 
     <div class="h-[100vh] w-full flex flex-col mb-12 sm:mb-60 mt-2 z-20">
         <Carousel {data}></Carousel>

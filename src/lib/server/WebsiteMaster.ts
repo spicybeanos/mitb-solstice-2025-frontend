@@ -50,6 +50,32 @@ export async function setStayGForm(link: string) {
     return { success: true, error: null }
 
 }
+export async function getShowArtist() {
+    const { data, error } = await supabaseAdmin
+        .from('website_properties')
+        .select('value')
+        .eq('name', 'show_artist')
+        .single();
+
+    if (error || !data) {
+        return { success: false, error: `Could not fetch property : ${error}`, result: null }
+    }
+
+    return { success: true, result: data.value == 'true', error: null };
+}
+
+export async function setShowArtist(show:boolean) {
+    const { error } = await supabaseAdmin
+        .from('website_properties')
+        .update({ value: show.toString() })
+        .eq('name', 'show_artist');
+    if (error) {
+        return { success: false, error: `Could not fetch property : ${error}` }
+    }
+    return { success: true, error: null }
+
+}
+
 /**
  * Fetch event media details for a given eventID.
  */
