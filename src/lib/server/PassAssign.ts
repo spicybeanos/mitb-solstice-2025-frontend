@@ -22,7 +22,7 @@ function toUrlSafeBase64(base64: string) {
     return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 function makeID() {
-    return toUrlSafeBase64(uuid())
+    return toUrlSafeBase64(Buffer.from(uuid().replace(/-/g, ''), 'hex').toString('base64'))
 }
 
 export async function assignPass(user_id: string, pass_id: string, email: string) {
