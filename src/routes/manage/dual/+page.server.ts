@@ -81,7 +81,7 @@ export const actions = {
             }
 
             const form = await request.formData();
-            const reg1 = form.get('reg') as string | null
+            const reg1 = form.get('reg1') as string | null
             const _es_ = form.get('esports') as string | null
 
             if (reg1 == null) { return fail(400, { msg: `reg1 is empty` }) }
@@ -89,7 +89,7 @@ export const actions = {
 
             const esports = _es_ == 'on';
 
-            const pass = exports ? "9iiwEUtZSz2052dd6S0wzw" : "ALryBwdJS-yJm1zosXzUHQ";
+            const pass = esports ? "T615OpoVROuHP5M7ghpPfA" : "mJY2B-iLTVG20fpz_Om0hg";
 
             const user1 = await getUserIdFromRegNo(reg1);
 
@@ -98,7 +98,7 @@ export const actions = {
             const res1 = await assignPass(user1.result, pass, guser.object?.email)
 
             if (res1.error != null) {
-                return fail(500, { msg: `failed to assign pass: \nuser 1 : ${res1.error}\nuser 2: ${res2.error}` });
+                return fail(500, { msg: `failed to assign pass: \nuser 1 : ${res1.error}` });
             }
 
             return { msg: 'Success!' }

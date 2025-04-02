@@ -11,6 +11,7 @@
     <a href="/manage/pass/">Passes</a>
     <a href="/manage/support/">Support</a>
     <a href="/manage/create/">Create (Admin)</a>
+    <a href="/manage/dual/">Assign</a>
 
 </aside>
 
