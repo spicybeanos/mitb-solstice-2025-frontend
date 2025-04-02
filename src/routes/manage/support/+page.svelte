@@ -29,7 +29,7 @@
                         {#if tick.category == "Other"}
                             <div>Problem: {tick.problem}</div>
                         {/if}
-                        <div>{tick.name} {tick.phone} {tick.email}</div>
+                        <div>{tick.name} {tick.phone_number} {tick.email_address}</div>
                         <div>{tick.description}</div>
                         <div>ID : {tick.id}</div>
                         <a
