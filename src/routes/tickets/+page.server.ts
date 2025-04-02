@@ -33,5 +33,4 @@ export async function load({ cookies }) {
     } catch (err) {
         error(500, 'Could not fetch tickets');
     }
-
 }

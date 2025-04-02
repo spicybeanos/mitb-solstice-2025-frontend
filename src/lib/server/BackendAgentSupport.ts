@@ -80,5 +80,5 @@ export async function setTicketStatus(id: string, solved: boolean, comment: stri
 }
 
 export async function deleteTicket(id:string) {
-    return await del(`support-ticket/${id}`);
+    return await del<ProblemTicket>(`support-ticket/${id}`);
 }

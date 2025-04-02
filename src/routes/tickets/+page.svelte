@@ -1,8 +1,9 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { onMount, tick } from "svelte";
     import { UserProfileData } from "../GoogleLogin.svelte.ts";
     import SimpleCard from "$lib/components/SimpleCard.svelte";
-    import type { ProblemTicket } from '$lib/server/BackendTypes.ts';
+    import type { ProblemTicket } from "$lib/server/BackendTypes.ts";
+    import BasicButtonFilled from "$lib/components/ui/Basic/BasicButtonFilled.svelte";
 
     let tickets = $state([] as ProblemTicket[]);
     let { data } = $props();
@@ -12,38 +13,33 @@
         tickets = data.tickets;
     });
 
-    // TO BE CALLED ON MOUNT ONLY !!
-    async function getTickets() {
-        loadingData = true;
-        let base_url =
-            window === undefined
-                ? "http://localhost:5173/tickets"
-                : (window as any).location.origin;
+    let ticketDeletResult = $state(null as string | null);
 
-        if (UserProfileData.loggedIn) {
-            const email_q = encodeURIComponent(UserProfileData.email);
-            console.log(email_q);
-            let url: URL = new URL("tickets", base_url);
-            url.searchParams.append("email", UserProfileData.email);
-            console.log(url.toString());
-            const response = await fetch(url.toString(), {
-                method: "GET",
-            });
-            const result = await response.json();
-            if (result.success) {
-                tickets = result.value;
+    function deleteTicket(ticketID: string) {
+        fetch(`/tickets/delete/${ticketID}`, { method: "POST" }).then((r) => {
+            if (r.ok) {
+                r.json().then((body) => {
+                    ticketDeletResult = body.msg;
+                });
             } else {
-                console.log("no tickets!");
+                r.json().then((body) => {
+                    ticketDeletResult = body.error;
+                });
             }
-        }
-        loadingData = false;
+        }).then(
+        );
     }
+
+    // TO BE CALLED ON MOUNT ONLY !!
 </script>
 
 <div class="mid">
     <div class="flex justify-center">
         <div class="text-white">Unsolved tickets: {tickets.length}</div>
     </div>
+    {#if ticketDeletResult != null}
+        <div class="text-white">{ticketDeletResult}</div>
+    {/if}
     {#if !UserProfileData.loggedIn}
         <div style="color: red;">Please log in to make a ticket!</div>
     {/if}
@@ -65,15 +61,23 @@
                         <div class="medium text-white">
                             e-mail : {ticket.email_address}
                         </div>
-                        <div class="tiny gray">{ticket.id}</div>
+                        <code class="tiny gray">{ticket.id}</code>
                         <div
                             class="medium text-white border border-gray-500 p-1.5 rounded-sm"
                         >
                             {ticket.description}
                         </div>
-                        {#if ticket.comment != ''}
-                        <div class='text-green-400'>{ticket.comment}</div>
+                        {#if ticket.comment != ""}
+                            <div class="text-green-400">{ticket.comment}</div>
                         {/if}
+                        <BasicButtonFilled
+                            color="red"
+                            OnClick={() => {
+                                deleteTicket(ticket.id);
+                            }}
+                        >
+                            <b>DELETE</b></BasicButtonFilled
+                        >
                     </div>
                 </SimpleCard>
             </div>

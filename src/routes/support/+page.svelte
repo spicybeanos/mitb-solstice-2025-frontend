@@ -78,7 +78,7 @@
                     type="textarea"
                     maxLength={128}
                 />
-                <div>{description.length}/128</div>
+                <div class="text-white">{description.length}/128</div>
                 <Button OnClicked={() => {}} active>Send ticket</Button>
             </form>
         </SimpleCard>

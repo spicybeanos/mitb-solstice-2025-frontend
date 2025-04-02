@@ -186,6 +186,27 @@
                         </div>
                     {/if}
                     <!-- Info Card - Improve mobile layout -->
+                    {#if data.pass == null}
+                        <div
+                            class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-black/30 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500"
+                            in:fly={{ ...cardAnimation, delay: 600 }}
+                        >
+                            <div
+                                class="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left"
+                            >
+                                <img
+                                    src="/icons/info.svg"
+                                    alt="info icon"
+                                    class="w-6 h-6"
+                                />
+                                <div class="text-[#C7AE93]">
+                                    Bought a pass but it isn't showing? <a href='/support' class="text-yellow-500"
+                                        >Submit a ticket.</a>
+                                        If you have bought a dual pass, make sure to also include the other person's details.
+                                </div>
+                            </div>
+                        </div>
+                    {/if}
                     <div
                         class="card-glow shadow-xl hover:shadow-[#AB83FE]/40 bg-black/30 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-gray-800/50 hover:border-[#AB83FE]/30 transition-all duration-500"
                         in:fly={{ ...cardAnimation, delay: 600 }}
