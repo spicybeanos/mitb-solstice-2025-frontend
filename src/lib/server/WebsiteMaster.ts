@@ -39,7 +39,17 @@ export async function getStayGForm(): Promise<Result<string>> {
 
     return { success: true, result: data.value as string, error: null };
 }
+export async function setStayGForm(link: string) {
+    const { error } = await supabaseAdmin
+        .from('website_properties')
+        .update({ value: link })
+        .eq('name', 'stay_gform');
+    if (error) {
+        return { success: false, error: `Could not fetch property : ${error}` }
+    }
+    return { success: true, error: null }
 
+}
 /**
  * Fetch event media details for a given eventID.
  */

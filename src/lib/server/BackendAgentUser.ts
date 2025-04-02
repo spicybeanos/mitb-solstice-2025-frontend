@@ -13,6 +13,10 @@ export async function getUserId(email: string): Promise<string | null> {
     return res.success ? res.result : null;
 }
 
+export async function getuserIdFromRegNo(regNo:string) {
+    return await get<string>(`user/id-registration?mahe_registration_number=${encodeURIComponent(regNo)}`);
+}
+
 export async function getUserInfo(userId: string): Promise<SolsticeUser | null> {
     const res = await get<SolsticeUser>(`user/${userId}`);
     return res.success ? res.result : null;

@@ -3,6 +3,8 @@
     import TextInput from "$lib/components/TextInput.svelte";
     import AButton from "$lib/components/AButton.svelte";
     import SimpleCard from "$lib/components/SimpleCard.svelte";
+    import InfoCard from "$lib/components/InfoCard.svelte";
+    import GlowDiv from '$lib/components/ui/GlowDiv.svelte'
 
     interface ProblemTicket {
         name: String;
@@ -57,7 +59,7 @@
                     <div class="text-white">Category:</div>
                     <select bind:value={selected} required name="category">
                         {#each categories as cat}
-                            <option value={cat}>
+                            <option value={cat} class="font-Tektur">
                                 {cat}
                             </option>
                         {/each}
@@ -69,6 +71,13 @@
                         placeholder="Problem category if other (NA other wise)"
                         name="problem"
                     /><br />
+                {/if}
+                {#if selected == "passes"}
+                    <InfoCard >
+                        If you have bought a dual pass, mention your
+                        registration number as well as the other person's
+                        registration number
+                    </InfoCard>
                 {/if}
                 <TextInput
                     bind:text={description}

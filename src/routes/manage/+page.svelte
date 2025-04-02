@@ -2,15 +2,18 @@
     import SimpleCard from "$lib/components/SimpleCard.svelte";
     import BasicButtonFilled from "$lib/components/ui/Basic/BasicButtonFilled.svelte";
     import BasicHeader from "$lib/components/ui/Basic/BasicHeader.svelte";
+    import BasicInput from "$lib/components/ui/Basic/BasicInput.svelte";
     import { onMount } from "svelte";
     let { data, form } = $props();
 
     let regOn = $state(false);
     let bandOn = $state(false);
+    let gform = $state("");
 
     onMount(() => {
         regOn = data.eventRegis ? data.eventRegis : false;
         bandOn = data.bandDist ? data.bandDist : false;
+        gform = data.gform;
     });
 </script>
 
@@ -28,7 +31,7 @@
                     <label class="text-white flex flex-row">
                         Enable event registrations
                         <input
-                        class="w-6"
+                            class="w-6"
                             type="checkbox"
                             name="reg"
                             bind:checked={regOn}
@@ -58,6 +61,18 @@
                 >
                     <BasicButtonFilled>Download Car</BasicButtonFilled>
                 </a>
+                <form action="?/gform" method="post">
+                    <label>
+                        Stay Google form URL
+                        <BasicInput
+                            bind:value={gform}
+                            name="link"
+                            placeholder="Stay google form link"
+                        />
+                    </label>
+
+                    <BasicButtonFilled>UPDATE</BasicButtonFilled>
+                </form>
             </div>
         </div>
     </SimpleCard>

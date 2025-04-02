@@ -4,6 +4,7 @@
     import BasicButtonFilled from "$lib/components/ui/Basic/BasicButtonFilled.svelte";
     import BasicButtonOutline from "$lib/components/ui/Basic/BasicButtonOutline.svelte";
     import SimpleCard from "$lib/components/SimpleCard.svelte";
+    import AButton from "$lib/components/AButton.svelte";
     let { data, form } = $props();
     let comment = $state("");
 </script>
@@ -25,9 +26,9 @@
                 <BasicHeader>Ticket Information</BasicHeader>
                 <code>{data.ticket?.id}</code>
                 {#if data.ticket?.solved}
-                    <div style:color='green'>Status: Solved</div>
+                    <div style:color="green">Status: Solved</div>
                 {:else}
-                    <div style:color='red'>Status: Un solved</div>
+                    <div style:color="red">Status: Un solved</div>
                 {/if}
                 <div>Name : {data.ticket?.name}</div>
                 <div>Phone number : {data.ticket?.phone_number}</div>
@@ -37,6 +38,12 @@
                 {#if data.ticket?.category == "other"}
                     <div>Problem : {data.ticket?.problem}</div>
                 {/if}
+                <div>
+                    <AButton
+                        href={`/manage/dual?ticket_id=${encodeURIComponent(data.ticket?.id)}`}
+                        >Assign dual pass</AButton
+                    >
+                </div>
                 <div>Description : {data.ticket?.description}</div>
             </div>
             <div>
