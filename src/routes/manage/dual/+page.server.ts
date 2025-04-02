@@ -81,17 +81,17 @@ export const actions = {
             }
 
             const form = await request.formData();
-            const reg1 = form.get('reg1') as string | null
+            const reg = form.get('reg') as string | null
             const _es_ = form.get('esports') as string | null
 
-            if (reg1 == null) { return fail(400, { msg: `reg1 is empty` }) }
+            if (reg == null) { return fail(400, { msg: `reg is empty` }) }
             // if (_es_ == null) { return fail(400, { msg: `esports is empty` }) }
 
             const esports = _es_ == 'on';
 
             const pass = esports ? "T615OpoVROuHP5M7ghpPfA" : "mJY2B-iLTVG20fpz_Om0hg";
 
-            const user1 = await getUserIdFromRegNo(reg1);
+            const user1 = await getUserIdFromRegNo(reg);
 
             if (user1.result == null) { return fail(400, { msg: 'user with reg1 does not exist' }) }
 
