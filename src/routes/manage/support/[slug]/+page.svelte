@@ -65,7 +65,7 @@
                     >
                     <BasicButtonFilled><b>MARK</b></BasicButtonFilled>
                 </form>
-                <form action="?/dismis" method="POST">
+                <form action="?/delete" method="POST">
                     <BasicButtonOutline color="red"
                         ><b>DISMIS & DELETE</b></BasicButtonOutline
                     >

@@ -7,11 +7,17 @@
 
 <div class="flex justify-center">
     <div class="p-[30px]">
-        <BasicHeader>Support Tickets</BasicHeader>
+        <BasicHeader
+            >Support Tickets
+            {#if data.user == "aryan.d.dalal@gmail.com"}
+                <div class="text-white text-2xl">{data.tickets.length}</div>
+            {/if}
+        </BasicHeader>
         <div class="flex flex-wrap">
             {#if data?.err}
                 <div class="text-red-400">{data?.err}</div>
             {/if}
+
             {#each data?.tickets as tick}
                 <SimpleCard>
                     <div

@@ -3,6 +3,7 @@ import { check_TicketsRW_Access } from '$lib/server/BackendAdmin.js';
 import { getUnsolvedTickets } from '$lib/server/BackendAgentSupport.js';
 import type { ProblemTicket } from '$lib/server/BackendTypes.js';
 import { generateChecksum } from '$lib/server/CacheMaster';
+import { getUserObjectFromJWT } from '$lib/server/GAuth.js';
 import { error, fail } from '@sveltejs/kit';
 
 export async function load({ cookies }) {
@@ -30,7 +31,8 @@ export async function load({ cookies }) {
                 });
             }
         }
-        if (access == true) { return { tickets: tickets as ProblemTicket[], err: null } }
+        const guser = getUserObjectFromJWT(cookies.get('authToken') as string)
+        if (access == true) { return { tickets: tickets as ProblemTicket[], err: null ,user:guser.email} }
         else { return fail(403, { tickets: [] as ProblemTicket[], err: 'You do not have permission to view tickets!' }); }
     } catch (err) {
         return fail(503, { tickets: [] as ProblemTicket[], err: 'Service is temporerily offline!' })
