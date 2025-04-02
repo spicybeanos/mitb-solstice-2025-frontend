@@ -10,24 +10,18 @@
     }
     /*
     
-        <!-- <div class="flex flex-center justify-center">
+    <div class="flex flex-center justify-center">
         <SimpleCard className="w-[70%]">
             <img src="/divya_kumar.png" />
             <BasicHeader>Divya Kumar</BasicHeader>
             <div class="text-white text-2xl p-5 text-center">
                 Presenting Divya Kumar - The Voice Behind Your Favorite Beats!
                 <br>
-                With 14 million+ monthly listeners on Spotify, Divya Kumar is
-                the powerhouse voice behind chartbusters like "Maston Ka Jhund"
-                (Bhaag Milkha Bhaag), "Kamariya" (Stree), and "Sun Saathiya"
-                (ABCD 2). Born into a legacy of music, Divya's soulful and
-                high-energy vocals have made him a fan favourite across
-                Bollywood and beyond. Whether it's a foot-tapping party anthem
-                or a heartfelt melody, he knows how to hit the right
-                note every time!
+                Step into the sonic universe of Chaar Diwaari—where jazz, hip-hop, and rock collide to create pure magic! 
+The musical alter ego of Garv Taneja, he’s the mastermind behind hits like Jhaag and Roshni, blending raw emotions with experimental beats. Brace yourself for an unforgettable night as he sets Solstice on fire with his electrifying vibe!
             </div>
         </SimpleCard>
-    </div> -->
+    </div> 
     */
     type EventType =
         | "cultural"
@@ -78,6 +72,22 @@
                 ></InteractiveHover></a
             >
         </div>
+    </div>
+
+    <div class="flex flex-center justify-center">
+        <SimpleCard className="w-fit flex flex-col flex-center justify-center">
+            <img src="/divya_kumar.png" />
+            <BasicHeader>Divya Kumar</BasicHeader>
+            <div class="text-white text-2xl p-5 text-center">
+                Presenting Divya Kumar - The Voice Behind Your Favorite Beats!
+                <br />
+                Step into the sonic universe of Chaar Diwaari—where jazz, hip-hop,<br>
+                and rock collide to create pure magic! The musical alter ego of Garv<br>
+                Taneja, he’s the mastermind behind hits like Jhaag and Roshni, blending<br>
+                raw emotions with experimental beats. Brace yourself for an unforgettable<br>
+                night as he sets Solstice on fire with his electrifying vibe!<br>
+            </div>
+        </SimpleCard>
     </div>
 
     <div class="h-[100vh] w-full flex flex-col mb-12 sm:mb-60 mt-2 z-20">
