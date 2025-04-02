@@ -14,7 +14,7 @@ export interface EventMedia {
     background: string;
     rulebook: string;
     max_teams: number;
-    prize_pool:string | null;
+    prize_pool: string | null;
 }
 
 /** Default event media values */
@@ -23,8 +23,22 @@ export const defaultEvent: Omit<EventMedia, 'eventID'> = {
     background: 'https://i.imgur.com/fLZJH60.jpg',
     rulebook: 'https://drive.google.com/file/d/12D-FxdrX6WiWRpa1zu22EJRzwxJLNd3J/view?usp=drive_link',
     max_teams: 1000,
-    prize_pool:null
+    prize_pool: null
 };
+
+export async function getStayGForm(): Promise<Result<string>> {
+    const { data, error } = await supabaseAdmin
+        .from('website_properties')
+        .select('value')
+        .eq('name', 'stay_gform')
+        .single();
+
+    if (error || !data) {
+        return { success: false, error: `Could not fetch property : ${error}`, result: null }
+    }
+
+    return { success: true, result: data.value as string, error: null };
+}
 
 /**
  * Fetch event media details for a given eventID.
@@ -85,8 +99,8 @@ export async function changeEventMedia(eventID: string, media: Partial<EventMedi
             thumbnail: media.thumbnail ?? defaultEvent.thumbnail,
             background: media.background ?? defaultEvent.background,
             rulebook: media.rulebook ?? defaultEvent.rulebook,
-            max_teams:media.max_teams ?? defaultEvent.max_teams,
-            prize_pool:media.prize_pool??defaultEvent.prize_pool
+            max_teams: media.max_teams ?? defaultEvent.max_teams,
+            prize_pool: media.prize_pool ?? defaultEvent.prize_pool
         })
         .eq('eventID', eventID.trim());
 
@@ -112,8 +126,8 @@ export async function addEventMedia(eventID: string, media: Partial<EventMedia>)
             thumbnail: media.thumbnail || defaultEvent.thumbnail,
             background: media.background || defaultEvent.background,
             rulebook: media.rulebook || defaultEvent.rulebook,
-            max_teams:media.max_teams || defaultEvent.max_teams,
-            prize_pool:media.prize_pool || defaultEvent.prize_pool
+            max_teams: media.max_teams || defaultEvent.max_teams,
+            prize_pool: media.prize_pool || defaultEvent.prize_pool
         }]);
 
     if (error) {
