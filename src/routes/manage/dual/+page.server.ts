@@ -50,7 +50,7 @@ export const actions = {
 
             const esports = _es_ == 'on';
 
-            const pass = esports ? "9iiwEUtZSz2052dd6S0wzw" : "ALryBwdJS-yJm1zosXzUHQ";
+            const pass = esports ? "ALryBwdJS-yJm1zosXzUHQ" : "9iiwEUtZSz2052dd6S0wzw";
 
             const user1 = await getUserIdFromRegNo(reg1);
             const user2 = await getUserIdFromRegNo(reg2);
