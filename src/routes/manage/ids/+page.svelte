@@ -7,6 +7,7 @@
 
     let email = $state("");
     let userid = $state("");
+    let regno = $state('');
     let passName = $state('');
     let loaded = $state(false);
     let response: { error: string | null; userData: SolsticeUser | null } =
@@ -20,7 +21,6 @@
                 : (window as any).location.origin;
 
         const email_q = encodeURIComponent(email);
-        console.log(email_q);
         let url: URL = new URL("manage/ids", base_url);
         url.searchParams.append("email", email);
 
@@ -44,9 +44,31 @@
                 : (window as any).location.origin;
 
         const userid_q = encodeURIComponent(userid);
-        console.log(userid_q);
         let url: URL = new URL("manage/ids", base_url);
         url.searchParams.append("userid", userid);
+
+        const res = await fetch(url.toString(), { method: "GET" });
+        if (res.status == 200) {
+            const info = await res.json();
+            response.error = null;
+            passName = info.passName;
+            response.userData = info.userData;
+        } else {
+            const info = await res.json();
+            response.error = info.error;
+        }
+        loaded = true;
+    }
+    async function getUserDetailsByRegNo() {
+        loaded = false;
+        let base_url =
+            window === undefined
+                ? "http://localhost:5173/manage/ids"
+                : (window as any).location.origin;
+
+        const userid_q = encodeURIComponent(regno);
+        let url: URL = new URL("manage/ids", base_url);
+        url.searchParams.append("reg", regno);
 
         const res = await fetch(url.toString(), { method: "GET" });
         if (res.status == 200) {
@@ -95,6 +117,24 @@
             <BasicButtonFilled
                 OnClick={() => {
                     getUserDetailsByUserID();
+                }}><b>GO</b></BasicButtonFilled
+            >
+            <BasicButtonOutline
+                OnClick={() => {
+                    loaded = false;
+                }}><b>RESET</b></BasicButtonOutline
+            >
+        </div>
+        <div>
+            <BasicInput
+                required
+                name="reg"
+                placeholder="Registration number"
+                bind:value={regno}
+            />
+            <BasicButtonFilled
+                OnClick={() => {
+                    getUserDetailsByRegNo();
                 }}><b>GO</b></BasicButtonFilled
             >
             <BasicButtonOutline

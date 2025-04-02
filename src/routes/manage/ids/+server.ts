@@ -3,7 +3,7 @@
 import { verifyAndGetUser } from "$lib/server/Backend";
 import { check_manage_Access } from "$lib/server/BackendAdmin";
 import { getPass } from "$lib/server/BackendAgentPass";
-import { getUserId, getUserInfo } from "$lib/server/BackendAgentUser";
+import { getUserId, getuserIdFromRegNo, getUserInfo } from "$lib/server/BackendAgentUser";
 import { generateChecksum } from "$lib/server/CacheMaster";
 import { error, fail, json, type Cookies } from "@sveltejs/kit";
 
@@ -20,14 +20,14 @@ export async function GET({ url, cookies }: { url: URL, cookies: Cookies }) {
                     secure: true,
                     sameSite: "strict",
                     path: "/",
-                    maxAge:3600
+                    maxAge: 3600
                 });
                 cookies.set('userChecksum', generateChecksum(user.result), {
                     httpOnly: false, // Accessible by frontend
                     secure: true,
                     sameSite: "strict",
                     path: "/",
-                    maxAge:3600
+                    maxAge: 3600
                 });
             }
         }
@@ -39,6 +39,11 @@ export async function GET({ url, cookies }: { url: URL, cookies: Cookies }) {
             userID = await getUserId(email as string);
         } else {
             userID = url.searchParams.get('userid');
+            if (userID == null)
+            {
+                const regno = url.searchParams.get('reg') as string
+                userID = (await getuserIdFromRegNo(regno)).result
+            }
         }
 
 
@@ -46,16 +51,16 @@ export async function GET({ url, cookies }: { url: URL, cookies: Cookies }) {
 
         const userInfo = await getUserInfo(userID);
         if (userInfo == null) { return json({ error: 'User info fetch failed!' }, { status: 400 }); }
-        
+
         let pass_name = '';
         const pass_details = await getPass(userInfo.pass_id);
-        if(pass_details == null) {pass_name = 'No pass owned';}
-        else{
+        if (pass_details == null) { pass_name = 'No pass owned'; }
+        else {
             pass_name = pass_details.name;
         }
 
         return json({
-            passName:pass_name,
+            passName: pass_name,
             userData: userInfo,
             error: null
         }, { status: 200 })
