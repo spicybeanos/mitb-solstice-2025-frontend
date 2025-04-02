@@ -79,6 +79,14 @@ export interface SolsticeUser {
     pass_id: string | null;
     id: UserID;
 }
+export interface UpdateSolsticeUser {
+    first_name: string;
+    last_name: string;
+    email_address: string;
+    phone_number: string | null;
+    mahe_registration_number: number | null;
+    pass_id: string | null;
+}
 
 export interface SolsticeTeamContent {
     [key: string]: SolsticeUser[];

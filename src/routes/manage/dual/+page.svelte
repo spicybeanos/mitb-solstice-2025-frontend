@@ -4,7 +4,7 @@
     import BasicInput from "$lib/components/ui/Basic/BasicInput.svelte";
     import BasicButtonFilled from "$lib/components/ui/Basic/BasicButtonFilled.svelte";
     import SimpleCard from "$lib/components/SimpleCard.svelte";
-    let { data } = $props();
+    let { data, form } = $props();
     let isDual = $state(true);
 </script>
 
@@ -54,6 +54,9 @@
                         />
                     </label>
                 </div>
+                {#if form?.msg}
+                    <div class="text-xl text-white">{form?.msg}</div>
+                {/if}
                 {#if isDual}
                     <form
                         action="?/dual"
@@ -77,7 +80,11 @@
                         <BasicButtonFilled>ASSIGN</BasicButtonFilled>
                     </form>
                 {:else}
-                    <form action="?/single" method="post" class="flex justify-center flex-center">
+                    <form
+                        action="?/single"
+                        method="post"
+                        class="flex justify-center flex-center"
+                    >
                         <BasicInput
                             placeholder="Reg No"
                             required={true}

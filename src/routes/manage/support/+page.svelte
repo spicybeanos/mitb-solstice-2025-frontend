@@ -25,6 +25,7 @@
                         {/if}
                         <div>{tick.name} {tick.phone} {tick.email}</div>
                         <div>{tick.description}</div>
+                        <div>ID : {tick.id}</div>
                         <a
                             class="text-blue-400"
                             href={`/manage/support/${tick.id}`}>Visit</a

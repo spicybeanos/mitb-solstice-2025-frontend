@@ -119,9 +119,9 @@ export const actions = {
             if (!canAccess) { return fail(403, { msg: 'You cannot edit website properties![HR]' }) }
 
             const form = await request.formData();
-            const reg = form.get('band');
-            await setBandDistributionEnabled(reg == 'on')
-            logAuditChange({ action: 'UPDATE', table_name: 'website_properties', user_email: guser.email, record_id: 'is_event_registration_enabled', new_data: { value: reg == 'on' }, old_data: { value: reg != 'on' } })
+            const band = form.get('band');
+            await setBandDistributionEnabled(band == 'on')
+            logAuditChange({ action: 'UPDATE', table_name: 'website_properties', user_email: guser.email, record_id: 'is_event_registration_enabled', new_data: { value: band == 'on' }, old_data: { value: band != 'on' } })
             return { msg: 'success!' }
         } catch (ex) {
             return fail(503, { msg: `Error : ${ex}` })
