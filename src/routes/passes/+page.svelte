@@ -185,7 +185,7 @@
                 {#if SolsticeAllPassInfo !== null}
                     {#each SolsticeAllPassInfo as pass, i}
                         {#if !pass.name.startsWith("MAHE")}
-                            {#if pass.name !== undefined}
+                            {#if pass.name !== undefined && pass.id != 'Pi036rnfQni-tknGiM4qQg'}
                                 {@render passCardInfo(i, pass)}
                             {/if}
                         {/if}
