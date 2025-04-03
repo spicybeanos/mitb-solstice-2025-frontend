@@ -16,7 +16,7 @@
                 <AButton href="/redeem/mahe/single">
                     <div class="text-white">I've bought a SINGLE pass</div></AButton
                 >
-                <AButton href="/redeem/mahe/single">
+                <AButton href="/redeem/mahe/es">
                     <div class="text-white">I've bought a ESPORTS only pass</div></AButton
                 >
             </div>
