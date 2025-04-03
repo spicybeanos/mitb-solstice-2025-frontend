@@ -28,7 +28,7 @@
     ];
     // last element for demo purposes
 
-    const passURL = "https://payment.manipal.edu/Tech-solstice-nexus-Login";
+    let passURL = "https://payment.manipal.edu/Tech-solstice-nexus-Login";
 
     let loading = $state(true);
     let SolsticeAllPassInfo: SolsticePassInfo[] | null = $state([]);
@@ -42,6 +42,9 @@
         SolsticeAllPassInfo?.sort((a, b) => {
             return a.name.localeCompare(b.name);
         });
+        if(!data.loggedIn){
+            passURL='/profile'
+        }
         userPassInfo = data.userPassInfo;
         loading = false;
     });
