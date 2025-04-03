@@ -78,12 +78,10 @@ The musical alter ego of Garv Taneja, he’s the mastermind behind hits like Jha
             <SimpleCard
                 className="w-fit flex flex-col flex-center justify-center"
             >
-                <img src="/divya_kumar.png" />
-                <BasicHeader>Divya Kumar</BasicHeader>
+                <img src="/char_diwari.png" />
+                <BasicHeader>Char Diwari</BasicHeader>
                 <div class="text-white text-2xl p-5 text-center">
-                    Presenting Divya Kumar - The Voice Behind Your Favorite
-                    Beats!
-                    <br />
+                    
                     Step into the sonic universe of Chaar Diwaari—where jazz, hip-hop,<br
                     />
                     and rock collide to create pure magic! The musical alter ego
