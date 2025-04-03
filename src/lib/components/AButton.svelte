@@ -14,6 +14,7 @@
         display: inline-flex;
         position: relative;
         z-index: 1;
+        width: fit-content;
         border-style: solid;
         text-decoration: none;
         color: var(--text-dark-mode);

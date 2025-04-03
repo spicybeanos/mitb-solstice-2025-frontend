@@ -2,6 +2,7 @@
     import Button from "$lib/components/Button.svelte";
     import { fly, fade } from "svelte/transition";
     import TextInput from "$lib/components/TextInput.svelte";
+    import AButton from "$lib/components/AButton.svelte";
     import QR from "$lib/components/QR.svelte";
     // import GoogleLogin from "../GoogleLogin.svelte";
     import { isSigningOut } from "../GoogleLogin.svelte.ts";
@@ -200,11 +201,8 @@
                                     class="w-6 h-6"
                                 />
                                 <div class="text-[#C7AE93]">
-                                    Bought a pass but it isn't showing? <a
-                                        href="/support?sel=passes"
-                                        class="text-yellow-500"
-                                        >Submit a ticket.</a
-                                    >
+                                    Bought a pass but it isn't showing? 
+                                    <AButton href='/redeem'>GET PASS</AButton>
                                     If you have bought a dual pass, make sure to
                                     also include the other person's details.
                                 </div>
