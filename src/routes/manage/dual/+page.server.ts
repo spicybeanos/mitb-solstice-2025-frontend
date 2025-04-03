@@ -1,5 +1,6 @@
 import { patch } from '$lib/server/Backend.js';
 import { check_ITOC_Access } from '$lib/server/BackendAdmin.js';
+import { getAllPasses } from '$lib/server/BackendAgentPass';
 import { getTicketByTicketID } from '$lib/server/BackendAgentSupport';
 import { getUserId, getuserIdFromRegNo as getUserIdFromRegNo } from '$lib/server/BackendAgentUser.ts';
 import { verifyGJWT } from '$lib/server/GAuth.js';
@@ -8,24 +9,27 @@ import { fail } from '@sveltejs/kit';
 
 export async function load({ url }) {
     const ticketID = url.searchParams.get('ticket_id');
-
+    const passes = await getAllPasses();
     if (ticketID == null) {
         return {
             ticket: null,
-            userID: null
+            userID: null,
+            allPasses: passes
         };
     }
     const ticket = await getTicketByTicketID(ticketID);
     if (ticket == null) {
         return {
             ticket: null,
-            userID: null
+            userID: null,
+            allPasses: passes
         };
     }
     const userID = await getUserId(ticket.email_address);
     return {
         ticket: ticket,
-        userID: userID
+        userID: userID,
+        allPasses: passes
     };
 }
 

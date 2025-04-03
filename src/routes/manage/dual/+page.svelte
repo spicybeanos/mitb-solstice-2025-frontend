@@ -4,9 +4,20 @@
     import BasicInput from "$lib/components/ui/Basic/BasicInput.svelte";
     import BasicButtonFilled from "$lib/components/ui/Basic/BasicButtonFilled.svelte";
     import SimpleCard from "$lib/components/SimpleCard.svelte";
+    import { onMount } from "svelte";
+    import type { SolsticePassInfo } from "$lib/server/BackendTypes.js";
     let { data, form } = $props();
     let isDual = $state(true);
+    let passesList = $state([] as SolsticePassInfo[]);
     let isMAHE = $state(true);
+
+    onMount(() => {
+        if (data.allPasses != null) {
+            for (const p of data.allPasses) {
+                passesList.push(p);
+            }
+        }
+    });
 </script>
 
 <div class="flex justify-center flex-wrap">
@@ -118,11 +129,11 @@
                             required={true}
                             name="userid"
                         />
-                        <BasicInput
-                            placeholder="Pass ID"
-                            required={true}
-                            name="passid"
-                        />
+                        <select name="passid" class="bg-white p-3 rounded-md text-black">
+                            {#each passesList as p}
+                                <option class="text-black" value={p.id}>{p.name}</option>
+                            {/each}
+                        </select>
                         <BasicButtonFilled>ASSIGN</BasicButtonFilled>
                     </form>
                 {/if}
