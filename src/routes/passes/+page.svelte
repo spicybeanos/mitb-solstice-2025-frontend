@@ -28,7 +28,7 @@
     ];
     // last element for demo purposes
 
-    let passURL = "https://payment.manipal.edu/Tech-solstice-nexus-Login";
+    let passURL = $state("https://payment.manipal.edu/Tech-solstice-nexus-Login");
 
     let loading = $state(true);
     let SolsticeAllPassInfo: SolsticePassInfo[] | null = $state([]);
