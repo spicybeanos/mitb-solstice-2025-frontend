@@ -13,7 +13,7 @@
                 <AButton href="/redeem/mahe">
                     <div class="text-white">I'm a MAHE student</div></AButton
                 >
-                <AButton href="/support?sel=passes">
+                <AButton href="/redeem/non">
                     <div class="text-white">
                         I'm NOT a MAHE student
                     </div></AButton
