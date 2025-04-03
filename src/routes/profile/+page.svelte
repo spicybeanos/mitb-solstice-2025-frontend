@@ -201,8 +201,8 @@
                                     class="w-6 h-6"
                                 />
                                 <div class="text-[#C7AE93]">
-                                    Bought a pass but it isn't showing? 
-                                    <AButton href='/redeem'>GET PASS</AButton>
+                                    Bought a pass but it isn't showing?
+                                    <AButton href="/redeem">GET PASS</AButton>
                                     If you have bought a dual pass, make sure to
                                     also include the other person's details.
                                 </div>
@@ -390,6 +390,20 @@
 </div>
 
 <style>
+    @font-face {
+        font-family: "JetBrains Mono";
+        src:
+            url("https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-Bold.woff2")
+                format("woff2"),
+            url("https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff/JetBrainsMono-Bold.woff")
+                format("woff");
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+    }
+    code{
+        font-family:'JetBrains Mono'
+    }
     img {
         border-radius: 50%;
     }
