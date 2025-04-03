@@ -46,6 +46,7 @@ export async function verifyAndGetUser(jwt: string | null | undefined, userInfoC
     if (userInfo == null) { return { success: false, error: 'user does not exist on database', result: null }; }
     return { success: true, error: 'no cookie', result: userInfo };
 }
+
 async function request<T>(method: string, url: string, body?: any): Promise<Result<T>> {
     try {
         const options: RequestInit = {
