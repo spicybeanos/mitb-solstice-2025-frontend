@@ -106,5 +106,35 @@ export const actions = {
         catch (ex) {
             return fail(500, { msg: `Serverside error ${JSON.stringify(ex)}` })
         }
+    },
+    non: async ({ cookies, request }) => {
+        try {
+            const acc = await check_ITOC_Access(cookies.get('authToken'), null, null);
+            const guser = await verifyGJWT(cookies.get('authToken') as string);
+
+            if (guser.object == null) {
+                return fail(403)
+            }
+
+            const form = await request.formData();
+            const user = form.get('userid') as string | null
+            const pass = form.get('passid') as string | null
+
+            if (pass == null) { return fail(400, { msg: `pass is empty` }) }
+            // if (_es_ == null) { return fail(400, { msg: `esports is empty` }) }
+
+            if (user == null) { return fail(400, { msg: 'user does not exist' }) }
+
+            const res1 = await assignPass(user, pass, guser.object?.email)
+
+            if (res1.error != null) {
+                return fail(500, { msg: `failed to assign pass: \nuser 1 : ${res1.error}` });
+            }
+
+            return { msg: 'Success!' }
+        }
+        catch (ex) {
+            return fail(500, { msg: `Serverside error ${JSON.stringify(ex)}` })
+        }
     }
 }

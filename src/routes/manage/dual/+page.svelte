@@ -6,6 +6,7 @@
     import SimpleCard from "$lib/components/SimpleCard.svelte";
     let { data, form } = $props();
     let isDual = $state(true);
+    let isMAHE = $state(true);
 </script>
 
 <div class="flex justify-center flex-wrap">
@@ -53,47 +54,75 @@
                             class="w-10"
                         />
                     </label>
+                    <label>
+                        Is MAHE pass?
+                        <input
+                            type="checkbox"
+                            bind:checked={isMAHE}
+                            class="w-10"
+                        />
+                    </label>
                 </div>
                 {#if form?.msg}
                     <div class="text-xl text-white">{form?.msg}</div>
                 {/if}
-                {#if isDual}
-                    <form
-                        action="?/dual"
-                        method="post"
-                        class="flex justify-center flex-center"
-                    >
-                        <BasicInput
-                            placeholder="Reg No 1"
-                            required={true}
-                            name="reg1"
-                        />
-                        <BasicInput
-                            placeholder="Reg No 2"
-                            required={true}
-                            name="reg2"
-                        />
-                        <label class="flex flex-center justify-center">
-                            Is esports?
-                            <input type="checkbox" name="esports" />
-                        </label>
-                        <BasicButtonFilled>ASSIGN</BasicButtonFilled>
-                    </form>
+                {#if isMAHE}
+                    {#if isDual}
+                        <form
+                            action="?/dual"
+                            method="post"
+                            class="flex justify-center flex-center"
+                        >
+                            <BasicInput
+                                placeholder="Reg No 1"
+                                required={true}
+                                name="reg1"
+                            />
+                            <BasicInput
+                                placeholder="Reg No 2"
+                                required={true}
+                                name="reg2"
+                            />
+                            <label class="flex flex-center justify-center">
+                                Is esports?
+                                <input type="checkbox" name="esports" />
+                            </label>
+                            <BasicButtonFilled>ASSIGN</BasicButtonFilled>
+                        </form>
+                    {:else}
+                        <form
+                            action="?/single"
+                            method="post"
+                            class="flex justify-center flex-center"
+                        >
+                            <BasicInput
+                                placeholder="Reg No"
+                                required={true}
+                                name="reg"
+                            />
+                            <label>
+                                Is esports?
+                                <input type="checkbox" name="esports" />
+                            </label>
+                            <BasicButtonFilled>ASSIGN</BasicButtonFilled>
+                        </form>
+                    {/if}
                 {:else}
                     <form
-                        action="?/single"
+                        action="?/non"
                         method="post"
                         class="flex justify-center flex-center"
                     >
                         <BasicInput
-                            placeholder="Reg No"
+                            placeholder="User ID"
                             required={true}
-                            name="reg"
+                            name="userid"
                         />
-                        <label>
-                            Is esports?
-                            <input type="checkbox" name="esports" />
-                        </label>
+                        <BasicInput
+                            placeholder="Pass ID"
+                            required={true}
+                            name="passid"
+                        />
                         <BasicButtonFilled>ASSIGN</BasicButtonFilled>
                     </form>
                 {/if}
