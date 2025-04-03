@@ -9,6 +9,7 @@
 <div class="flex flex-center justify-center flex-col">
     <SimpleCard>
         {#if data.is_logged_in}
+        <div class="text-white">You will get your pass by 12:30 AM</div>
             <div class="flex flex-col flex-center justify-center">
                 <AButton href="/redeem/mahe">
                     <div class="text-white">I'm a MAHE student</div></AButton
