@@ -38,6 +38,13 @@
                 {#if data.ticket?.category == "other"}
                     <div>Problem : {data.ticket?.problem}</div>
                 {/if}
+                <div
+                    class="border border-gray-600 rounded-lg p-5 flex flex-col m-[5px]"
+                >
+                    <div>User ID : {data.userInfo?.id}</div>
+                    <div>Reg no : {data.userInfo?.mahe_registration_number}</div>
+                    <div>Pass : {data.passName}</div>
+                </div>
                 <div>
                     <AButton
                         href={`/manage/dual?ticket_id=${encodeURIComponent(data.ticket?.id)}`}

@@ -132,7 +132,7 @@ export const actions = {
             const res1 = await assignPass(user, pass, guser.object?.email)
 
             if (res1.error != null) {
-                return fail(500, { msg: `failed to assign pass: \nuser 1 : ${res1.error}` });
+                return fail(500, { msg: `failed to assign pass: \nuser 1 : ${JSON.stringify(res1.error)}` });
             }
 
             return { msg: 'Success!' }
