@@ -5,6 +5,7 @@
     import BasicButtonOutline from "$lib/components/ui/Basic/BasicButtonOutline.svelte";
     import SimpleCard from "$lib/components/SimpleCard.svelte";
     import AButton from "$lib/components/AButton.svelte";
+    import {displayDateTime} from '$lib/components/DisplayTime.ts'
     let { data, form } = $props();
     let comment = $state("");
 </script>
@@ -35,6 +36,9 @@
                 <div>E-mail : {data.ticket?.email_address}</div>
                 <div>College : {data.ticket?.college_name}</div>
                 <div>Category : {data.ticket?.category}</div>
+                <div>
+                    Creation : {displayDateTime(new Date(data.ticket?.timestamp ?? 0))}
+                </div>
                 {#if data.ticket?.category == "other"}
                     <div>Problem : {data.ticket?.problem}</div>
                 {/if}
@@ -42,12 +46,14 @@
                     class="border border-gray-600 rounded-lg p-5 flex flex-col m-[5px]"
                 >
                     <div>User ID : {data.userInfo?.id}</div>
-                    <div>Reg no : {data.userInfo?.mahe_registration_number}</div>
+                    <div>
+                        Reg no : {data.userInfo?.mahe_registration_number}
+                    </div>
                     <div>Pass : {data.passName}</div>
                 </div>
                 <div>
                     <AButton
-                        href={`/manage/dual?ticket_id=${encodeURIComponent(data.ticket?.id)}`}
+                        href={`/manage/dual?ticket_id=${encodeURIComponent(data.ticket?.id ?? "")}`}
                         >Assign dual pass</AButton
                     >
                 </div>
