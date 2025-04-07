@@ -3,6 +3,7 @@ import { json } from '@sveltejs/kit'
 
 export async function POST({ request }) {
     try {
+        return json({ error: 'Service stopped' }, { status: 503 });
         const header = request.headers.get('Authorization');
         const token = header?.split(' ')[1]; 
 

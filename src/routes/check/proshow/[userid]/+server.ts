@@ -6,6 +6,7 @@ import { fail, json, text } from '@sveltejs/kit';
 
 
 export async function GET({ request, params }) {
+    return json({ error: 'Service stopped' }, { status: 503 });
     try {
         const header = request.headers.get('Authorization');
         const token = header?.split(' ')[1];
@@ -30,6 +31,7 @@ export async function GET({ request, params }) {
 }
 
 export async function POST({ request, params }) {
+    return json({ error: 'Service stopped' }, { status: 503 });
     try {
         const header = request.headers.get('Authorization');
         const token = header?.split(' ')[1];

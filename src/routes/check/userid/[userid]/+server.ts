@@ -11,6 +11,7 @@ interface UserInfoRequest {
 }
 
 export async function GET({ request, params }: RequestEvent) {
+    return json({ error: 'Service stopped' }, { status: 503 });
     try {
         const header = request.headers.get('Authorization');
         const token = header?.split(' ')[1];

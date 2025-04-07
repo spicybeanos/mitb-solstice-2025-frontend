@@ -4,6 +4,7 @@ import { APP_ADMIN_KEY } from '$env/static/private'
 
 
 export async function POST({ request }) {
+    return json({ error: 'Service stopped' }, { status: 503 });
     try {
         const auth = request.headers.get('Authorization')
 

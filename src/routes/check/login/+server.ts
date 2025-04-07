@@ -5,6 +5,7 @@ import { json } from "@sveltejs/kit";
 
 export async function POST({ request }) {
     try {
+        return json({ error: 'Service stopped' }, { status: 503 });
         const body = await request.json() as CheckerUserLogin;
         const log = await logIn(body);
 
